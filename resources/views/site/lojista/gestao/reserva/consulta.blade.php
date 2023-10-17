@@ -140,6 +140,6 @@
             <div class="row center">
                 {{$reservas->links('custom/pagination')}}
             </div>              
-    </div>
+    </div> 
 
 @endsection
