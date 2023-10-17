@@ -32,4 +32,5 @@ class Reserva extends Model {
     public function tbplano(){
         return $this->belongsTo(Plano::class, 'placodigo', 'placodigo');
     }
+    
 }
