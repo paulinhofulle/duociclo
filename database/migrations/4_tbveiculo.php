@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('tbveiculo', function (Blueprint $table) {
             $table->id('veicodigo');
             $table->integer('veiano');
-            $table->integer('veikm');
+            $table->integer('veiquilometragem');
             $table->integer('veisituacao'); // 1- disponível 2- em uso 3- em manutencao
             $table->string('veiplaca', 10)->unique();
             $table->string('veicor');

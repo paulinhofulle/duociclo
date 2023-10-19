@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('ressituacao'); // 1- pendente 2- aceita 3- recusada
             $table->timestamps();
 
-            $table->unsignedBigInteger('unicodigo');
+            $table->unsignedBigInteger('usucodigo');
             $table->foreign('usucodigo')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
 
             $table->unsignedBigInteger('veicodigo');

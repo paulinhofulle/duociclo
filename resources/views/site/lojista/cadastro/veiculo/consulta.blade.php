@@ -70,7 +70,7 @@
                         <td>{{$veiculo->veidescricao}}</td>
                         <td>{{$veiculo->veicor}}</td>
                         <td>{{$veiculo->veiano}}</td>
-                        <td>{{$veiculo->veikm}}</td>
+                        <td>{{$veiculo->veiquilometragem}}</td>
                         <td>{{$veiculo->veiplaca}}</td>
                         <td>{{$veiculo->veisituacao}}</td>
                         <td style="display: flex; justify-content:end;">
@@ -154,7 +154,7 @@
                         $('#modalVisualizarVeiculo .modal-content').append('<p><b>Descrição:</b> ' + veiculo.veidescricao + '</p>');
                         $('#modalVisualizarVeiculo .modal-content').append('<p><b>Cor:</b> ' + veiculo.veicor + '</p>');
                         $('#modalVisualizarVeiculo .modal-content').append('<p><b>Ano:</b> ' + veiculo.veiano + '</p>');
-                        $('#modalVisualizarVeiculo .modal-content').append('<p><b>KM:</b> ' + veiculo.veikm + '</p>');
+                        $('#modalVisualizarVeiculo .modal-content').append('<p><b>KM:</b> ' + veiculo.veiquilometragem + '</p>');
                         $('#modalVisualizarVeiculo .modal-content').append('<p><b>Placa:</b> ' + veiculo.veiplaca + '</p>');
                         if(marca){
                             sDescricaoMarca = marca.marcodigo + ' - ' + marca.marnome;
@@ -176,7 +176,7 @@
 
                     function preencherFormularioDeAlteracao(veiculo) {
                         $('#modalAlterarVeiculo #veicodigo').val(veiculo.veicodigo);
-                        $('#modalAlterarVeiculo #veikm').val(veiculo.veikm);
+                        $('#modalAlterarVeiculo #veiquilometragem').val(veiculo.veiquilometragem);
                         $('#modalAlterarVeiculo #veiplaca').val(veiculo.veiplaca);
                         $('#modalAlterarVeiculo #veicor').val(veiculo.veicor);
                         $('#modalAlterarVeiculo #veidescricao').val(veiculo.veidescricao);

@@ -37,9 +37,9 @@
                 @enderror
             </div>
             <div class="input-field">
-                <input id="veikm" type="number" class="validate" name="veikm" value="{{ old('veikm', $veiculo->veikm) }}" required>
-                <label for="veikm">KM</label>
-                @error('veikm')
+                <input id="veiquilometragem" type="number" class="validate" name="veiquilometragem" value="{{ old('veiquilometragem', $veiculo->veiquilometragem) }}" required>
+                <label for="veiquilometragem">KM</label>
+                @error('veiquilometragem')
                     <span class="error-message" style="color:red;">{{ $message }}</span>
                 @enderror
             </div>

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('placodigo');
             $table->string('pladescricao');
             $table->integer('plaquantidadedias');
+            $table->integer('plaquantidadeparcela');
             $table->double('plavalor', 10, 2);
             $table->timestamps();
 
