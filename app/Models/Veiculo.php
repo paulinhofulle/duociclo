@@ -15,7 +15,7 @@ class Veiculo extends Model{
     protected $fillable = [
         'veidescricao',
         'veiano',
-        'veikm',
+        'veiquilometragem',
         'veisituacao',
         'veiplaca',
         'veicor',

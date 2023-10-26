@@ -8,7 +8,7 @@
                 <article class="bg-gradient-green card z-depth-4 ">
                     <i class="material-icons">attach_money</i>
                     <p>Lucros com aluguéis</p>
-                    <h3>R${{$lucro}}</h3>
+                    <h3>R${{ number_format($lucro, 2, ',', '.') }}</h3>
                 </article>
             </div>
             <div class="col s12 m6">

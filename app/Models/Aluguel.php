@@ -32,4 +32,8 @@ class Aluguel extends Model{
     public function tbplano(){
         return $this->belongsTo(Plano::class, 'placodigo', 'placodigo');
     }
+
+    public function tbparcela(){
+        return $this->belongsTo(Parcela::class, 'alucodigo', 'alucodigo');
+    }
 }

@@ -6,7 +6,6 @@
     <title>@yield('title')</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!-- Custom CSS-->
     <link rel="stylesheet" href="{{asset('css/style.css')}}">
 
 </head>
@@ -16,7 +15,7 @@
 
   <nav class="orange">
       <div class="nav-wrapper container">
-        <a href="#" class="brand-logo center" style="text-decoration:none;">Duociclo</a>
+        <a href="#" class="brand-logo center" id="site-title" style="text-decoration:none;">Duociclo</a>
         <ul id="nav-mobile" class="left">
           @yield('opcoesMenu')
         </ul>
@@ -46,6 +45,37 @@
         
         if (sucessoMessage) {
             M.toast({ html: sucessoMessage, classes: 'green' });
+        }
+      });
+
+      document.addEventListener('DOMContentLoaded', function() {
+          var elems = document.querySelectorAll('.sidenav');
+          var instances = M.Sidenav.init(elems, {
+              edge: 'left' // Define o lado do menu (esquerda)
+          });
+      });
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var siteTitle = document.getElementById('site-title');
+        var menuOptions = document.querySelector('.nav-wrapper ul.left');
+        
+        // Verifica e oculta o menu ao carregar a página
+        hideMenuOptionsIfNeeded(siteTitle, menuOptions);
+        
+        // Verifica e oculta o menu ao redimensionar a janela
+        window.addEventListener('resize', function() {
+          hideMenuOptionsIfNeeded(siteTitle, menuOptions);
+        });
+        
+        // Função para ocultar as opções do menu, se necessário
+        function hideMenuOptionsIfNeeded(title, options) {
+          var titleRect = title.getBoundingClientRect();
+          var optionsRect = options.getBoundingClientRect();
+          if (titleRect.bottom < optionsRect.top) {
+            options.style.display = 'none';
+          } else {
+            options.style.display = 'block';
+          }
         }
       });
   </script>

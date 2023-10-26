@@ -16,12 +16,11 @@ use App\Http\Controllers\Controller;
 class LojistaController extends Controller {
     
     public function menu(){
-        $lucro = Aluguel::join('tbplano', 'aluguel.placodigo', '=', 'tbplano.placodigo')
-    ->where('aluguel.alusituacao', 2)
-    ->whereHas('tbveiculo', function ($query) {
-        $query->where('lojcodigo', Auth::user()->lojcodigo);
-    })
-    ->sum('tbplano.plavalor');
+        $lucro = Aluguel::join('tbplano', 'tbaluguel.placodigo', '=', 'tbplano.placodigo')
+                        ->join('tbveiculo', 'tbaluguel.veicodigo', '=', 'tbveiculo.veicodigo')
+                        ->where('tbaluguel.alusituacao', 2)
+                        ->where('tbveiculo.lojcodigo', Auth::user()->lojcodigo)
+                        ->sum('tbplano.plavalor');
         $gasto = Manutencao::where('mansituacao', 2)
                            ->whereHas('tbveiculo', function($query) {
                                       $query->where('lojcodigo', Auth::user()->lojcodigo);

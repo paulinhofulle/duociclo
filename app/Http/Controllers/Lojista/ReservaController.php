@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ReservaController extends Controller {
     
-    public function consultaReserva(Request $request){
+    public function consultaReservaLojista(Request $request){
         $search = $request->input('search');
 
         $query = Reserva::query();
@@ -43,6 +43,25 @@ class ReservaController extends Controller {
 
     public function finalizarReserva(Request $request, $id){
 
+    }
+
+    public function consultaReservaCliente(Request $request){
+        $search = $request->input('search');
+        $usucodigo = Auth::user()->usucodigo;
+        $query = Reserva::query();
+        $query->with('tbveiculo', 'tbplano', 'user');
+        $query->where('usucodigo', $usucodigo);
+
+        if ($search) {
+            $query->whereHas('tbveiculo', function ($q) use ($search) {
+                $q->where('veinome', 'like', "%$search");
+            });
+        }
+
+        $reservas = $query->paginate(7);
+        $totalReservas = $reservas->total();
+
+        return view('site/cliente/gestao/reserva/consulta', compact('reservas', 'totalReservas', 'search'));
     }
 
 }

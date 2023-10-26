@@ -101,7 +101,7 @@
                 $(document).ready(function() {
                     //INCLUIR
                     var modalIncluirVeiculo = $('#modalIncluirVeiculo').modal();
-                    modalIncluirVeiculo[0].style.maxHeight = '100%';
+                    modalIncluirVeiculo[0].style.maxHeight = '80%';
                     $("#openModalBtnIncluir").click(function() {
                         modalIncluirVeiculo.modal("open");
                         $('.error-message').remove();
@@ -127,7 +127,7 @@
                     
                     //VISUALIZAR
                     var modalVisualizarVeiculo = $('#modalVisualizarVeiculo').modal();
-                    modalVisualizarVeiculo[0].style.maxHeight = '100%';
+                    modalVisualizarVeiculo[0].style.maxHeight = '80%';
                     $('.seuBotaoDeVisualizacao').click(function() {
                         var veicodigo = $(this).data('veiculo-id'); // Obtém o ID da loja do atributo data-loja-id
                         var veiculo = encontrarVeiculoPorId(veicodigo); // Encontra a loja correspondente no array de lojas
@@ -167,7 +167,7 @@
                         var veicodigo = $(this).data('veiculo-id'); // Obtém o ID da loja do atributo data-loja-id
                         var veiculo = encontrarVeiculoPorId(veicodigo);
                         var modalAlterarVeiculo = $('#modalAlterarVeiculo_' + veicodigo).modal();
-                        modalAlterarVeiculo[0].style.maxHeight = '100%';
+                        modalAlterarVeiculo[0].style.maxHeight = '80%';
                         preencherFormularioDeAlteracao(veiculo);
                         modalAlterarVeiculo.modal('open');
                         $('.error-message').remove();

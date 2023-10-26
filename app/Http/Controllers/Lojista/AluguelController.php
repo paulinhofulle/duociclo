@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 class AluguelController extends Controller {
    
-    public function consultaAluguel(Request $request){
+    public function consultaAluguelLojista(Request $request){
         $search = $request->input('search');
 
         $query = Aluguel::query();
@@ -32,6 +32,26 @@ class AluguelController extends Controller {
         $totalAlugueis = $alugueis->total();
 
         return view('site/lojista/gestao/aluguel/consulta', compact('alugueis', 'totalAlugueis', 'search'));
+    }
+
+    public function consultaAluguelCliente(Request $request){
+        $search = $request->input('search');
+        $usucodigo = Auth::user()->usucodigo;
+        $query = Aluguel::query();
+        $query->with('tbveiculo', 'tbplano', 'user');
+        $query->where('usucodigo', $usucodigo);
+
+        if ($search) {
+            $query->whereHas('tbveiculo', function ($q) use ($search) {
+                $q->where('veinome', 'like', "%$search");
+            });
+        }
+
+        $alugueis = $query->paginate(7);
+
+        $totalAlugueis = $alugueis->total();
+
+        return view('site/cliente/gestao/aluguel/consulta', compact('alugueis', 'totalAlugueis', 'search'));
     }
 
 }

@@ -10,6 +10,7 @@
 .bg-gradient-green {background-image: linear-gradient(to right, #00c853 , #69f0ae);}
 .bg-gradient-blue {background-image: linear-gradient(to right, #0091ea , #40c4ff);}
 .bg-gradient-orange {background-image: linear-gradient(to right, #f57f17 , #fbc02d );}
+.bg-gradient-red {background-image: linear-gradient(to right, #ff0000 , #ff9999 );}
 
 /* Row */
 .row {margin-bottom: 0;}

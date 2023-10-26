@@ -16,6 +16,7 @@ class Plano extends Model{
         'pladescricao',
         'plaquantidadedias',
         'plavalor',
+        'plaquantidadeparcela',
         'lojcodigo'
     ];
 

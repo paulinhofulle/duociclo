@@ -12,6 +12,7 @@ use App\Http\Controllers\Lojista\PlanoController;
 use App\Http\Controllers\Lojista\ManutencaoController;
 use App\Http\Controllers\Lojista\ReservaController;
 use App\Http\Controllers\Lojista\AluguelController;
+use App\Http\Controllers\Cliente\ClienteController;
 
 // LOGIN
 Route::view('/', 'site/login')->name('login');
@@ -58,7 +59,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('/lojista/planos/excluir/{id}', [PlanoController::class, 'excluirPlano'])->name('excluirPlano');
     Route::put('/lojista/planos/alterar/{id}', [PlanoController::class, 'alterarPlano'])->name('alterarPlano');
     //aluguel
-    Route::get('/lojista/alugueis', [AluguelController::class, 'consultaAluguel'])->name('consultaAluguel');
+    Route::get('/lojista/alugueis', [AluguelController::class, 'consultaAluguelLojista'])->name('consultaAluguelLojista');
     //manutencao
     Route::get('/lojista/manutencoes', [ManutencaoController::class, 'consultaManutencao'])->name('consultaManutencao');
     Route::post('/lojista/manutencoes/incluir', [ManutencaoController::class, 'incluirManutencao'])->name('incluirManutencao');
@@ -66,14 +67,16 @@ Route::group(['middleware' => ['auth']], function () {
     Route::put('/lojista/manutencoes/alterar/{id}', [ManutencaoController::class, 'alterarManutencao'])->name('alterarManutencao');
     Route::put('/lojista/manutencoes/finalizar/{id}', [ManutencaoController::class, 'finalizarManutencao'])->name('finalizarManutencao');
     //reserva
-    Route::get('/lojista/reservas', [ReservaController::class, 'consultaReserva'])->name('consultaReserva');
+    Route::get('/lojista/reservas', [ReservaController::class, 'consultaReservaLojista'])->name('consultaReservaLojista');
     Route::put('/lojista/reservas/aceitar/{id}', [ReservaController::class, 'aceitarReserva'])->name('aceitarReserva');
     Route::put('/lojista/reservas/recusar/{id}', [ReservaController::class, 'recusarReserva'])->name('recusarReserva');
 
     //CLIENTE
+    Route::get('/cliente', [ClienteController::class, 'menu'])->name('cliente');
+    Route::get('/cliente/meuPerfil', [ClienteController::class, 'meuPerfil'])->name('meuPerfilCliente');
+    Route::put('/cliente/meuPerfil/alterar/{id}', [ClienteController::class, 'alterarMeuPerfil'])->name('alterarMeuPerfilCliente');
+    //aluguel
+    Route::get('/cliente/alugueis', [AluguelController::class, 'consultaAluguelCliente'])->name('consultaAluguelCliente');
+    Route::get('/cliente/reservas', [ReservaController::class, 'consultaReservaCliente'])->name('consultaReservaCliente');
 
 });
-
-
-
-

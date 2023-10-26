@@ -67,7 +67,12 @@
                         <td>{{$manutencao->mancodigo}}</td>
                         <td>{{$manutencao->mandescricao}}</td>
                         <td>{{ date('d/m/Y', strtotime($manutencao->mandatainicio)) }}</td>
-                        <td>{{ date('d/m/Y', strtotime($manutencao->mandatatermino)) }}</td>
+                        <td>@if ($manutencao->mandatatermino == null)
+                                -
+                            @else
+                                {{ date('d/m/Y', strtotime($manutencao->mandatatermino)) }}
+                            @endif 
+                        </td>
                         <td>{{ number_format($manutencao->manvalor, 2, ',', '.') }}</td>
                         <td>{{$manutencao->mansituacao}}</td>
                         <td style="display: flex; justify-content:end;">
@@ -131,7 +136,7 @@
                     
                     //VISUALIZAR
                     var modalVisualizarManutencao = $('#modalVisualizarManutencao').modal();
-                    modalVisualizarManutencao[0].style.maxHeight = '100%';
+                    modalVisualizarManutencao[0].style.maxHeight = '80%';
                     $('.seuBotaoDeVisualizacao').click(function() {
                         var mancodigo = $(this).data('manutencao-id'); // Obtém o ID da loja do atributo data-loja-id
                         var manutencao = encontrarManutencaoPorId(mancodigo); // Encontra a loja correspondente no array de lojas
@@ -172,7 +177,7 @@
                         var mancodigo = $(this).data('manutencao-id'); // Obtém o ID da loja do atributo data-loja-id
                         var manutencao = encontrarManutencaoPorId(mancodigo);
                         var modalAlterarManutencao = $('#modalAlterarManutencao_' + mancodigo).modal();
-                        modalAlterarManutencao[0].style.maxHeight = '100%';
+                        modalAlterarManutencao[0].style.maxHeight = '50%';
                         modalAlterarManutencao.modal('open');
                         $('.error-message').remove();
                         limparClassesCampos();

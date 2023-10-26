@@ -23,7 +23,14 @@
                 @error('plavalor')
                     <span class="error-message" style="color:red;">{{ $message }}</span>
                 @enderror
-            </div> 
+            </div>
+            <div class="input-field">
+                <input id="plaquantidadeparcela" type="number" class="validate" name="plaquantidadeparcela" required>
+                <label for="plaquantidadeparcela">Quantidade de Parcelas</label>
+                @error('plaquantidadeparcela')
+                    <span class="error-message" style="color:red;">{{ $message }}</span>
+                @enderror
+            </div>
             <button id="btnEnviarFormIncluir" type="submit" class="btn waves-effect waves-light" style="background-color: orange">Salvar</button>
             <a href="#!" id="btnFecharIncluir" class="modal-close waves-effect waves-green btn-flat">Fechar</a>
         </form>

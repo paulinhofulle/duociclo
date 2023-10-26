@@ -1,11 +1,11 @@
-@extends('site/lojista/menu')
-@section('title', 'Duociclo - Aluguéis')
+@extends('site/cliente/menu')
+@section('title', 'Duociclo - Meus Aluguéis')
 
 @section('conteudo')
     <div class="row container crud">
             <div class="row titulo ">              
               <h1 class="left" style="color: #ff9800; font-weight:500; text-transform:none;">Aluguéis</h1>
-              <span class="right chip">{{$totalAlugueis}} aluguéis cadastradas</span>  
+              <span class="right chip">{{$totalAlugueis}} aluguéis relacionados</span>  
             </div>
             @if (session('sucesso'))
                 <div class="card green">
@@ -55,7 +55,6 @@
                 <tbody>
                   @foreach ($alugueis as $aluguel)
                     @include('site/lojista/gestao/manutencao/visualizar', ['aluguel' => $aluguel])
-                    @include('site/lojista/gestao/manutencao/parcela', ['aluguel' => $aluguel])
                     <tr>
                         <td>{{$aluguel->alucodigo}}</td>
                         <td>{{$aluguel->tbveiculo->veinome}}</td>
@@ -67,9 +66,6 @@
                         <td style="display: flex; justify-content:end;">
                             <button class="btn-floating halfway-fab waves-effect waves-light blue secondary-content btn modal-trigger seuBotaoDeVisualizacao" title="Visualizar" style="position: relative; bottom:0px;" data-aluguel-id="{{ $aluguel->alucodigo }}">
                                 <i class="material-icons">remove_red_eye</i>
-                            </button>
-                            <button class="btn-floating halfway-fab waves-effect waves-light green secondary-content seuBotaoDeParcelas" data-aluguel-id="{{ $aluguel->alucodigo }}" style="position: relative; bottom:0px;" title="Parcelas">
-                                <i class="material-icons">receipt</i>
                             </button>
                         </td>
                     </tr>    
@@ -113,29 +109,7 @@
                    //         sDescricao = veiculo.veicodigo + ' - ' + veiculo.veidescricao;
                      //   }
                     //    $('#modalVisualizarManutencao .modal-content').append('<p><b>Veículo:</b> ' + sDescricao + '</p>');
-                    };
-
-                    //FINALIZAR
-                    $('.seuBotaoDeAceitar').click(function() {
-                        var rescodigo = $(this).data('reserva-id'); // Obtém o ID da loja do atributo data-loja-id
-                        var reserva = encontrarReservaPorId(rescodigo);
-                        var modalAceitarReserva = $('#modalAceitarReserva_' + mancodigo).modal();
-                        modalAceitarReserva[0].style.maxHeight = '100%';
-                        modalAceitarReserva.modal('open');
-                        $('.error-message').remove();
-                    });
-
-                    $('.seuBotaoDeRecusar').click(function() {
-                        var rescodigo = $(this).data('reserva-id'); // Obtém o ID da loja do atributo data-loja-id
-                        var reserva = encontrarReservaPorId(rescodigo);
-                        var modalRecusarReserva = $('#modalRecusarReserva_' + rescodigo).modal();
-                        modalRecusarReserva[0].style.maxHeight = '100%';
-                        modalRecusarReserva.modal('open');
-                        $('.error-message').remove();
-                    });
-
-                });
-        
+                    };      
             </script>
             <div class="row center">
                 {{$alugueis->links('custom/pagination')}}

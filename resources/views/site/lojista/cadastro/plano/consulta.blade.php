@@ -140,7 +140,8 @@
                         $('#modalVisualizarPlano .modal-content').append('<h4 class="center">Visualizar</h4>');
                         $('#modalVisualizarPlano .modal-content').append('<p><b>Descrição:</b> ' + plano.pladescricao + '</p>');
                         $('#modalVisualizarPlano .modal-content').append('<p><b>Quantidade de Dias:</b> ' + plano.plaquantidadedias + '</p>');
-                        $('#modalVisualizarPlano .modal-content').append('<p><b>Valor:</b> ' + plano.plavalor + '</p>');
+                        $('#modalVisualizarPlano .modal-content').append('<p><b>Valor:</b> R$' + plano.plavalor + '</p>');
+                        $('#modalVisualizarPlano .modal-content').append('<p><b>Quantidade de Parcelas:</b> ' + plano.plaquantidadeparcela + '</p>');
                     };
 
                     //ALTERAR
