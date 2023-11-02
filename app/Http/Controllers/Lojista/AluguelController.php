@@ -54,4 +54,8 @@ class AluguelController extends Controller {
         return view('site/cliente/gestao/aluguel/consulta', compact('alugueis', 'totalAlugueis', 'search'));
     }
 
+    public function parcela(){
+        return view('site/cliente/gestao/aluguel/parcela');
+    }
+
 }

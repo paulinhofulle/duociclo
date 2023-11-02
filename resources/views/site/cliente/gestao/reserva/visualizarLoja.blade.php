@@ -1,4 +1,4 @@
-<div id="modalVisualizarAluguel" class="modal">
+<div id="modalReservaVisualizarLoja" class="modal">
     <div class="modal-content">
         
     </div>

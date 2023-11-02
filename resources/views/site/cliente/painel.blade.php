@@ -4,6 +4,24 @@
 @section('conteudo')
     @if ($aluguel == null)
         <div class="row container">
+            <section class="info">
+                <div class="col s12 m12">
+                    <article class="bg-gradient-green card z-depth-4 ">
+                        <i class="material-icons">motorcycle</i>
+                        <p>Aluguel Ativo</p>
+                        <ul style="color: white">
+                            <li>Veículo: CG 125 ES</li>
+                            <li>Plano: Mensal</li>
+                            <li>Data de Início: 02/11/2023</li>
+                            <li>Data de Término: 02/12/2023</li>
+                            <li>Valor:R$500,00</li>
+                        </ul>
+                    </article>
+                </div>
+            </section>
+        </div>
+    @else
+    <div class="row container">
         <section class="info">
             <div class="col s12 m12">
                 <article class="bg-gradient-orange card z-depth-4 ">
@@ -14,7 +32,9 @@
             </div>
         </section>
         </div>
-    @else
+
+
+
         <div class="row container">
             <section class="info">
                 <div class="col s12 m12">
@@ -63,6 +83,14 @@
                             </tr>    
                         @endforeach
                     @endif
+
+                    <tr>
+                        <td>1</td>
+                        <td>R$500,00</td>
+                        <td>10/11/2023</td>
+                        <td>Aberta</td>
+                        </td>
+                    </tr>    
                 </tbody>
             </table>
         </div>

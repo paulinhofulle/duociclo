@@ -79,4 +79,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/cliente/alugueis', [AluguelController::class, 'consultaAluguelCliente'])->name('consultaAluguelCliente');
     Route::get('/cliente/reservas', [ReservaController::class, 'consultaReservaCliente'])->name('consultaReservaCliente');
 
+
+
+
+
+    Route::view('/parcelas', 'site/lojista/gestao/aluguel/parcela')->name('consultaParcelaLojista');
+    Route::view('/solicitarReserva', 'site/cliente/gestao/reserva/solicitar')->name('reservaCliente');
 });

@@ -19,7 +19,7 @@ class ReservaController extends Controller {
 
         $query = Reserva::query();
         
-        $query->with('tbveiculo', 'tbplano', 'user'); // Eager load os relacionamentos
+        $query->with('tbveiculo', 'tbplano', 'users'); // Eager load os relacionamentos
 
         $query->whereHas('tbveiculo', function ($q) {
             $q->where('lojcodigo', Auth::user()->lojcodigo);
@@ -31,10 +31,15 @@ class ReservaController extends Controller {
             });
         }
 
-        $reservas = $query->paginate(7);
+        $reservas = Reserva::with('users')->paginate(7);
         $totalReservas = $reservas->total();
+        $situacoes = [
+            1 => 'Pendente',
+            2 => 'Aceita',
+            3 => 'Recusada'
+        ];
 
-        return view('site/lojista/gestao/reserva/consulta', compact('reservas', 'totalReservas', 'search'));
+        return view('site/lojista/gestao/reserva/consulta', compact('situacoes', 'reservas', 'totalReservas', 'search'));
     }
 
     public function aceitarReserva(Request $request, $id){

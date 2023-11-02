@@ -13,8 +13,8 @@
     
         <ul id="dropdownGestao" class="dropdown-content">
             <li><a href="{{route('consultaManutencao')}}" style="color:#ff9800;">Manutenções</a></li>
-            <li><a href="{{route('consultaReserva')}}" style="color:#ff9800;">Reservas</a></li>
-            <li><a href="{{route('consultaAluguel')}}" style="color:#ff9800;">Aluguéis</a></li>
+            <li><a href="{{route('consultaReservaLojista')}}" style="color:#ff9800;">Reservas</a></li>
+            <li><a href="{{route('consultaAluguelLojista')}}" style="color:#ff9800;">Aluguéis</a></li>
         </ul>
     
         <li><a href="{{ url('/lojista') }}" style="text-decoration:none;">Home</a></li>

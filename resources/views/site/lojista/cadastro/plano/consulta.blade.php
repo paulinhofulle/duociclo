@@ -52,6 +52,7 @@
                     <th>Descrição</th>
                     <th>Qtde Dias</th>
                     <th>Valor</th>
+                    <th>Qtde Parcelas</th>
                     <th></th>
                   </tr>
                 </thead>
@@ -65,6 +66,7 @@
                         <td>{{$plano->pladescricao}}</td>
                         <td>{{$plano->plaquantidadedias}}</td>
                         <td>R${{str_replace('.', ',', $plano->plavalor)}}</td>
+                        <td>{{$plano->plaquantidadeparcela}}</td>
                         <td style="display: flex; justify-content:end;">
                             <button class="btn-floating halfway-fab waves-effect waves-light orange secondary-content seuBotaoDeAlteracao" data-plano-id="{{ $plano->placodigo }}" style="position: relative; bottom:0px;" title="Alterar">
                                 <i class="material-icons">build</i>

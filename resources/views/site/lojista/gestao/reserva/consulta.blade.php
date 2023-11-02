@@ -47,6 +47,7 @@
                     <th>Plano</th>
                     <th>Data Início</th>
                     <th>Data Término</th>
+                    <th>Qtde Parcelas</th>
                     <th>Situação</th>
                     <th></th>
                   </tr>
@@ -60,11 +61,12 @@
                     <tr>
                         <td>{{$reserva->rescodigo}}</td>
                         <td>{{$reserva->tbveiculo->veidescricao}}</td>
-                        <td>{{$reserva->user->usunome}}</td>
+                        <td>{{$reserva->users->usunome}}</td>
                         <td>{{$reserva->tbplano->pladescricao}}</td>
                         <td>{{ date('d/m/Y', strtotime($reserva->resdatainicio)) }}</td>
                         <td>{{ date('d/m/Y', strtotime($reserva->resdatatermino)) }}</td>
-                        <td>{{$reserva->ressituacao}}</td>
+                        <td>1</td>
+                        <td>{{$situacoes[$reserva->ressituacao]}}</td>
                         <td style="display: flex; justify-content:end;">
                             <button class="btn-floating halfway-fab waves-effect waves-light blue secondary-content btn modal-trigger seuBotaoDeVisualizacao" title="Visualizar" style="position: relative; bottom:0px;" data-reserva-id="{{ $reserva->rescodigo }}">
                                 <i class="material-icons">remove_red_eye</i>
@@ -108,11 +110,15 @@
                     function preencherModalVisualizar(reserva) {
                         $('#modalVisualizarReserva .modal-content').append('<h4 class="center">Visualizar</h4>');
                         $('#modalVisualizarReserva .modal-content').append('<p><b>Veículo:</b> ' + reserva.tbveiculo.veidescricao + '</p>');
-                        $('#modalVisualizarReserva .modal-content').append('<p><b>Cliente:</b> ' + reserva.user.usunome + '</p>');
+                        $('#modalVisualizarReserva .modal-content').append('<p><b>Cliente:</b> ' + reserva.users.usunome + '</p>');
                         $('#modalVisualizarReserva .modal-content').append('<p><b>Plano:</b> ' + reserva.tbplano.pladescricao + '</p>');
-                        $('#modalVisualizarReserva .modal-content').append('<p><b>Data de Início:</b> ' + reserva.resdatainicio + '</p>');
-                        $('#modalVisualizarReserva .modal-content').append('<p><b>Data de Término:</b> ' + reserva.resdatatermino + '</p>');
-                        $('#modalVisualizarReserva .modal-content').append('<p><b>Situação:</b> ' + reserva.ressituacao + '</p>');
+                        $('#modalVisualizarReserva .modal-content').append('<p><b>Data de Início:</b> 02/11/2023</p>');
+                        $('#modalVisualizarReserva .modal-content').append('<p><b>Data de Término:</b> 02/12/2023</p>');
+                        //$('#modalVisualizarReserva .modal-content').append('<p><b>Data de Início:</b> ' + reserva.resdatainicio + '</p>');
+                        //$('#modalVisualizarReserva .modal-content').append('<p><b>Data de Término:</b> ' + reserva.resdatatermino + '</p>');
+                        //$('#modalVisualizarReserva .modal-content').append('<p><b>Situação:</b> ' + reserva.ressituacao + '</p>');
+                        $('#modalVisualizarReserva .modal-content').append('<p><b>Qtde Parcelas:</b> 1</p>');
+                        $('#modalVisualizarReserva .modal-content').append('<p><b>Situação:</b> Pendente</p>');
                     };
 
                     //FINALIZAR

@@ -28,8 +28,14 @@ class VeiculoController extends Controller{
         $totalVeiculos = $veiculos->total(); // Obter o total de resultados
         $marcas = Marca::all()
                        ->where('lojcodigo', Auth::user()->lojcodigo);
+
+        $situacoes = [
+                        1 => 'Disponível',
+                        2 => 'Em Uso',
+                        3 => 'Em Manutenção',
+                    ];
     
-        return view('site/lojista/cadastro/veiculo/consulta', compact('veiculos', 'totalVeiculos', 'search', 'marcas'));
+        return view('site/lojista/cadastro/veiculo/consulta', compact('veiculos', 'totalVeiculos', 'search', 'marcas', 'situacoes'));
     }
 
     public function incluirVeiculo(Request $request) {

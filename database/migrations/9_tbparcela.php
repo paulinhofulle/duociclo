@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('tbparcela', function (Blueprint $table) {
             $table->id('parsequencia');
-            $table->integer('parsituacao');
+            $table->integer('parsituacao'); //1- aberta 2- paga
             $table->date('pardatavalidade');
             $table->double('parvalor', 10, 2);
             $table->timestamps();

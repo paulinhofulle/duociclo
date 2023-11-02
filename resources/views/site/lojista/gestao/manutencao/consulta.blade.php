@@ -74,7 +74,7 @@
                             @endif 
                         </td>
                         <td>{{ number_format($manutencao->manvalor, 2, ',', '.') }}</td>
-                        <td>{{$manutencao->mansituacao}}</td>
+                        <td>{{$situacoes[$manutencao->mansituacao]}}</td>
                         <td style="display: flex; justify-content:end;">
                             @if ($manutencao->mansituacao == 1)
                                 <button class="btn-floating halfway-fab waves-effect waves-light orange secondary-content seuBotaoDeAlteracao" data-manutencao-id="{{ $manutencao->mancodigo }}" style="position: relative; bottom:0px;" title="Alterar">

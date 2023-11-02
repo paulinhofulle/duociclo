@@ -31,8 +31,13 @@ class ManutencaoController extends Controller {
                            ->where('lojcodigo', '=', Auth::user()->lojcodigo);
         $veiculos = Veiculo::all()
                            ->where('lojcodigo', '=', Auth::user()->lojcodigo);
+
+        $situacoes = [
+            1 => 'Em Andamento',
+            2 => 'Finalizado'
+        ];
     
-        return view('site/lojista/gestao/manutencao/consulta', compact('manutencoes', 'totalManutencoes', 'search', 'veiculos', 'veiculosDisponiveis'));
+        return view('site/lojista/gestao/manutencao/consulta', compact('situacoes', 'manutencoes', 'totalManutencoes', 'search', 'veiculos', 'veiculosDisponiveis'));
     }
 
     public function incluirManutencao(Request $request){

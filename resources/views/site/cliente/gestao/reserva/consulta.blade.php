@@ -26,12 +26,11 @@
             @endif
 
             <div class="row">
-                <a id="openModalBtnIncluir" href="#modalSolicitarReserva" class="btn modal-trigger" style="background-color: green; border-color: white; color: white; margin-bottom: 1rem;">
+                <a id="openModalBtnIncluir" href="{{route('reservaCliente')}}" class="btn" style="background-color: green; border-color: white; color: white; margin-bottom: 1rem;">
                     <i class="material-icons left">add</i>Solicitar
                 </a>
             </div>
 
-            @include('site/cliente/gestao/reserva/solicitar')
 
            <nav class="bg-gradient-orange">
             <div class="nav-wrapper">
@@ -49,10 +48,13 @@
             <table class="striped ">
                 <thead>
                   <tr>
+                    <th></th>
                     <th>ID</th>  
                     <th>Veículo</th>
-                    <th>Cliente</th>
+                    <th>Loja</th>
                     <th>Plano</th>
+                    <th>Valor</th>
+                    <th>Qtde Parcelas</th>
                     <th>Data Início</th>
                     <th>Data Término</th>
                     <th>Situação</th>
@@ -66,7 +68,7 @@
                     <tr>
                         <td>{{$reserva->rescodigo}}</td>
                         <td>{{$reserva->tbveiculo->veidescricao}}</td>
-                        <td>{{$reserva->user->usunome}}</td>
+                        <td>{{$reserva->users->usunome}}</td>
                         <td>{{$reserva->tbplano->pladescricao}}</td>
                         <td>{{ date('d/m/Y', strtotime($reserva->resdatainicio)) }}</td>
                         <td>{{ date('d/m/Y', strtotime($reserva->resdatatermino)) }}</td>
@@ -78,6 +80,24 @@
                         </td>
                     </tr>    
                   @endforeach
+                  @include('site/cliente/gestao/reserva/visualizar')
+                  <tr>
+                    <td><img src="{{ asset('imagens/download.png') }}"></td>
+                    <td>1</td>
+                    <td>CG 125 ES</td>
+                    <td>Motos Neno</td>
+                    <td>Mensal</td>
+                    <td>R$500,00</td>
+                    <td>1</td>
+                    <td>02/11/2023</td>
+                    <td>02/12/2023</td>
+                    <td>Aceita</td>
+                    <td style="display: flex; justify-content:end;">
+                        <button class="btn-floating halfway-fab waves-effect waves-light blue secondary-content btn modal-trigger seuBotaoDeVisualizacao" title="Visualizar" style="position: relative; bottom:0px;">
+                            <i class="material-icons">remove_red_eye</i>
+                        </button>
+                    </td>
+                </tr>  
                 </tbody>
               </table>
             </div>
@@ -105,13 +125,17 @@
 
                     function preencherModalVisualizar(reserva) {
                         $('#modalVisualizarReserva .modal-content').append('<h4 class="center">Visualizar</h4>');
-                        $('#modalVisualizarReserva .modal-content').append('<p><b>Veículo:</b> ' + reserva.tbveiculo.veidescricao + '</p>');
-                        $('#modalVisualizarReserva .modal-content').append('<p><b>Cliente:</b> ' + reserva.user.usunome + '</p>');
-                        $('#modalVisualizarReserva .modal-content').append('<p><b>Plano:</b> ' + reserva.tbplano.pladescricao + '</p>');
-                        $('#modalVisualizarReserva .modal-content').append('<p><b>Data de Início:</b> ' + reserva.resdatainicio + '</p>');
-                        $('#modalVisualizarReserva .modal-content').append('<p><b>Data de Término:</b> ' + reserva.resdatatermino + '</p>');
-                        $('#modalVisualizarReserva .modal-content').append('<p><b>Situação:</b> ' + reserva.ressituacao + '</p>');
+                        $('#modalVisualizarReserva .modal-content').append('<p><b>Veículo:</b> CG 125 ES</p>');
+                        $('#modalVisualizarReserva .modal-content').append('<p><b>Loja:</b> Motos Neno</p>');
+                        $('#modalVisualizarReserva .modal-content').append('<p><b>Plano:</b> Mensal</p>');
+                        $('#modalVisualizarReserva .modal-content').append('<p><b>Valor:</b>R$500,00</p>');
+                        $('#modalVisualizarReserva .modal-content').append('<p><b>Qtde Parcelas:</b> 1</p>');
+                        $('#modalVisualizarReserva .modal-content').append('<p><b>Data de Início:</b> 02/11/2023</p>');
+                        $('#modalVisualizarReserva .modal-content').append('<p><b>Data de Término:</b>02/12/2023</p>');
+                        $('#modalVisualizarReserva .modal-content').append('<p><b>Situação:</b>Aceita</p>');
                     };
+
+
                 });
         
             </script>

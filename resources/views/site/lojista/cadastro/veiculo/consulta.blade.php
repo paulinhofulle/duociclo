@@ -65,14 +65,14 @@
                     @include('site/lojista/cadastro/veiculo/visualizar', ['veiculo' => $veiculo])
                     @include('site/lojista/cadastro/veiculo/alterar', ['veiculo' => $veiculo])
                     <tr>
-                        <td><img src="{{ asset('storage/' . $veiculo->veiimagem) }}"></td>
+                        <td><img src="{{ asset('imagens/download.png') }}"></td>
                         <td>{{$veiculo->veicodigo}}</td>
                         <td>{{$veiculo->veidescricao}}</td>
                         <td>{{$veiculo->veicor}}</td>
                         <td>{{$veiculo->veiano}}</td>
                         <td>{{$veiculo->veiquilometragem}}</td>
                         <td>{{$veiculo->veiplaca}}</td>
-                        <td>{{$veiculo->veisituacao}}</td>
+                        <td>{{$situacoes[$veiculo->veisituacao]}}</td>
                         <td style="display: flex; justify-content:end;">
                             <button class="btn-floating halfway-fab waves-effect waves-light orange secondary-content seuBotaoDeAlteracao" data-veiculo-id="{{ $veiculo->veicodigo }}" style="position: relative; bottom:0px;" title="Alterar">
                                 <i class="material-icons">build</i>

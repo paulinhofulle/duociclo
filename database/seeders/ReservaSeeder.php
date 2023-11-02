@@ -14,10 +14,10 @@ class ReservaSeeder extends Seeder
     public function run(): void
     {
         Reserva::create([
-            'resdatainicio'      => '2023-10-16',
-            'resdatatermino'               => '2023-10-26',
+            'resdatainicio'      => '2023-11-02',
+            'resdatatermino'               => '2023-11-30',
             'ressituacao'            => 1,
-            'id'               =>4 ,
+            'usucodigo'               =>3 ,
             'placodigo'                 => 1,
             'veicodigo' => 2,
         ]);

@@ -25,8 +25,8 @@ class Reserva extends Model {
         return $this->belongsTo(Veiculo::class, 'veicodigo', 'veicodigo');
     }
 
-    public function user(){
-        return $this->belongsTo(User::class, 'id', 'id');
+    public function users(){
+        return $this->belongsTo(User::class, 'usucodigo');
     }
 
     public function tbplano(){
