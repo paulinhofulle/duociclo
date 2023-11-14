@@ -66,7 +66,7 @@
                 <tr>
                     <th>Parcela</th>  
                     <th>Valor</th>
-                    <th>Data de Validade</th>
+                    <th>Data de Vencimento</th>
                     <th>Situação</th>
                 </tr>
                 </thead>
