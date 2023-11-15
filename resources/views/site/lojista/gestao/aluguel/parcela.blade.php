@@ -30,7 +30,7 @@
                   <tr>
                     <th>Sequência</th>  
                     <th>Valor</th>
-                    <th>Data de Validade</th>
+                    <th>Data de Vencimento</th>
                     <th>Situação</th>
                     <th></th>
                   </tr>
