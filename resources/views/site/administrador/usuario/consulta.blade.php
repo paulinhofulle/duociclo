@@ -37,7 +37,7 @@
             <div class="nav-wrapper">
               <form action="{{ route('consultaUsuario') }}" method="GET">
                 <div class="input-field">
-                    <input placeholder="Pesquisar..." id="search" type="search" name="search" value="{{ $search }}">
+                    <input placeholder="Pesquisar pelo Nome..." id="search" type="search" name="search" value="{{ $search }}">
                   <label class="label-icon" for="search"><i class="material-icons">search</i></label>
                   <i class="material-icons">close</i>
                 </div>

@@ -5,7 +5,7 @@
     <div class="row container crud">
             <div class="row titulo ">              
               <h1 class="left" style="color: #ff9800; font-weight:500; text-transform:none;">Aluguéis</h1>
-              <span class="right chip">{{$totalAlugueis}} aluguéis cadastradas</span>  
+              <span class="right chip">{{$totalAlugueis}} aluguéis cadastrados</span>  
             </div>
             @if (session('sucesso'))
                 <div class="card green">
@@ -29,7 +29,7 @@
             <div class="nav-wrapper">
               <form action="{{ route('consultaManutencao') }}" method="GET">
                 <div class="input-field">
-                    <input placeholder="Pesquisar..." id="search" type="search" name="search" value="{{ $search }}">
+                    <input placeholder="Pesquisar pelo Veículo..." id="search" type="search" name="search" value="{{ $search }}">
                   <label class="label-icon" for="search"><i class="material-icons">search</i></label>
                   <i class="material-icons">close</i>
                 </div>
