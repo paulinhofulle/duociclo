@@ -32,6 +32,10 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('usucep', 8);
             $table->string('usucomplementoendereco', 255)->nullable();
+            $table->string('usurua', 255);
+            $table->string('usubairro', 255);
+            $table->string('usucidade', 255);
+            $table->string('usuestado', 2);
             $table->rememberToken();
             $table->timestamps();
 

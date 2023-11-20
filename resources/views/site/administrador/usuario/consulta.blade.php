@@ -114,6 +114,10 @@
                     $('#usutelefone').val('');
                     $('#email').val('');
                     $('#usucep').val('');
+                    $('#usurua').val('');
+                    $('#usubairro').val('');
+                    $('#usucidade').val('');
+                    $('select[name="usuestado"]').val('');
                     $('#usucomplementoendereco').val('');
                     $('#usudatanascimento').val('');
                 };
@@ -125,6 +129,10 @@
                     $('#usutelefone')[0].className = 'validate';
                     $('#email')[0].className = 'validate';
                     $('#usucep')[0].className = 'validate';
+                    $('#usurua')[0].className = 'validate';
+                    $('#usubairro')[0].className = 'validate';
+                    $('#usucidade')[0].className = 'validate';
+                    $('#usuestado')[0].className = 'validate';
                     $('#usucomplementoendereco')[0].className = 'validate';
                     $('#usudatanascimento')[0].className = 'validate';
                 };
@@ -234,6 +242,10 @@
                     $('#modalVisualizarUsuario .modal-content').append('<p><b>Data de Nascimento:</b> ' + usuario.usudatanascimento + '</p>');
                     $('#modalVisualizarUsuario .modal-content').append('<p><b>Telefone:</b> ' + usuario.usutelefone + '</p>');
                     $('#modalVisualizarUsuario .modal-content').append('<p><b>CEP:</b> ' + usuario.usucep + '</p>');
+                    $('#modalVisualizarUsuario .modal-content').append('<p><b>Rua:</b> ' + usuario.usurua + '</p>');
+                    $('#modalVisualizarUsuario .modal-content').append('<p><b>Bairro:</b> ' + usuario.usubairro + '</p>');
+                    $('#modalVisualizarUsuario .modal-content').append('<p><b>Cidade:</b> ' + usuario.usucidade + '</p>');
+                    $('#modalVisualizarUsuario .modal-content').append('<p><b>Estado:</b> ' + usuario.usuestado + '</p>');
                     $('#modalVisualizarUsuario .modal-content').append('<p><b>N° Endereço:</b> ' + usuario.usunumeroendereco + '</p>');
                     $('#modalVisualizarUsuario .modal-content').append('<p><b>Complemento Endereço:</b> ' + usuario.usucomplementoendereco + '</p>');
                     $('#modalVisualizarUsuario .modal-content').append('<p><b>E-mail:</b> ' + usuario.email + '</p>');

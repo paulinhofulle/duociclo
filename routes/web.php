@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\EnderecoController;
 use App\Http\Controllers\Administrador\AdministradorController;
 use App\Http\Controllers\Administrador\LojaController;
 use App\Http\Controllers\Administrador\UsuarioController;
@@ -22,6 +23,8 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 // CADASTRAR
 Route::get('/cadastrar', [LoginController::class, 'cadastrar'])->name('cadastrar');
 Route::post('/registrar', [LoginController::class, 'registrar'])->name('registrar');
+Route::post('/obter-endereco-por-cep', [EnderecoController::class, 'obterEnderecoPorCep']);
+
 
 Route::group(['middleware' => ['auth']], function () {
     // ADMINISTRADOR

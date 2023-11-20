@@ -5,7 +5,7 @@
     <div class="row container crud">
             <div class="row titulo ">              
               <h1 class="left" style="color: #ff9800; font-weight:500; text-transform:none;">Aluguéis</h1>
-              <span class="right chip">{{$totalAlugueis}} aluguéis cadastrados</span>  
+              <span class="right chip">1 aluguéis cadastrados</span>  
             </div>
             @if (session('sucesso'))
                 <div class="card green">

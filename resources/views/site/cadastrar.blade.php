@@ -40,7 +40,7 @@
         </div>
 
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-6">
                 <div class="form-floating mb-3">
                     <input type="tel" class="form-control" id="usutelefone" name="usutelefone" placeholder="(XX) XXXXX-XXXX" required>
                     <label for="usutelefone">Telefone</label>
@@ -49,9 +49,7 @@
                     @enderror
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-6">
                 <div class="form-floating mb-3">
                     <input type="email" class="form-control" id="email" name="email" required>
                     <label for="email">E-mail</label>
@@ -63,7 +61,7 @@
         </div>
 
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control" id="usucep" name="usucep" placeholder="00000-000" required>
                     <label for="usucep">CEP</label>
@@ -72,6 +70,79 @@
                     @enderror
                 </div>
             </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="usurua" name="usurua" required>
+                    <label for="usurua">Rua</label>
+                    @error('usurua')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="usubairro" name="usubairro" required>
+                    <label for="usubairro">Bairro</label>
+                    @error('usubairro')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="usucidade" name="usucidade" required>
+                    <label for="usucidade">Cidade</label>
+                    @error('usucidade')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating mb-3">
+                    <select name="usuestado" class="form-control" required>
+                        <option value="" selected>Selecione...</option>
+                        <!-- Lista de estados -->
+                        <option value="AC">Acre</option>
+                        <option value="AL">Alagoas</option>
+                        <option value="AP">Amapá</option>
+                        <option value="AM">Amazonas</option>
+                        <option value="BA">Bahia</option>
+                        <option value="CE">Ceará</option>
+                        <option value="DF">Distrito Federal</option>
+                        <option value="ES">Espírito Santo</option>
+                        <option value="GO">Goiás</option>
+                        <option value="MA">Maranhão</option>
+                        <option value="MT">Mato Grosso</option>
+                        <option value="MS">Mato Grosso do Sul</option>
+                        <option value="MG">Minas Gerais</option>
+                        <option value="PA">Pará</option>
+                        <option value="PB">Paraíba</option>
+                        <option value="PR">Paraná</option>
+                        <option value="PE">Pernambuco</option>
+                        <option value="PI">Piauí</option>
+                        <option value="RJ">Rio de Janeiro</option>
+                        <option value="RN">Rio Grande do Norte</option>
+                        <option value="RS">Rio Grande do Sul</option>
+                        <option value="RO">Rondônia</option>
+                        <option value="RR">Roraima</option>
+                        <option value="SC">Santa Catarina</option>
+                        <option value="SP">São Paulo</option>
+                        <option value="SE">Sergipe</option>
+                        <option value="TO">Tocantins</option>
+                    </select>
+                    <label for="usuestado">Estado</label>
+                    @error('usuestado')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+        </div>
+        <div class="row">
             <div class="col-md-6">
                 <div class="form-floating mb-3">
                     <input type="number" class="form-control" id="usunumeroendereco" name="usunumeroendereco" required>
@@ -81,10 +152,7 @@
                     @enderror
                 </div>
             </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-6">
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control" id="usucomplemento" name="usucomplemento">
                     <label for="usucomplemento">Complemento</label>
@@ -119,6 +187,45 @@
         </div>
         <button class="btn btn-primary w-100 py-2" style="background-color: #e2a951; border-color:white; color:white">Cadastrar</button>
     </form>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#usucep').on('blur', function() {
+                var cep = $(this).val();
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                $.ajax({
+                    url: '/obter-endereco-por-cep',
+                    method: 'POST',
+                    data: { usucep: cep },
+                    success: function (response) {
+                        if (response.data) {
+                            $('#usurua').val(response.data.logradouro).prop('disabled', true);
+                            $('#usubairro').val(response.data.bairro).prop('disabled', true);
+                            $('#usucidade').val(response.data.localidade).prop('disabled', true);
+                            $('select[name="usuestado"]').val(response.data.uf).prop('disabled', true);
+                        } else{
+                            $('#usurua').val('').prop('disabled', false);
+                            $('#usubairro').val('').prop('disabled', false);
+                            $('#usucidade').val('').prop('disabled', false);
+                            $('select[name="usuestado"]').val('').prop('disabled', false);
+
+                        }
+                    },
+                    error: function (error) {
+                        console.error(error);
+                        // Lidar com erros aqui
+                    }
+                });
+            });
+        });
+    </script>    
 @endsection
 
 @section('botaoAux')

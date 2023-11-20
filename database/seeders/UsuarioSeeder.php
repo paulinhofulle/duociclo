@@ -23,6 +23,10 @@ class UsuarioSeeder extends Seeder
             'usutelefone'            => '47988061721',
             'email'                  => 'paulohfulle@gmail.com',
             'usucep'                 => '89163467',
+            'usurua'                 => 'Rua guido vota',
+            'usubairro'              => 'fundo canoas',
+            'usucidade'              => 'rio do sul',
+            'usuestado'              => 'SC',
             'usucomplementoendereco' => 'casa de madeira',
         ]);
 

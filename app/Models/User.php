@@ -30,6 +30,10 @@ class User extends Authenticatable
         'email',
         'email_verified_at',
         'usucep',
+        'usurua',
+        'usubairro',
+        'usucidade',
+        'usuestado',
         'usucomplementoendereco',
         'remember_token',
         'lojcodigo'

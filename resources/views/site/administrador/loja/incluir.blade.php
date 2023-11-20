@@ -39,6 +39,65 @@
                 @enderror
             </div>
             <div class="input-field">
+                <input id="lojrua" type="text" class="validate" name="lojrua">
+                <label for="lojrua">Rua</label>
+                @error('lojrua')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="input-field">
+                <input id="lojbairro" type="text" class="validate" name="lojbairro">
+                <label for="lojbairro">Bairro</label>
+                @error('lojbairro')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="input-field">
+                <input id="lojcidade" type="text" class="validate" name="lojcidade">
+                <label for="lojcidade">Cidade</label>
+                @error('lojcidade')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="input-field">
+                <label for="lojestado">Estado</label>
+                <br>
+                <select name="lojestado" class="form-control" required>
+                    <option value="" selected>Selecione...</option>
+                    <!-- Lista de estados -->
+                    <option value="AC">Acre</option>
+                    <option value="AL">Alagoas</option>
+                    <option value="AP">Amapá</option>
+                    <option value="AM">Amazonas</option>
+                    <option value="BA">Bahia</option>
+                    <option value="CE">Ceará</option>
+                    <option value="DF">Distrito Federal</option>
+                    <option value="ES">Espírito Santo</option>
+                    <option value="GO">Goiás</option>
+                    <option value="MA">Maranhão</option>
+                    <option value="MT">Mato Grosso</option>
+                    <option value="MS">Mato Grosso do Sul</option>
+                    <option value="MG">Minas Gerais</option>
+                    <option value="PA">Pará</option>
+                    <option value="PB">Paraíba</option>
+                    <option value="PR">Paraná</option>
+                    <option value="PE">Pernambuco</option>
+                    <option value="PI">Piauí</option>
+                    <option value="RJ">Rio de Janeiro</option>
+                    <option value="RN">Rio Grande do Norte</option>
+                    <option value="RS">Rio Grande do Sul</option>
+                    <option value="RO">Rondônia</option>
+                    <option value="RR">Roraima</option>
+                    <option value="SC">Santa Catarina</option>
+                    <option value="SP">São Paulo</option>
+                    <option value="SE">Sergipe</option>
+                    <option value="TO">Tocantins</option>
+                </select>
+                @error('lojestado')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="input-field">
                 <input id="lojnumeroendereco" type="number" class="validate" name="lojnumeroendereco" required>
                 <label for="lojnumeroendereco">N° Endereço</label>
                 @error('lojnumeroendereco')
@@ -57,3 +116,40 @@
         </form>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#lojcep').on('blur', function() {
+                var cep = $(this).val();
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                $.ajax({
+                    url: '/obter-endereco-por-cep',
+                    method: 'POST',
+                    data: { cep: cep },
+                    success: function (response) {
+                        if (response.data) {
+                            $('#lojrua').val(response.data.logradouro).addClass('filled').prop('readonly', true).css({'color': 'rgba(0,0,0,0.42)','border-bottom': '1px dotted rgba(0,0,0,0.42)'});
+                            $('#lojbairro').val(response.data.bairro).addClass('filled').prop('readonly', true).css({'color': 'rgba(0,0,0,0.42)','border-bottom': '1px dotted rgba(0,0,0,0.42)'});
+                            $('#lojcidade').val(response.data.localidade).addClass('filled').prop('readonly', true).css({'color': 'rgba(0,0,0,0.42)','border-bottom': '1px dotted rgba(0,0,0,0.42)'});
+                            $('select[name="lojestado"]').val(response.data.uf).addClass('filled').prop('readonly', true).css({'color': 'rgba(0,0,0,0.42)','border-bottom': '1px dotted rgba(0,0,0,0.42)'});
+                        } else{
+                            $('#lojrua').val('').removeClass('filled').prop('readonly', false);
+                            $('#lojbairro').val('').removeClass('filled').prop('readonly', false);
+                            $('#lojcidade').val('').removeClass('filled').prop('readonly', false);
+                            $('select[name="lojestado"]').val('').removeClass('filled').prop('readonly', false);
+                        }
+                    },
+                    error: function (error) {
+                        console.error(error);
+                        // Lidar com erros aqui
+                    }
+                });
+            });
+        });
+    </script>    

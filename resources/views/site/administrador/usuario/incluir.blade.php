@@ -39,6 +39,65 @@
                 @enderror
             </div>
             <div class="input-field">
+                <input id="usurua" type="text" class="validate" name="usurua">
+                <label for="usurua">Rua</label>
+                @error('usurua')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="input-field">
+                <input id="usubairro" type="text" class="validate" name="usubairro">
+                <label for="usubairro">Bairro</label>
+                @error('usubairro')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="input-field">
+                <input id="usucidade" type="text" class="validate" name="usucidade">
+                <label for="usucidade">Cidade</label>
+                @error('usucidade')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="input-field">
+                <label for="usuestado">Estado</label>
+                <br>
+                <select name="usuestado" class="form-control" required>
+                    <option value="" selected>Selecione...</option>
+                    <!-- Lista de estados -->
+                    <option value="AC">Acre</option>
+                    <option value="AL">Alagoas</option>
+                    <option value="AP">Amapá</option>
+                    <option value="AM">Amazonas</option>
+                    <option value="BA">Bahia</option>
+                    <option value="CE">Ceará</option>
+                    <option value="DF">Distrito Federal</option>
+                    <option value="ES">Espírito Santo</option>
+                    <option value="GO">Goiás</option>
+                    <option value="MA">Maranhão</option>
+                    <option value="MT">Mato Grosso</option>
+                    <option value="MS">Mato Grosso do Sul</option>
+                    <option value="MG">Minas Gerais</option>
+                    <option value="PA">Pará</option>
+                    <option value="PB">Paraíba</option>
+                    <option value="PR">Paraná</option>
+                    <option value="PE">Pernambuco</option>
+                    <option value="PI">Piauí</option>
+                    <option value="RJ">Rio de Janeiro</option>
+                    <option value="RN">Rio Grande do Norte</option>
+                    <option value="RS">Rio Grande do Sul</option>
+                    <option value="RO">Rondônia</option>
+                    <option value="RR">Roraima</option>
+                    <option value="SC">Santa Catarina</option>
+                    <option value="SP">São Paulo</option>
+                    <option value="SE">Sergipe</option>
+                    <option value="TO">Tocantins</option>
+                </select>
+                @error('usuestado')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="input-field">
                 <input id="usunumeroendereco" type="number" class="validate" name="usunumeroendereco" required>
                 <label for="usunumeroendereco">N° Endereço</label>
                 @error('usunumeroendereco')
@@ -60,10 +119,9 @@
                 @enderror
             </div>
             <div class="input-field">
-                <label>Loja</label>
+                <label for="lojcodigo">Loja</label>
                 <br>
-                <br>
-                <select name="lojcodigo" class="validate browser-default" required>
+                <select name="lojcodigo" class=" form-control validate" required>
                     <option value="" selected>Selecione a loja...</option>
                     @foreach ($lojas as $loja)
                         <option value="{{ $loja->lojcodigo }}">{{ $loja->lojnome }}</option>
@@ -75,3 +133,40 @@
         </form>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function() {
+        $('#usucep').on('blur', function() {
+            var cep = $(this).val();
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                url: '/obter-endereco-por-cep',
+                method: 'POST',
+                data: { cep: cep },
+                success: function (response) {
+                    if (response.data) {
+                        $('#usurua').val(response.data.logradouro).addClass('filled').prop('disabled', true);
+                        $('#usubairro').val(response.data.bairro).addClass('filled').prop('disabled', true);
+                        $('#usucidade').val(response.data.localidade).addClass('filled').prop('disabled', true);
+                        $('select[name="usuestado"]').val(response.data.uf).addClass('filled').prop('disabled', true);
+                    } else{
+                        $('#usurua').val('').removeClass('filled').prop('disabled', false);
+                        $('#usubairro').val('').removeClass('filled').prop('disabled', false);
+                        $('#usucidade').val('').removeClass('filled').prop('disabled', false);
+                        $('select[name="usuestado"]').val('').removeClass('filled').prop('disabled', false);
+                    }
+                },
+                error: function (error) {
+                    console.error(error);
+                    // Lidar com erros aqui
+                }
+            });
+        });
+    });
+    </script>    

@@ -35,6 +35,10 @@ class UsuarioController extends Controller {
             'email'                 => ['required', 'email', 'unique:users'],
             'usucep'                => ['required', 'min:8'],
             'usunumeroendereco'     => ['required', 'numeric'],
+            'usurua'                => ['required'],
+            'usubairro'             => ['required'],
+            'usucidade'             => ['required'],
+            'usuestado'             => ['required'],
             'usucomplemento'        => ['nullable']
         ],[
             'usunome.required'           => 'O campo Nome é obrigatório!',
@@ -49,6 +53,10 @@ class UsuarioController extends Controller {
             'usucep.required'            => 'O campo CEP é obrigatório!',
             'usucep.min'                 => 'O campo CEP deve ter 8 números!',
             'usunumeroendereco.required' => 'O campo N° Endereço é obrigatório!',
+            'usurua.required'            => 'O campo Rua é obrigatório!',
+            'usubairro.required'         => 'O campo Bairro é obrigatório!',
+            'usucidade.required'         => 'O campo Cidade é obrigatório!',
+            'usuestado.required'         => 'O campo Estado é obrigatório!',
             'usunumeroendereco.numeric'  => 'Só deve ser informado números!',
         ]);
 
@@ -62,6 +70,10 @@ class UsuarioController extends Controller {
                 'usucep' => $request->input('usucep'),
                 'usunumeroendereco' => $request->input('usunumeroendereco'),
                 'usucomplementoendereco' => $request->input('usucomplementoendereco'),
+                'usurua' => $request->input('usurua'),
+                'usubairro' => $request->input('usubairro'),
+                'usucidade' => $request->input('usucidade'),
+                'usuestado' => $request->input('usuestado'),
                 'password' => bcrypt('duociclo_lojista'),
                 'lojcodigo' => $request->lojcodigo,
             ];

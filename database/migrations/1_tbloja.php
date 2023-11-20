@@ -19,6 +19,10 @@ return new class extends Migration
             $table->string('lojtelefone', 11);
             $table->string('lojemail', 255)->unique();
             $table->string('lojcep', 8);
+            $table->string('lojrua');
+            $table->string('lojbairro');
+            $table->string('lojcidade');
+            $table->string('lojestado', 2);
             $table->string('lojcomplementoendereco', 255)->nullable();
             $table->timestamps();
         });

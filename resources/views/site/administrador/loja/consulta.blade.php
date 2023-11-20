@@ -116,6 +116,10 @@
                     $('#lojtelefone').val('');
                     $('#lojemail').val('');
                     $('#lojcep').val('');
+                    $('#lojrua').val('');
+                    $('#lojbairro').val('');
+                    $('#lojcidade').val('');
+                    $('#lojestado').val('');
                     $('#lojcomplementoendereco').val('');
                 };
 
@@ -126,6 +130,9 @@
                     $('#lojtelefone')[0].className = 'validate';
                     $('#lojemail')[0].className = 'validate';
                     $('#lojcep')[0].className = 'validate';
+                    $('#lojrua')[0].className = 'validate';
+                    $('#lojbairro')[0].className = 'validate';
+                    $('#lojcidade')[0].className = 'validate';
                     $('#lojcomplementoendereco')[0].className = 'validate';
                 };
 
@@ -212,6 +219,10 @@
                     $('#modalVisualizarLoja .modal-content').append('<p><b>Telefone:</b> ' + loja.lojtelefone + '</p>');
                     $('#modalVisualizarLoja .modal-content').append('<p><b>E-mail:</b> ' + loja.lojemail + '</p>');
                     $('#modalVisualizarLoja .modal-content').append('<p><b>CEP:</b> ' + loja.lojcep + '</p>');
+                    $('#modalVisualizarLoja .modal-content').append('<p><b>Rua:</b> ' + loja.lojrua + '</p>');
+                    $('#modalVisualizarLoja .modal-content').append('<p><b>Bairro:</b> ' + loja.lojbairro + '</p>');
+                    $('#modalVisualizarLoja .modal-content').append('<p><b>Cidade:</b> ' + loja.lojcidade + '</p>');
+                    $('#modalVisualizarLoja .modal-content').append('<p><b>Estado:</b> ' + loja.lojestado + '</p>');
                     $('#modalVisualizarLoja .modal-content').append('<p><b>N° Endereço:</b> ' + loja.lojnumeroendereco + '</p>');
                     $('#modalVisualizarLoja .modal-content').append('<p><b>Complemento Endereço:</b> ' + loja.lojcomplementoendereco + '</p>');
                 };

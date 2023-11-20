@@ -19,6 +19,10 @@ class Loja extends Model
         'lojtelefone'           ,
         'lojemail'              ,
         'lojcep'                ,
+        'lojrua'                ,
+        'lojbairro'             ,
+        'lojcidade'             ,
+        'lojestado'             ,
         'lojcomplementoendereco',
     ];
 }

@@ -5,7 +5,7 @@
     <div class="row container crud">
             <div class="row titulo ">              
               <h1 class="left" style="color: #ff9800; font-weight:500; text-transform:none;">Reservas</h1>
-              <span class="right chip">{{$totalReservas}} reservas solicitadas</span>  
+              <span class="right chip">1 reservas solicitadas</span>  
             </div>
             @if (session('sucesso'))
                 <div class="card green">
