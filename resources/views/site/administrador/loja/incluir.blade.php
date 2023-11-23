@@ -139,10 +139,10 @@
                             $('#lojcidade').val(response.data.localidade).addClass('filled').prop('readonly', true).css({'color': 'rgba(0,0,0,0.42)','border-bottom': '1px dotted rgba(0,0,0,0.42)'});
                             $('select[name="lojestado"]').val(response.data.uf).addClass('filled').prop('readonly', true).css({'color': 'rgba(0,0,0,0.42)','border-bottom': '1px dotted rgba(0,0,0,0.42)'});
                         } else{
-                            $('#lojrua').val('').removeClass('filled').prop('readonly', false);
-                            $('#lojbairro').val('').removeClass('filled').prop('readonly', false);
-                            $('#lojcidade').val('').removeClass('filled').prop('readonly', false);
-                            $('select[name="lojestado"]').val('').removeClass('filled').prop('readonly', false);
+                            $('#lojrua').val('').removeClass('filled').prop('readonly', false).css({'color': '','border-bottom': ''});
+                            $('#lojbairro').val('').removeClass('filled').prop('readonly', false).css({'color': '','border-bottom': ''});
+                            $('#lojcidade').val('').removeClass('filled').prop('readonly', false).css({'color': '','border-bottom': ''});
+                            $('select[name="lojestado"]').val('').removeClass('filled').prop('readonly', false).css({'color': '','border-bottom': ''});
                         }
                     },
                     error: function (error) {

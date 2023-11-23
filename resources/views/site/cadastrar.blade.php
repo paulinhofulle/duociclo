@@ -75,7 +75,8 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="usurua" name="usurua" required>
+                    <input type="text" class="form-control" id="usurua_aux" name="usurua" required>
+                    <input type="hidden" id="usurua" name="usurua" value="">
                     <label for="usurua">Rua</label>
                     @error('usurua')
                         <span class="text-danger">{{ $message }}</span>
@@ -84,7 +85,8 @@
             </div>
             <div class="col-md-6">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="usubairro" name="usubairro" required>
+                    <input type="text" class="form-control" id="usubairro_aux" name="usubairro" required>
+                    <input type="hidden" id="usubairro" name="usubairro" value="">
                     <label for="usubairro">Bairro</label>
                     @error('usubairro')
                         <span class="text-danger">{{ $message }}</span>
@@ -95,7 +97,8 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="usucidade" name="usucidade" required>
+                    <input type="text" class="form-control" id="usucidade_aux" name="usucidade" required>
+                    <input type="hidden" id="usucidade" name="usucidade" value="">
                     <label for="usucidade">Cidade</label>
                     @error('usucidade')
                         <span class="text-danger">{{ $message }}</span>
@@ -104,7 +107,8 @@
             </div>
             <div class="col-md-6">
                 <div class="form-floating mb-3">
-                    <select name="usuestado" class="form-control" required>
+                    <input type="hidden" id="usuestado" name="usuestado" value="">
+                    <select name="usuestado_aux" class="form-control" required>
                         <option value="" selected>Selecione...</option>
                         <!-- Lista de estados -->
                         <option value="AC">Acre</option>
@@ -193,7 +197,6 @@
         $(document).ready(function() {
             $('#usucep').on('blur', function() {
                 var cep = $(this).val();
-
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -203,18 +206,18 @@
                 $.ajax({
                     url: '/obter-endereco-por-cep',
                     method: 'POST',
-                    data: { usucep: cep },
+                    data: { cep: cep },
                     success: function (response) {
                         if (response.data) {
-                            $('#usurua').val(response.data.logradouro).prop('disabled', true);
-                            $('#usubairro').val(response.data.bairro).prop('disabled', true);
-                            $('#usucidade').val(response.data.localidade).prop('disabled', true);
-                            $('select[name="usuestado"]').val(response.data.uf).prop('disabled', true);
+                            $('#usurua_aux').val(response.data.logradouro).addClass('filled').prop('disabled', true);
+                            $('#usubairro_aux').val(response.data.bairro).addClass('filled').prop('disabled', true);
+                            $('#usucidade_aux').val(response.data.localidade).addClass('filled').prop('disabled', true);
+                            $('select[name="usuestado_aux"]').val(response.data.uf).addClass('filled').prop('disabled', true);
                         } else{
-                            $('#usurua').val('').prop('disabled', false);
-                            $('#usubairro').val('').prop('disabled', false);
-                            $('#usucidade').val('').prop('disabled', false);
-                            $('select[name="usuestado"]').val('').prop('disabled', false);
+                            $('#usurua_aux').val('').removeClass('filled').prop('disabled', false);
+                            $('#usubairro_aux').val('').removeClass('filled').prop('disabled', false);
+                            $('#usucidade_aux').val('').removeClass('filled').prop('disabled', false);
+                            $('select[name="usuestado_aux"]').val('').removeClass('filled').prop('disabled', false);
 
                         }
                     },
@@ -223,6 +226,18 @@
                         // Lidar com erros aqui
                     }
                 });
+            });
+
+            $('form').on('submit', function() {
+                debugger;
+                // Copie os valores dos campos auxiliares para os campos hidden
+                $('#usurua').val($('#usurua_aux').val());
+                $('#usubairro').val($('#usubairro_aux').val());
+                $('#usucidade').val($('#usucidade_aux').val());
+                $('#usuestado').val($('select[name="usuestado_aux"]').val());
+
+                // Continue com o envio do formulário
+                return true;
             });
         });
     </script>    

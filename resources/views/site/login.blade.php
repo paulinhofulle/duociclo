@@ -3,12 +3,17 @@
 
 @section('form')
     @if($mensagem = Session::get('erro'))
-        {{$mensagem}}
+        <div class="alert alert-erro">
+            {{$mensagem}}
+        </div>
     @endif
 
     @if($errors->any())
         @foreach($errors->all() as $error)
+        <div class="alert alert-erro">
             {{$error}} <br>
+        </div>
+            
         @endforeach
     @endif
 
