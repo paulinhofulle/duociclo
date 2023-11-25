@@ -34,6 +34,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/administrador/lojas/incluir', [LojaController::class, 'incluirLoja'])->name('incluirLoja');
     Route::delete('/administrador/lojas/excluir/{id}', [LojaController::class, 'excluirLoja'])->name('excluirLoja');
     Route::put('administrador/lojas/alterar/{id}', [LojaController::class, 'alterarLoja'])->name('alterarLoja');
+    Route::post('/administrador/lojas/validaAlteracaoLoja', [LojaController::class, 'validaAlteracaoLoja']);
+    Route::post('/administrador/lojas/validaInclusaoLoja', [LojaController::class, 'validaInclusaoLoja']);
     //usuario
     Route::get('/administrador/usuarios', [UsuarioController::class, 'consultaUsuario'])->name('consultaUsuario');
     Route::post('/administrador/usuarios/incluir', [UsuarioController::class, 'incluirUsuario'])->name('incluirUsuario');

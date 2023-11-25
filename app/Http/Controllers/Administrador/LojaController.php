@@ -23,8 +23,8 @@ class LojaController extends Controller {
         return view('site/administrador/loja/consulta', compact('lojas', 'totalLojas', 'search'));
     }
 
-    public function incluirLoja(Request $request){
-        /*$bValido = $request->validate([
+    public function validaInclusaoLoja(Request $request){
+        $bValido = $request->validate([
             'lojnome'               => ['required'],
             'lojcnpj'               => ['required', 'min:14', 'unique:tbloja'],
             'lojtelefone'           => ['required'],
@@ -51,7 +51,10 @@ class LojaController extends Controller {
             'lojcep.min'                 => 'O campo CEP deve ter 8 números!'
         ]);
 
-        if($bValido){*/
+        return response()->json(['isValid' => $bValido, 'errors' => $bValido ? [] : $validator->errors()->toArray()]);
+    }
+
+    public function incluirLoja(Request $request){
             $aLojaData = [
                 'lojnome'                => $request->input('lojnome'),
                 'lojcnpj'                => $request->input('lojcnpj'),
@@ -65,18 +68,21 @@ class LojaController extends Controller {
                 'lojestado'              => $request->input('lojestado'),
                 'lojcomplementoendereco' => $request->input('lojcomplementoendereco')
             ];
-            var_dump($aLojaData);
             Loja::create($aLojaData);
             return redirect()->route('consultaLoja')->with('sucesso', 'Loja incluída com sucesso.');
-        //}
     }
 
-    public function alterarLoja(Request $request, $id){
+    public function validaAlteracaoLoja(Request $request){
+        $id = $request->input('lojcodigo');
         $bValido = $request->validate([
             'lojnome'               => ['required'],
-            'lojcnpj'               => ['required', 'min:14', (new Unique('tbloja'))->ignore($id, 'lojcnpj')],
+            'lojcnpj'               => ['required', 'min:14', (new Unique('tbloja'))->ignore($id, 'lojcodigo')],
             'lojtelefone'           => ['required'],
             'lojcep'                => ['required', 'min:8'],
+            'lojrua'                => ['required'],
+            'lojbairro'             => ['required'],
+            'lojcidade'             => ['required'],
+            'lojestado'             => ['required'],
             'lojnumeroendereco'     => ['required', 'numeric'],
             'lojcomplemento'        => ['nullable']
         ],[
@@ -88,10 +94,18 @@ class LojaController extends Controller {
             'lojnumeroendereco.required' => 'O campo N° Endereço é obrigatório!',
             'lojnumeroendereco.numeric'  => 'O campo N° Endereço deve ser numérico!',
             'lojcep.required'            => 'O campo CEP é obrigatório!',
-            'lojcep.min'                 => 'O campo CEP deve ter 8 números!'
+            'lojcep.min'                 => 'O campo CEP deve ter 8 números!',
+            'lojrua.required'            => 'O campo Rua é obrigatório!',
+            'lojbairro.required'         => 'O campo Bairro é obrigatório!',
+            'lojcidade.required'         => 'O campo Cidade é obrigatório!',
+            'lojestado.required'         => 'O campo Estado é obrigatório!',
         ]);
-    
-        if($bValido){
+
+        return response()->json(['isValid' => $bValido, 'errors' => $bValido ? [] : $validator->errors()->toArray()]);
+    }
+
+    public function alterarLoja(Request $request, $id){
+        
             $loja = Loja::find($id);
             if (!$loja) {
                 \Log::error("Loja não encontrada com ID: $id");
@@ -104,12 +118,16 @@ class LojaController extends Controller {
             $loja->lojtelefone = $request->input('lojtelefone');
             $loja->lojemail = $request->input('lojemail');
             $loja->lojcep = $request->input('lojcep');
+            $loja->lojrua = $request->input('lojrua');
+            $loja->lojbairro = $request->input('lojbairro');
+            $loja->lojcidade = $request->input('lojcidade');
+            $loja->lojestado = $request->input('lojestado');
             $loja->lojcomplementoendereco = $request->input('lojcomplementoendereco');
     
             $loja->save();
     
             return redirect()->route('consultaLoja')->with('sucesso', 'Loja alterada com sucesso.');
-        }
+        
     }
 
     public function excluirLoja(Request $request) {

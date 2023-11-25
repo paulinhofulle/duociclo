@@ -45,7 +45,7 @@
           </nav>     
 
             <div class="card z-depth-4 registros" >
-            <table class="striped ">
+            <table class="striped responsive-table">
                 <thead>
                   <tr>
                     <th>ID</th>  

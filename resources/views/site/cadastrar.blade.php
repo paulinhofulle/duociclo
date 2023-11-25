@@ -208,7 +208,7 @@
                     method: 'POST',
                     data: { cep: cep },
                     success: function (response) {
-                        if (response.data) {
+                        if (response.data.erro !== true) {
                             $('#usurua_aux').val(response.data.logradouro).addClass('filled').prop('disabled', true);
                             $('#usubairro_aux').val(response.data.bairro).addClass('filled').prop('disabled', true);
                             $('#usucidade_aux').val(response.data.localidade).addClass('filled').prop('disabled', true);
@@ -229,7 +229,6 @@
             });
 
             $('form').on('submit', function() {
-                debugger;
                 // Copie os valores dos campos auxiliares para os campos hidden
                 $('#usurua').val($('#usurua_aux').val());
                 $('#usubairro').val($('#usubairro_aux').val());

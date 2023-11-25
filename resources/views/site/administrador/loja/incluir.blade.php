@@ -39,21 +39,24 @@
                 @enderror
             </div>
             <div class="input-field">
-                <input id="lojrua" type="text" class="validate" name="lojrua">
+                <input id="lojrua_aux" type="text" class="validate" name="lojrua_aux">
+                <input type="hidden" id="lojrua" name="lojrua" value="">
                 <label for="lojrua">Rua</label>
                 @error('lojrua')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
             <div class="input-field">
-                <input id="lojbairro" type="text" class="validate" name="lojbairro">
+                <input id="lojbairro_aux" type="text" class="validate" name="lojbairro_aux">
+                <input type="hidden" id="lojbairro" name="lojbairro" value="">
                 <label for="lojbairro">Bairro</label>
                 @error('lojbairro')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
             <div class="input-field">
-                <input id="lojcidade" type="text" class="validate" name="lojcidade">
+                <input id="lojcidade_aux" type="text" class="validate" name="lojcidade_aux">
+                <input type="hidden" id="lojcidade" name="lojcidade" value="">
                 <label for="lojcidade">Cidade</label>
                 @error('lojcidade')
                     <span class="text-danger">{{ $message }}</span>
@@ -62,7 +65,9 @@
             <div class="input-field">
                 <label for="lojestado">Estado</label>
                 <br>
-                <select name="lojestado" class="form-control" required>
+                <br>
+                <input type="hidden" id="lojestado" name="lojestado" value="">
+                <select name="lojestado_aux" class="validate browser-default" required>
                     <option value="" selected>Selecione...</option>
                     <!-- Lista de estados -->
                     <option value="AC">Acre</option>
@@ -133,16 +138,26 @@
                     method: 'POST',
                     data: { cep: cep },
                     success: function (response) {
-                        if (response.data) {
-                            $('#lojrua').val(response.data.logradouro).addClass('filled').prop('readonly', true).css({'color': 'rgba(0,0,0,0.42)','border-bottom': '1px dotted rgba(0,0,0,0.42)'});
-                            $('#lojbairro').val(response.data.bairro).addClass('filled').prop('readonly', true).css({'color': 'rgba(0,0,0,0.42)','border-bottom': '1px dotted rgba(0,0,0,0.42)'});
-                            $('#lojcidade').val(response.data.localidade).addClass('filled').prop('readonly', true).css({'color': 'rgba(0,0,0,0.42)','border-bottom': '1px dotted rgba(0,0,0,0.42)'});
-                            $('select[name="lojestado"]').val(response.data.uf).addClass('filled').prop('readonly', true).css({'color': 'rgba(0,0,0,0.42)','border-bottom': '1px dotted rgba(0,0,0,0.42)'});
+                        if (response.data.erro !== true) {
+                            $('#lojrua_aux').val(response.data.logradouro).addClass('filled').prop('disabled', true);
+                            $('#lojbairro_aux').val(response.data.bairro).addClass('filled').prop('disabled', true);
+                            $('#lojcidade_aux').val(response.data.localidade).addClass('filled').prop('disabled', true);
+                            $('select[name="lojestado_aux"]').val(response.data.uf).addClass('filled').prop('disabled', true);
+                        
+                            $('label[for="lojrua"]').addClass('active');
+                            $('label[for="lojbairro"]').addClass('active');
+                            $('label[for="lojcidade"]').addClass('active');
+
                         } else{
-                            $('#lojrua').val('').removeClass('filled').prop('readonly', false).css({'color': '','border-bottom': ''});
-                            $('#lojbairro').val('').removeClass('filled').prop('readonly', false).css({'color': '','border-bottom': ''});
-                            $('#lojcidade').val('').removeClass('filled').prop('readonly', false).css({'color': '','border-bottom': ''});
-                            $('select[name="lojestado"]').val('').removeClass('filled').prop('readonly', false).css({'color': '','border-bottom': ''});
+                            $('#lojrua_aux').val('').removeClass('filled').prop('disabled', false);
+                            $('#lojbairro_aux').val('').removeClass('filled').prop('disabled', false);
+                            $('#lojcidade_aux').val('').removeClass('filled').prop('disabled', false);
+                            $('select[name="lojestado_aux"]').val('').removeClass('filled').prop('disabled', false);
+                        
+                            $('label[for="lojrua"]').addClass('active');
+                            $('label[for="lojbairro"]').addClass('active');
+                            $('label[for="lojcidade"]').addClass('active');
+                        
                         }
                     },
                     error: function (error) {
@@ -150,6 +165,17 @@
                         // Lidar com erros aqui
                     }
                 });
+            });
+
+            $('form').on('submit', function() {
+                // Copie os valores dos campos auxiliares para os campos hidden
+                $('#lojrua').val($('#lojrua_aux').val());
+                $('#lojbairro').val($('#lojbairro_aux').val());
+                $('#lojcidade').val($('#lojcidade_aux').val());
+                $('#lojestado').val($('select[name="lojestado_aux"]').val());
+
+                // Continue com o envio do formulário
+                return true;
             });
         });
     </script>    
