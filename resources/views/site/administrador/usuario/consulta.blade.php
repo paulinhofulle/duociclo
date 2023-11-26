@@ -62,6 +62,7 @@
                   @foreach ($usuarios as $usuario)
                     @include('site/administrador/usuario/visualizar', ['usuario' => $usuario])
                     @include('site/administrador/usuario/alterar', ['usuario' => $usuario])
+                    @include('site/administrador/usuario/excluir', ['usuario' => $usuario])
                     <tr>
                         <td>{{$usuario->id}}</td>
                         <td>{{$usuario->usunome}}</td>
@@ -71,13 +72,8 @@
                         <td style="display: flex; justify-content:end;">
                             <button class="btn-floating halfway-fab waves-effect waves-light orange secondary-content seuBotaoDeAlteracao" data-usuario-id="{{ $usuario->id }}" style="position: relative; bottom:0px;" title="Alterar">
                                 <i class="material-icons">build</i>
-                            </button>
-                            <form action="{{ route('excluirUsuario', ['id' => $usuario->id]) }}" method="POST" enctype="multipart/form-data">
-                                @csrf
-                                @method('DELETE')
-                                <input type="hidden" name="id" value="{{ $usuario->id }}">
-                                <button class="btn-floating halfway-fab waves-effect waves-light red secondary-content" title="Excluir" style="position: relative; bottom:0px;"><i class="material-icons">delete</i></button>
-                            </form>
+                            </button>    
+                            <button class="btn-floating halfway-fab waves-effect waves-light red secondary-content seuBotaoDeExclusao" title="Excluir" style="position: relative; bottom:0px;" data-usuario-id="{{ $usuario->id }}"><i class="material-icons">delete</i></button>
                             <button class="btn-floating halfway-fab waves-effect waves-light blue secondary-content seuBotaoDeVisualizacao" title="Visualizar" style="position: relative; bottom:0px;" data-usuario-id="{{ $usuario->id }}">
                                 <i class="material-icons">remove_red_eye</i>
                             </button>
@@ -132,7 +128,6 @@
                     $('#usurua')[0].className = 'validate';
                     $('#usubairro')[0].className = 'validate';
                     $('#usucidade')[0].className = 'validate';
-                    $('#usuestado')[0].className = 'validate';
                     $('#usucomplementoendereco')[0].className = 'validate';
                     $('#usudatanascimento')[0].className = 'validate';
                 };
@@ -141,86 +136,7 @@
                     limparCamposModalIncluir();
                 });
 
-                $('#btnEnviarFormIncluir').click(function(event){
-                    event.preventDefault(); // Evite o envio do formulário padrão
-
-                    // Limpar mensagens de erro existentes
-                    $('.error-message').remove();
-
-                    // Realize as validações aqui
-                    var usunome = $('#modalIncluirUsuario #usunome').val().trim();
-                    var usucpf = $('#modalIncluirUsuario #usucpf').val().trim();
-                    var usudatanascimento = $('#modalIncluirUsuario #usudatanascimento').val().trim();
-                    var usutelefone = $('#modalIncluirUsuario #usutelefone').val().trim();
-                    var email = $('#modalIncluirUsuario #email').val().trim();
-                    var usucep = $('#modalIncluirUsuario #usucep').val().trim();
-                    var usunumeroendereco = $('#modalIncluirUsuario #usunumeroendereco').val().trim();
-
-                    var isValid = true; // Inicialmente, assume-se que o formulário é válido
-
-                    // Validação do campo Nome
-                    if (usunome === '') {
-                        $('#modalIncluirUsuario #usunome').after('<span class="error-message" style="color:red;">O campo Nome é obrigatório!</span>');
-                        isValid = false;
-                    } else {
-                        $('#usunome-error').remove();
-                    }
-
-                    // Validação do campo CPF
-                    if (usucpf.length < 11 || isNaN(usucpf)) {
-                        $('#modalIncluirUsuario #usucpf').after('<span class="error-message" style="color:red;">O campo CPF deve conter no mínimo 11 dígitos numéricos!</span>');
-                        isValid = false;
-                    } else {
-                        $('#usucpf-error').remove();
-                    }
-
-                    // Validação do campo Data de Nascimento
-                    if (usudatanascimento === '') {
-                        $('#modalIncluirUsuario #usudatanascimento').after('<span class="error-message" style="color:red;">O campo Data de Nascimento é obrigatório!</span>');
-                        isValid = false;
-                    } else {
-                        $('#usudatanascimento-error').remove();
-                    }
-
-                    // Validação do campo Telefone
-                    if (usutelefone === '') {
-                        $('#modalIncluirUsuario #usutelefone').after('<span class="error-message" style="color:red;">O campo Telefone é obrigatório!</span>');
-                        isValid = false;
-                    } else {
-                        $('#usutelefone-error').remove();
-                    }
-
-                    // Validação do campo E-mail
-                    if (email === '') {
-                        $('#modalIncluirUsuario #email').after('<span class="error-message" style="color:red;">O campo E-mail é inválido!</span>');
-                        isValid = false;
-                    } else {
-                        $('#email-error').remove();
-                    }
-
-                    // Validação do campo CEP
-                    if (usucep.length !== 8 || isNaN(usucep)) {
-                        $('#modalIncluirUsuario #usucep').after('<span class="error-message" style="color:red;">O campo CEP deve conter 8 dígitos numéricos!</span>');
-                        isValid = false;
-                    } else {
-                        $('#usucep-error').remove();
-                    }
-
-                    // Validação do campo Número de Endereço
-                    if (isNaN(usunumeroendereco)) {
-                        $('#modalIncluirUsuario #usunumeroendereco').after('<span class="error-message" style="color:red;">O campo N° Endereço deve ser numérico!</span>');
-                        isValid = false;
-                    } else {
-                        $('#usunumeroendereco-error').remove();
-                    }
-
-                    // Se todas as validações passarem, você pode fechar o modal e fazer o redirecionamento ou qualquer outra coisa que desejar
-                    if (isValid) {
-                        $('#formIncluirUsuario').submit();
-                    } else {
-                        M.toast({ html: 'Por favor, corrija os erros no formulário antes de prosseguir.', classes: 'red' });
-                    }
-                });
+                
                 
                 //VISUALIZAR
                 $('.seuBotaoDeVisualizacao').click(function() {
@@ -267,106 +183,11 @@
                     });
                 };
 
-                //ALTERAR
-                $('.seuBotaoDeAlteracao').click(function() {
-                    var usucodigo = $(this).data('usuario-id');
-                    var usuario = encontrarUsuarioPorId(usucodigo);
-                    var modalAlterarUsuario = $('#modalAlterarUsuario_' + usucodigo).modal();
-                    preencherFormularioDeAlteracao(usuario);
-                    modalAlterarUsuario.modal('open');
-                    $('.error-message').remove();
-                    limparClassesCampos();
-                });
-
-                function preencherFormularioDeAlteracao(usuario) {
-                    $('#modalAlterarUsuario #id').val(usuario.id);
-                    $('#modalAlterarUsuario #usunome').val(usuario.usunome);
-                    $('#modalAlterarUsuario #usucpf').val(usuario.usucpf);
-                    $('#modalAlterarUsuario #usunumeroendereco').val(usuario.usunumeroendereco);
-                    $('#modalAlterarUsuario #usutelefone').val(usuario.usutelefone);
-                    $('#modalAlterarUsuario #email').val(usuario.email);
-                    $('#modalAlterarUsuario #usucep').val(usuario.usucep);
-                    $('#modalAlterarUsuario #usucomplementoendereco').val(usuario.usucomplementoendereco);
-                    $('#modalAlterarUsuario #usudatanascimento').val(usuario.usudatanascimento);
-                    $('#modalAlterarUsuario #lojcodigo').val(usuario.lojcodigo);
-                };
-
-                $('#btnEnviarFormAlteracao').click(function(event) {
-                    event.preventDefault();
-                    $('.error-message').remove();
-
-                    // Realize as validações aqui
-                    var usunome = $('#modalAlterarUsuario #usunome').val().trim();
-                    var usucpf = $('#modalAlterarUsuario #usucpf').val().trim();
-                    var usudatanascimento = $('#modalAlterarUsuario #usudatanascimento').val().trim();
-                    var usutelefone = $('#modalAlterarUsuario #usutelefone').val().trim();
-                    var email = $('#modalAlterarUsuario #email').val().trim();
-                    var usucep = $('#modalAlterarUsuario #usucep').val().trim();
-                    var usunumeroendereco = $('#modalAlterarUsuario #usunumeroendereco').val().trim();
-                    var isValid = true; // Inicialmente, assume-se que o formulário é válido
-
-                    // Validação do campo Nome
-                    if (usunome === '') {
-                        $('#modalAlterarUsuario #usunome').after('<span class="error-message" style="color:red;">O campo Nome é obrigatório!</span>');
-                        isValid = false;
-                    } else {
-                        $('#usunome-error').remove();
-                    }
-
-                    // Validação do campo CPF
-                    if (usucpf.length < 11 || isNaN(usucpf)) {
-                        $('#modalAlterarUsuario #usucpf').after('<span class="error-message" style="color:red;">O campo CPF deve conter no mínimo 11 dígitos numéricos!</span>');
-                        isValid = false;
-                    } else {
-                        $('#usucpf-error').remove();
-                    }
-
-                    // Validação do campo Data de Nascimento
-                    if (usudatanascimento === '') {
-                        $('#modalAlterarUsuario #usudatanascimento').after('<span class="error-message" style="color:red;">O campo Data de Nascimento é obrigatório!</span>');
-                        isValid = false;
-                    } else {
-                        $('#usudatanascimento-error').remove();
-                    }
-
-                    // Validação do campo Telefone
-                    if (usutelefone === '') {
-                        $('#modalAlterarUsuario #usutelefone').after('<span class="error-message" style="color:red;">O campo Telefone é obrigatório!</span>');
-                        isValid = false;
-                    } else {
-                        $('#usutelefone-error').remove();
-                    }
-
-                    // Validação do campo E-mail
-                    if (email === '') {
-                        $('#modalAlterarUsuario #email').after('<span class="error-message" style="color:red;">O campo E-mail é inválido!</span>');
-                        isValid = false;
-                    } else {
-                        $('#email-error').remove();
-                    }
-
-                    // Validação do campo CEP
-                    if (usucep.length !== 8 || isNaN(usucep)) {
-                        $('#modalAlterarUsuario #usucep').after('<span class="error-message" style="color:red;">O campo CEP deve conter 8 dígitos numéricos!</span>');
-                        isValid = false;
-                    } else {
-                        $('#usucep-error').remove();
-                    }
-
-                    // Validação do campo Número de Endereço
-                    if (isNaN(usunumeroendereco)) {
-                        $('#modalAlterarUsuario #usunumeroendereco').after('<span class="error-message" style="color:red;">O campo N° Endereço deve ser numérico!</span>');
-                        isValid = false;
-                    } else {
-                        $('#usunumeroendereco-error').remove();
-                    }
-
-                    // Se todas as validações passarem, você pode fechar o modal e fazer o redirecionamento ou qualquer outra coisa que desejar
-                    if (isValid) {
-                        $('#formAlterarUsuario').submit();
-                    } else {
-                        M.toast({ html: 'Por favor, corrija os erros no formulário antes de prosseguir.', classes: 'red' });
-                    }
+                $('.seuBotaoDeExclusao').click(function() {
+                    debugger;
+                    var usucodigo = $(this).data('usuario-id'); 
+                    var modalExcluirUsuario = $('#modalExcluirUsuario_' + usucodigo).modal();
+                    modalExcluirUsuario.modal('open');
                 });
 
                 document.addEventListener('DOMContentLoaded', function() {

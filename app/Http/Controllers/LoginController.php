@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Carbon\Carbon;
 
 class LoginController extends Controller{
 
@@ -58,11 +59,19 @@ class LoginController extends Controller{
         return view('site/cadastrar');
     }
 
-    public function registrar(Request $request){
+    public function validaCadastro(Request $request){
         $bValido = $request->validate([
             'usunome'               => ['required'],
             'usucpf'                => ['required', 'min:11', 'unique:users'],
-            'usudatanascimento'     => ['required', 'date'],
+            'usudatanascimento'     => ['required', 'date',
+             function ($attribute, $value, $fail) {
+                $dob = Carbon::parse($value);
+                $idadeMinima = 18;
+
+                if ($dob->age < $idadeMinima) {
+                    $fail('Você deve ter pelo menos ' . $idadeMinima . ' anos de idade.');
+                }
+            }],
             'usutelefone'           => ['required'],
             'email'                 => ['required', 'email', 'unique:users'],
             'usucep'                => ['required', 'min:8'],
@@ -72,7 +81,7 @@ class LoginController extends Controller{
             'usuestado'             => ['required'],
             'usunumeroendereco'     => ['required', 'numeric'],
             'usucomplemento'        => ['nullable'],
-            'password'              => ['confirmed'],
+            'password'              => ['confirmed', 'min:6'],
             'password_confirmation' => ['required', 'min:6']
         ],[
             'usunome.required'           => 'O campo Nome é obrigatório!',
@@ -94,10 +103,14 @@ class LoginController extends Controller{
             'usunumeroendereco.numeric'  => 'Só deve ser informado números!',
             'password.required'          => 'O campo senha é obrigatório!',
             'password.min'               => 'O campo senha deve ter no mínimo 6 digítos!',
-            'password.confirmed'         => 'A senha de confirmação deve ser igual ao campo Senha'
+            'password.confirmed'         => 'A senha de confirmação deve ser igual ao campo Senha',
+            'password_confirmation.min'  => 'O campo senha deve ter no mínimo 6 digítos!'
         ]);
 
-        if($bValido){
+        return response()->json(['isValid' => $bValido, 'errors' => $bValido ? [] : $validator->errors()->toArray()]);
+    }
+
+    public function registrar(Request $request){
             $userData = [
                 'usunome' => $request->input('usunome'),
                 'usucpf' => $request->input('usucpf'),
@@ -119,9 +132,7 @@ class LoginController extends Controller{
             }
         
             User::create($userData);
-            return redirect()->route('login')->with('sucesso', 'Cadastro realizado com sucesso!');
-        }
-        
+            return redirect()->route('login')->with('sucesso', 'Cadastro realizado com sucesso!');     
     }
 
 }

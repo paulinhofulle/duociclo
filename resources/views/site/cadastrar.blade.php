@@ -189,7 +189,7 @@
                 </div>
             </div>
         </div>
-        <button class="btn btn-primary w-100 py-2" style="background-color: #e2a951; border-color:white; color:white">Cadastrar</button>
+        <button id="btnCadastrar" class="btn btn-primary w-100 py-2" style="background-color: #e2a951; border-color:white; color:white">Cadastrar</button>
     </form>
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -197,11 +197,6 @@
         $(document).ready(function() {
             $('#usucep').on('blur', function() {
                 var cep = $(this).val();
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
 
                 $.ajax({
                     url: '/obter-endereco-por-cep',
@@ -228,15 +223,63 @@
                 });
             });
 
-            $('form').on('submit', function() {
-                // Copie os valores dos campos auxiliares para os campos hidden
-                $('#usurua').val($('#usurua_aux').val());
-                $('#usubairro').val($('#usubairro_aux').val());
-                $('#usucidade').val($('#usucidade_aux').val());
-                $('#usuestado').val($('select[name="usuestado_aux"]').val());
+            $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
 
-                // Continue com o envio do formulário
-                return true;
+            $('#btnCadastrar').click(function(event){
+                event.preventDefault();
+                debugger;
+                var data = {
+                        usunome: $('#usunome').val().trim(),
+                        usucpf: $('#usucpf').val().trim(),
+                        usudatanascimento: $('#usudatanascimento').val().trim(),
+                        usutelefone: $('#usutelefone').val().trim(),
+                        email:$('#email').val().trim(),
+                        usucep:$('#usucep').val().trim(),
+                        usurua:$('#usurua_aux').val().trim(),
+                        usubairro: $('#usubairro_aux').val().trim(),
+                        usucidade: $('#usucidade_aux').val().trim(),
+                        usuestado: $('select[name="usuestado_aux"]').val().trim(),
+                        usunumeroendereco: $('#usunumeroendereco').val().trim(),
+                        usucomplemento: $('#usucomplemento').val().trim(),
+                        password: $('#password').val().trim(),
+                        password_confirmation: $('#password_confirmation').val().trim()
+                        // ... (outros campos)
+                    };
+                $.ajax({
+                        url: '/validaCadastro',
+                        method: 'POST',
+                        data: data,
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function (response) {
+                            debugger;
+                            if (response.isValid) {
+                                $('#usurua').val($('#usurua_aux').val());
+                                $('#usubairro').val($('#usubairro_aux').val());
+                                $('#usucidade').val($('#usucidade_aux').val());
+                                $('#usuestado').val($('select[name="usuestado_aux"]').val());
+                                $('#form').submit();
+                            } else {
+                                // Adicione mensagens de erro aos campos
+                                $.each(response.errors, function (key, value) {
+                                    $(key).after('<span class="error-message" style="color:red;">' + value[0] + '</span>');
+                                });
+                            }
+                        },
+                        error: function (error) {   
+                            debugger;
+                                // Adicione mensagens de erro aos campos
+                                $.each(error.responseJSON.errors, function (key, value) {
+                                    $('#'+key).after('<span class="error-message" style="color:red;">' + value[0] + '</span>');
+                                });
+                            // Lidar com erros aqui
+                        }
+                    });
             });
         });
     </script>    

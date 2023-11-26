@@ -23,6 +23,7 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 // CADASTRAR
 Route::get('/cadastrar', [LoginController::class, 'cadastrar'])->name('cadastrar');
 Route::post('/registrar', [LoginController::class, 'registrar'])->name('registrar');
+Route::post('/validaCadastro', [LoginController::class, 'validaCadastro']);
 Route::post('/obter-endereco-por-cep', [EnderecoController::class, 'obterEnderecoPorCep']);
 
 
@@ -41,7 +42,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/administrador/usuarios/incluir', [UsuarioController::class, 'incluirUsuario'])->name('incluirUsuario');
     Route::delete('/administrador/usuarios/excluir/{id}', [UsuarioController::class, 'excluirUsuario'])->name('excluirUsuario');
     Route::put('administrador/usuarios/alterar/{id}', [UsuarioController::class, 'alterarUsuario'])->name('alterarUsuario');
-    
+    Route::post('/administrador/usuarios/validaAlteracaoUsuario', [UsuarioController::class, 'validaAlteracaoUsuario']);
+    Route::post('/administrador/usuarios/validaInclusaoUsuario', [UsuarioController::class, 'validaInclusaoUsuario']);
+
     //LOJISTA
     Route::get('/lojista', [LojistaController::class, 'menu'])->name('lojista');
     Route::get('/lojista/minhaLoja', [LojistaController::class, 'minhaLoja'])->name('minhaLoja');

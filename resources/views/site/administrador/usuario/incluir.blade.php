@@ -39,21 +39,24 @@
                 @enderror
             </div>
             <div class="input-field">
-                <input id="usurua" type="text" class="validate" name="usurua">
+                <input type="text" class="form-control" id="usurua_aux" name="usurua" required>
+                <input type="hidden" id="usurua" name="usurua" value="">
                 <label for="usurua">Rua</label>
                 @error('usurua')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
             <div class="input-field">
-                <input id="usubairro" type="text" class="validate" name="usubairro">
+                <input type="text" class="form-control" id="usubairro_aux" name="usubairro" required>
+                <input type="hidden" id="usubairro" name="usubairro" value="">
                 <label for="usubairro">Bairro</label>
                 @error('usubairro')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
             <div class="input-field">
-                <input id="usucidade" type="text" class="validate" name="usucidade">
+                <input type="text" class="form-control" id="usucidade_aux" name="usucidade" required>
+                <input type="hidden" id="usucidade" name="usucidade" value="">
                 <label for="usucidade">Cidade</label>
                 @error('usucidade')
                     <span class="text-danger">{{ $message }}</span>
@@ -62,7 +65,9 @@
             <div class="input-field">
                 <label for="usuestado">Estado</label>
                 <br>
-                <select name="usuestado" class="form-control" required>
+                <br>
+                <input type="hidden" id="usuestado" name="usuestado" value="">
+                <select name="usuestado_aux" class="validate browser-default" required>
                     <option value="" selected>Selecione...</option>
                     <!-- Lista de estados -->
                     <option value="AC">Acre</option>
@@ -121,7 +126,8 @@
             <div class="input-field">
                 <label for="lojcodigo">Loja</label>
                 <br>
-                <select name="lojcodigo" class=" form-control validate" required>
+                <br>
+                <select name="lojcodigo" class="validate browser-default" required>
                     <option value="" selected>Selecione a loja...</option>
                     @foreach ($lojas as $loja)
                         <option value="{{ $loja->lojcodigo }}">{{ $loja->lojnome }}</option>
@@ -136,37 +142,111 @@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
         $(document).ready(function() {
-        $('#usucep').on('blur', function() {
-            var cep = $(this).val();
+            $('#btnEnviarFormIncluir').click(function(event){
+                    event.preventDefault(); // Evite o envio do formulário padrão
 
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
+                    // Limpar mensagens de erro existentes
+                    $('.error-message').remove();
 
-            $.ajax({
-                url: '/obter-endereco-por-cep',
-                method: 'POST',
-                data: { cep: cep },
-                success: function (response) {
-                    if (response.data) {
-                        $('#usurua').val(response.data.logradouro).addClass('filled').prop('readonly', true).css({'color': 'rgba(0,0,0,0.42)','border-bottom': '1px dotted rgba(0,0,0,0.42)'});
-                        $('#usubairro').val(response.data.bairro).addClass('filled').prop('readonly', true).css({'color': 'rgba(0,0,0,0.42)','border-bottom': '1px dotted rgba(0,0,0,0.42)'});
-                        $('#usucidade').val(response.data.localidade).addClass('filled').prop('readonly', true).css({'color': 'rgba(0,0,0,0.42)','border-bottom': '1px dotted rgba(0,0,0,0.42)'});
-                        $('select[name="usuestado"]').val(response.data.uf).addClass('filled').prop('readonly', true).css({'color': 'rgba(0,0,0,0.42)','border-bottom': '1px dotted rgba(0,0,0,0.42)'});
-                    } else{
-                        $('#usurua').val('').removeClass('filled').prop('disabled', false);
-                        $('#usubairro').val('').removeClass('filled').prop('disabled', false);
-                        $('#usucidade').val('').removeClass('filled').prop('disabled', false);
-                        $('select[name="usuestado"]').val('').removeClass('filled').prop('disabled', false);
+                    // Realize as validações aqui
+                    var usunome = $('#modalIncluirUsuario #usunome').val().trim();
+                    var usucpf = $('#modalIncluirUsuario #usucpf').val().trim();
+                    var usudatanascimento = $('#modalIncluirUsuario #usudatanascimento').val().trim();
+                    var usutelefone = $('#modalIncluirUsuario #usutelefone').val().trim();
+                    var email = $('#modalIncluirUsuario #email').val().trim();
+                    var usucep = $('#modalIncluirUsuario #usucep').val().trim();
+                    var usurua = $('#modalIncluirUsuario #usurua_aux').val().trim();
+                    var usubairro = $('#modalIncluirUsuario #usubairro_aux').val().trim();
+                    var usucidade = $('#modalIncluirUsuario #usucidade_aux').val().trim();
+                    var usuestado = $('#modalIncluirUsuario select[name="usuestado_aux"]').val().trim();
+                    var usunumeroendereco = $('#modalIncluirUsuario #usunumeroendereco').val().trim();
+                    var lojcodigo = $('#modalIncluirUsuario select[name="lojcodigo"]').val().trim();
+
+                    var data = {
+                        usunome: usunome,
+                        usucpf: usucpf,
+                        usutelefone: usutelefone,
+                        usudatanascimento: usudatanascimento,
+                        email:email,
+                        usucep:usucep,
+                        usurua:usurua,
+                        usubairro: usubairro,
+                        usucidade: usucidade,
+                        usuestado: usuestado,
+                        usunumeroendereco: usunumeroendereco,
+                        lojcodigo:lojcodigo
+                        // ... (outros campos)
+                    };
+
+                    // Enviar solicitação AJAX para validar no servidor
+                    $.ajax({
+                        url: '/administrador/usuarios/validaInclusaoUsuario',
+                        type: 'POST',
+                        data: data,
+                        success: function (response) {
+                            if (response.isValid) {
+                                // Se todas as validações passarem, você pode fechar o modal e fazer o redirecionamento ou qualquer outra coisa que desejar
+                                $('#modalIncluirUsuario #usurua').val($('#modalIncluirUsuario #usurua_aux').val());
+                                $('#modalIncluirUsuario #usubairro').val($('#modalIncluirUsuario #usubairro_aux').val());
+                                $('#modalIncluirUsuario #usucidade').val($('#modalIncluirUsuario #usucidade_aux').val());
+                                $('#modalIncluirUsuario #usuestado').val($('#modalIncluirUsuario select[name="usuestado_aux"]').val());
+                                $('#formIncluirUsuario').submit();
+                            } else {
+                                // Se houver erros, exiba as mensagens
+                                M.toast({ html: 'Por favor, corrija os erros no formulário antes de prosseguir.', classes: 'red' });
+                                
+                                // Adicione mensagens de erro aos campos
+                                $.each(response.errors, function (key, value) {
+                                    $('#modalIncluirUsuario #' + key).after('<span class="error-message" style="color:red;">' + value[0] + '</span>');
+                                });
+                            }
+                        },
+                        error: function (error) {
+                            M.toast({ html: 'Por favor, corrija os erros no formulário antes de prosseguir.', classes: 'red' });
+                                
+                                // Adicione mensagens de erro aos campos
+                                $.each(error.responseJSON.errors, function (key, value) {
+                                    $('#modalIncluirUsuario #' + key).after('<span class="error-message" style="color:red;">' + value[0] + '</span>');
+                                    $('label[for="'+key+'"]').addClass('active');
+                                });
+                            // Lidar com erros aqui
+                        }
+                    });
+                });
+
+            $('#usucep').on('blur', function() {
+                var cep = $(this).val();
+
+                $.ajax({
+                    url: '/obter-endereco-por-cep',
+                    method: 'POST',
+                    data: { cep: cep },
+                    success: function (response) {
+                        if (response.data.erro !== true) {
+                            $('#usurua_aux').val(response.data.logradouro).addClass('filled').prop('disabled', true);
+                            $('#usubairro_aux').val(response.data.bairro).addClass('filled').prop('disabled', true);
+                            $('#usucidade_aux').val(response.data.localidade).addClass('filled').prop('disabled', true);
+                            $('select[name="usuestado_aux"]').val(response.data.uf).addClass('filled').prop('disabled', true);
+                        
+                            $('label[for="usurua"]').addClass('active');
+                            $('label[for="usubairro"]').addClass('active');
+                            $('label[for="usucidade"]').addClass('active');
+                        } else{
+                            $('#usurua_aux').val('').removeClass('filled').prop('disabled', false);
+                            $('#usubairro_aux').val('').removeClass('filled').prop('disabled', false);
+                            $('#usucidade_aux').val('').removeClass('filled').prop('disabled', false);
+                            $('select[name="usuestado_aux"]').val('').removeClass('filled').prop('disabled', false);
+                        
+                            $('label[for="usurua"]').addClass('active');
+                            $('label[for="usubairro"]').addClass('active');
+                            $('label[for="usucidade"]').addClass('active');
+                        }
+                    },
+                    error: function (error) {
+                        console.error(error);
+                        // Lidar com erros aqui
                     }
-                },
-                error: function (error) {
-                    console.error(error);
-                    // Lidar com erros aqui
-                }
+                });
             });
-        });
     });
     </script>    

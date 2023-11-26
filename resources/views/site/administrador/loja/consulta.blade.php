@@ -241,11 +241,12 @@
                     var lojcodigo = $(this).data('loja-id'); 
                     var loja = encontrarLojaPorId(lojcodigo);
                     var modalAlterarLoja = $('#modalAlterarLoja_' + lojcodigo).modal();
-                    modalAlterarLoja.modal('open');
-                    carregaCep();
+                    
+                    carregaCep(loja);
                     preencherFormularioDeAlteracao(loja);
                     $('.error-message').remove();
                     limparClassesCampos();
+                    modalAlterarLoja.modal('open');
                 });
 
                 function preencherFormularioDeAlteracao(loja) {
@@ -265,8 +266,8 @@
                     // Preencha os outros campos conforme necessário
                 };
 
-                function carregaCep(){
-                    var lojcodigo = +$('#lojcodigo').val(); 
+                function carregaCep(loja){
+                    var lojcodigo = loja.lojcodigo; 
                     var cep = $('#modalAlterarLoja_' + lojcodigo +' #lojcep').val();
 
                         $.ajax({
@@ -285,10 +286,10 @@
                                     $('#modalAlterarLoja_' + lojcodigo +' label[for="lojcidade"]').addClass('active');
 
                                 } else{
-                                    $('#modalAlterarLoja_' + lojcodigo +' #lojrua_aux').val('').removeClass('filled').prop('disabled', false);
-                                    $('#modalAlterarLoja_' + lojcodigo +' #lojbairro_aux').val('').removeClass('filled').prop('disabled', false);
-                                    $('#modalAlterarLoja_' + lojcodigo +' #lojcidade_aux').val('').removeClass('filled').prop('disabled', false);
-                                    $('#modalAlterarLoja_' + lojcodigo +' select[name="lojestado_aux"]').val('').removeClass('filled').prop('disabled', false);
+                                    $('#modalAlterarLoja_' + lojcodigo +' #lojrua_aux').val(loja.lojrua).addClass('filled').prop('disabled', false);
+                                    $('#modalAlterarLoja_' + lojcodigo +' #lojbairro_aux').val(loja.lojbairro).addClass('filled').prop('disabled', false);
+                                    $('#modalAlterarLoja_' + lojcodigo +' #lojcidade_aux').val(loja.lojcidade).addClass('filled').prop('disabled', false);
+                                    $('#modalAlterarLoja_' + lojcodigo +' select[name="lojestado_aux"]').val(loja.lojestado).addClass('filled').prop('disabled', false);
                                 
                                     $('#modalAlterarLoja_' + lojcodigo +' label[for="lojrua"]').addClass('active');
                                     $('#modalAlterarLoja_' + lojcodigo +' label[for="lojbairro"]').addClass('active');
@@ -397,7 +398,6 @@
                 });
 
                 $('.seuBotaoDeExclusao').click(function() {
-                    debugger;
                     var lojcodigo = $(this).data('loja-id'); 
                     var loja = encontrarLojaPorId(lojcodigo);
                     var modalExcluirLoja = $('#modalExcluirLoja_' + lojcodigo).modal();

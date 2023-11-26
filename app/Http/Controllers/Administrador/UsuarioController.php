@@ -26,11 +26,19 @@ class UsuarioController extends Controller {
         return view('site/administrador/usuario/consulta', compact('usuarios', 'lojas', 'totalUsuarios', 'search'));
     }
 
-    public function incluirUsuario(Request $request){
+    public function validaInclusaoUsuario(Request $request){
         $bValido = $request->validate([
             'usunome'               => ['required'],
             'usucpf'                => ['required', 'min:11', 'unique:users'],
-            'usudatanascimento'     => ['required', 'date'],
+            'usudatanascimento'     => ['required', 'date',
+            function ($attribute, $value, $fail) {
+                $dob = Carbon::parse($value);
+                $idadeMinima = 18;
+
+                if ($dob->age < $idadeMinima) {
+                    $fail('O lojista deve ter pelo menos ' . $idadeMinima . ' anos de idade.');
+                }
+            }],
             'usutelefone'           => ['required'],
             'email'                 => ['required', 'email', 'unique:users'],
             'usucep'                => ['required', 'min:8'],
@@ -39,7 +47,7 @@ class UsuarioController extends Controller {
             'usubairro'             => ['required'],
             'usucidade'             => ['required'],
             'usuestado'             => ['required'],
-            'usucomplemento'        => ['nullable']
+            'lojcodigo'             => ['required']
         ],[
             'usunome.required'           => 'O campo Nome é obrigatório!',
             'usucpf.required'            => 'O campo CPF é obrigatório!',
@@ -58,9 +66,13 @@ class UsuarioController extends Controller {
             'usucidade.required'         => 'O campo Cidade é obrigatório!',
             'usuestado.required'         => 'O campo Estado é obrigatório!',
             'usunumeroendereco.numeric'  => 'Só deve ser informado números!',
+            'lojcodigo'                  => 'O lojista precisa estar vinculado a uma loja!'
         ]);
 
-        if($bValido){
+        return response()->json(['isValid' => $bValido, 'errors' => $bValido ? [] : $validator->errors()->toArray()]);
+    }
+
+    public function incluirUsuario(Request $request){
             $userData = [
                 'usunome' => $request->input('usunome'),
                 'usucpf' => $request->input('usucpf'),
@@ -84,19 +96,27 @@ class UsuarioController extends Controller {
         
             User::create($userData);
             return redirect()->route('consultaUsuario')->with('sucesso', 'Usuário cadastrado com sucesso.');
-        }
     }
 
-    public function alterarUsuario(Request $request, $id){
+    public function validaAlteracaoUsuario(Request $request){
+        $id = $request->input('usucodigo');
         $bValido = $request->validate([
             'usunome'               => ['required'],
             'usucpf'                => ['required', 'min:11', (new Unique('users'))->ignore($id, 'id')],
-            'usudatanascimento'     => ['required', 'date'],
+            'usudatanascimento'     => ['required', 'date',
+            function ($attribute, $value, $fail) {
+                $dob = Carbon::parse($value);
+                $idadeMinima = 18;
+
+                if ($dob->age < $idadeMinima) {
+                    $fail('O lojista deve ter pelo menos ' . $idadeMinima . ' anos de idade.');
+                }
+            }],
             'usutelefone'           => ['required'],
             'email'                 => ['required', 'email', (new Unique('users'))->ignore($id, 'id')],
             'usucep'                => ['required', 'min:8'],
             'usunumeroendereco'     => ['required', 'numeric'],
-            'usucomplemento'        => ['nullable']
+            'lojcodigo'             => ['required']
         ],[
             'usunome.required'           => 'O campo Nome é obrigatório!',
             'usucpf.required'            => 'O campo CPF é obrigatório!',
@@ -111,9 +131,11 @@ class UsuarioController extends Controller {
             'usucep.min'                 => 'O campo CEP deve ter 8 números!',
             'usunumeroendereco.required' => 'O campo N° Endereço é obrigatório!',
             'usunumeroendereco.numeric'  => 'Só deve ser informado números!',
+            'lojcodigo'                  => 'O lojista precisa estar vinculado a uma loja!'
         ]);
-    
-        if($bValido){
+    }
+
+    public function alterarUsuario(Request $request, $id){
             $usuario = User::find($id);
             if (!$usuario) {
                 \Log::error("Usuário não encontrado com ID: $id");
@@ -133,10 +155,6 @@ class UsuarioController extends Controller {
             $usuario->save();
     
             return redirect()->route('consultaUsuario')->with('sucesso', 'Usuário alterado com sucesso.');
-        }
-        else{
-            return redirect()->route('consultaUsuario')->with('erro', 'Usuário não encontrado.');
-        }
     }
 
     public function excluirUsuario(Request $request, $id){
