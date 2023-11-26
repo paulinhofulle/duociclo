@@ -1,4 +1,4 @@
-<div id="modalAlterarPlano_{{$plano->placodigo}}" class="modal" style="max-height: 100%">
+<div id="modalAlterarPlano_{{$plano->placodigo}}" class="modal" >
     <div class="modal-content">
         <!-- Formulário de edição da loja aqui -->
         <form id="formAlterarPlano" action="{{ route('alterarPlano', ['id' => old('placodigo', $plano->placodigo)]) }}" method="POST">
@@ -14,21 +14,21 @@
                 @enderror
             </div>
             <div class="input-field">
-                <input id="plaquantidadedias" type="number" class="validate" name="plaquantidadedias" value="{{ old('plaquantidadedias', $plano->plaquantidadedias) }}" required>
+                <input id="plaquantidadedias" type="number" class="validate" name="plaquantidadedias" value="{{ old('plaquantidadedias', $plano->plaquantidadedias) }}" required disabled>
                 <label for="plaquantidadedias">Quantidade de Dias</label>
                 @error('plaquantidadedias')
                     <span class="error-message" style="color:red;">{{ $message }}</span>
                 @enderror
             </div>
             <div class="input-field">
-                <input id="plavalor" type="number" class="validate" name="plavalor" placeholder="0,00" value="{{ old('plavalor', $plano->plavalor) }}" required>
+                <input id="plavalor" type="number" class="validate" name="plavalor" placeholder="0,00" value="{{ old('plavalor', $plano->plavalor) }}" required disabled>
                 <label for="plavalor">Valor</label>
                 @error('plavalor')
                     <span class="error-message" style="color:red;">{{ $message }}</span>
                 @enderror
             </div>
             <div class="input-field">
-                <input id="plaquantidadeparcela" type="number" class="validate" name="plaquantidadeparcela" value="{{ old('plaquantidadeparcela', $plano->plaquantidadedias) }}" required>
+                <input id="plaquantidadeparcela" type="number" class="validate" name="plaquantidadeparcela" value="{{ old('plaquantidadeparcela', $plano->plaquantidadedias) }}" required disabled>
                 <label for="plaquantidadeparcela">Quantidade de Parcelas</label>
                 @error('plaquantidadeparcela')
                     <span class="error-message" style="color:red;">{{ $message }}</span>

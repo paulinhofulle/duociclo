@@ -61,6 +61,7 @@
                   @foreach ($planos as $plano)
                     @include('site/lojista/cadastro/plano/visualizar', ['plano' => $plano])
                     @include('site/lojista/cadastro/plano/alterar', ['plano' => $plano])
+                    @include('site/lojista/cadastro/plano/excluir', ['plano' => $plano])
                     <tr>
                         <td>{{$plano->placodigo}}</td>
                         <td>{{$plano->pladescricao}}</td>
@@ -71,12 +72,7 @@
                             <button class="btn-floating halfway-fab waves-effect waves-light orange secondary-content seuBotaoDeAlteracao" data-plano-id="{{ $plano->placodigo }}" style="position: relative; bottom:0px;" title="Alterar">
                                 <i class="material-icons">build</i>
                             </button>
-                            <form action="{{ route('excluirPlano', ['id' => $plano->placodigo]) }}" method="POST" enctype="multipart/form-data">
-                                @csrf
-                                @method('DELETE')
-                                <input type="hidden" name="id" value="{{ $plano->placodigo }}">
-                                <button class="btn-floating halfway-fab waves-effect waves-light red secondary-content" title="Excluir" style="position: relative; bottom:0px;"><i class="material-icons">delete</i></button>
-                            </form>
+                            <button class="btn-floating halfway-fab waves-effect waves-light red secondary-content btn modal-trigger seuBotaoDeExclusao" title="Excluir" style="position: relative; bottom:0px;" data-plano-id="{{ $plano->placodigo }}"><i class="material-icons">delete</i></button>
                             <button class="btn-floating halfway-fab waves-effect waves-light blue secondary-content btn modal-trigger seuBotaoDeVisualizacao" title="Visualizar" style="position: relative; bottom:0px;" data-plano-id="{{ $plano->placodigo }}">
                                 <i class="material-icons">remove_red_eye</i>
                             </button>
@@ -94,7 +90,6 @@
                 $(document).ready(function() {
                     //INCLUIR
                     var modalIncluirPlano = $('#modalIncluirPlano').modal();
-                    modalIncluirPlano[0].style.maxHeight = '100%';
                     $("#openModalBtnIncluir").click(function() {
                         modalIncluirPlano.modal("open");
                         $('.error-message').remove();
@@ -124,7 +119,6 @@
                     
                     //VISUALIZAR
                     var modalVisualizarPlano = $('#modalVisualizarPlano').modal();
-                    modalVisualizarPlano[0].style.maxHeight = '100%';
                     $('.seuBotaoDeVisualizacao').click(function() {
                         var placodigo = $(this).data('plano-id'); // Obtém o ID da loja do atributo data-loja-id
                         var plano = encontrarPlanoPorId(placodigo); // Encontra a loja correspondente no array de lojas
@@ -139,6 +133,10 @@
                     };
 
                     function preencherModalVisualizar(plano) {
+                        var modalContent = $('#modalVisualizarPlano .modal-content');
+    
+                        // Limpar conteúdo anterior
+                        modalContent.empty();
                         $('#modalVisualizarPlano .modal-content').append('<h4 class="center">Visualizar</h4>');
                         $('#modalVisualizarPlano .modal-content').append('<p><b>Descrição:</b> ' + plano.pladescricao + '</p>');
                         $('#modalVisualizarPlano .modal-content').append('<p><b>Quantidade de Dias:</b> ' + plano.plaquantidadedias + '</p>');
@@ -151,24 +149,82 @@
                         var placodigo = $(this).data('plano-id'); // Obtém o ID da loja do atributo data-loja-id
                         var plano = encontrarPlanoPorId(placodigo);
                         var modalAlterarPlano = $('#modalAlterarPlano_' + placodigo).modal();
-                        modalAlterarPlano[0].style.maxHeight = '100%';
-                        //preencherFormularioDeAlteracao(plano);
+                        preencherFormularioDeAlteracao(plano);
                         modalAlterarPlano.modal('open');
                         $('.error-message').remove();
                         limparClassesCampos();
                     });
 
-                    function preencherFormularioDeAlteracao(veiculo) {
-                        $('#modalAlterarVeiculo #veicodigo').val(veiculo.veicodigo);
-                        $('#modalAlterarVeiculo #veikm').val(veiculo.veikm);
-                        $('#modalAlterarVeiculo #veiplaca').val(veiculo.veiplaca);
-                        $('#modalAlterarVeiculo #veicor').val(veiculo.veicor);
-                        $('#modalAlterarVeiculo #veidescricao').val(veiculo.veidescricao);
+                    function preencherFormularioDeAlteracao(plano) {
+                        var placodigo = plano.placodigo;
+                        $('#modalAlterarPlano_' + placodigo+' #placodigo').val(plano.placodigo);
+                        $('#modalAlterarPlano_' + placodigo+' #pladescricao').val(plano.pladescricao);
+                        $('#modalAlterarPlano_' + placodigo+' #plaquantidadedias').val(plano.plaquantidadedias);
+                        $('#modalAlterarPlano_' + placodigo+' #plavalor').val(plano.plavalor);
+                        $('#modalAlterarPlano_' + placodigo+' #plaquantidadeparcela').val(plano.plaquantidadeparcela);
                     };
+
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
 
                     $('#btnEnviarFormAlteracao').click(function() {
                         event.preventDefault();
-                        $('#formAlterarPlano').submit();
+                        var placodigo = +$('#placodigo').val(); 
+                        // Limpar mensagens de erro existentes
+                        $('.error-message').remove();
+
+                        // Realize as validações aqui
+                        var pladescricao = $('#modalAlterarPlano_' + placodigo+' #pladescricao').val().trim();
+                        var plaquantidadedias = $('#modalAlterarPlano_' + placodigo+' #plaquantidadedias').val().trim();
+                        var plavalor = $('#modalAlterarPlano_' + placodigo+' #plavalor').val().trim();
+                        var plaquantidadeparcela = $('#modalAlterarPlano_' + placodigo+' #plaquantidadeparcela').val().trim();
+                        
+                        var data = {
+                            pladescricao: pladescricao,
+                            plaquantidadedias: plaquantidadedias,
+                            plavalor: plavalor,
+                            plaquantidadeparcela:plaquantidadeparcela,
+                        };
+
+                        // Enviar solicitação AJAX para validar no servidor
+                        $.ajax({
+                            url: '/lojista/planos/validaAlteracaoPlano',
+                            type: 'POST',
+                            data: data,
+                            success: function (response) {
+                                if (response.isValid) {
+                                    $('#formAlterarPlano').submit();
+                                } else {
+                                    // Se houver erros, exiba as mensagens
+                                    M.toast({ html: 'Por favor, corrija os erros no formulário antes de prosseguir.', classes: 'red' });
+                                    
+                                    // Adicione mensagens de erro aos campos
+                                    $.each(response.errors, function (key, value) {
+                                        $('#modalAlterarPlano_' + placodigo+' #' + key).after('<span class="error-message" style="color:red;">' + value[0] + '</span>');
+                                    });
+                                }
+                            },
+                            error: function (error) {
+                                M.toast({ html: 'Por favor, corrija os erros no formulário antes de prosseguir.', classes: 'red' });
+                                    
+                                    // Adicione mensagens de erro aos campos
+                                    $.each(error.responseJSON.errors, function (key, value) {
+                                        $('#modalAlterarPlano_' + placodigo+' #' + key).after('<span class="error-message" style="color:red;">' + value[0] + '</span>');
+                                        $('label[for="'+key+'"]').addClass('active');
+                                    });
+                                // Lidar com erros aqui
+                            }
+                        });
+                    
+                    });
+
+                    $('.seuBotaoDeExclusao').click(function() {
+                        var placodigo = $(this).data('plano-id'); 
+                        var modalExcluirPlano = $('#modalExcluirPlano_' + placodigo).modal();
+                        modalExcluirPlano.modal('open');
                     });
 
                     Inputmask("currency", {

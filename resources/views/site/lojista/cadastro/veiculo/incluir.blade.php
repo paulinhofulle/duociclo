@@ -63,3 +63,63 @@
         </form>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+            $('#btnEnviarFormIncluir').click(function(event){
+                    event.preventDefault(); // Evite o envio do formulário padrão
+
+                    // Limpar mensagens de erro existentes
+                    $('.error-message').remove();
+
+                    // Realize as validações aqui
+                    var veidescricao = $('#modalIncluirVeiculo #veidescricao').val().trim();
+                    var veicor = $('#modalIncluirVeiculo #veicor').val().trim();
+                    var veiano = $('#modalIncluirVeiculo #veiano').val().trim();
+                    var marcodigo = $('#modalIncluirVeiculo select[name="marcodigo"]').val().trim();
+                    
+                    var data = {
+                        veidescricao: veidescricao,
+                        veicor: veicor,
+                        veiano: veiano,
+                        marcodigo:marcodigo,
+                    };
+
+                    // Enviar solicitação AJAX para validar no servidor
+                    $.ajax({
+                        url: '/lojista/veiculos/validaInclusaoVeiculo',
+                        type: 'POST',
+                        data: data,
+                        success: function (response) {
+                            if (response.isValid) {
+                                $('#formIncluirVeiculo').submit();
+                            } else {
+                                // Se houver erros, exiba as mensagens
+                                M.toast({ html: 'Por favor, corrija os erros no formulário antes de prosseguir.', classes: 'red' });
+                                
+                                // Adicione mensagens de erro aos campos
+                                $.each(response.errors, function (key, value) {
+                                    $('#modalIncluirVeiculo #' + key).after('<span class="error-message" style="color:red;">' + value[0] + '</span>');
+                                });
+                            }
+                        },
+                        error: function (error) {
+                            M.toast({ html: 'Por favor, corrija os erros no formulário antes de prosseguir.', classes: 'red' });
+                                
+                                // Adicione mensagens de erro aos campos
+                                $.each(error.responseJSON.errors, function (key, value) {
+                                    $('#modalIncluirVeiculo #' + key).after('<span class="error-message" style="color:red;">' + value[0] + '</span>');
+                                    $('label[for="'+key+'"]').addClass('active');
+                                });
+                            // Lidar com erros aqui
+                        }
+                    });
+                });
+    });
+    </script>    

@@ -28,6 +28,21 @@ class PlanoController extends Controller {
         return view('site/lojista/cadastro/plano/consulta', compact('planos', 'totalPlanos', 'search'));
     }
 
+    public function validaInclusaoPlano(Request $request){
+        $bValido = $request->validate([
+            'pladescricao'          => ['required'],
+            'plaquantidadedias'     => ['required'],
+            'plavalor'              => ['required'],
+            'plaquantidadeparcela' => ['required'],
+        ],[
+            'pladescricao.required'          => 'O campo Descrição é obrigatório!',
+            'plaquantidadedias.required'     => 'O campo Quantidade de Dias é obrigatório!',
+            'plavalor.required'              => 'O campo Valor é obrigatório!',
+            'plaquantidadeparcela.required' => 'O campo Quantidade de Parcelas é obrigatório!',
+        ]);
+        return response()->json(['isValid' => $bValido, 'errors' => $bValido ? [] : $validator->errors()->toArray()]);
+    }
+
     public function incluirPlano(Request $request){
         $aPlanoData = $request->all();
         $aPlanoData['plavalor']  = str_replace(',', '.', $request->input('plavalor'));
@@ -49,6 +64,21 @@ class PlanoController extends Controller {
         return redirect()->route('consultaPlano')->with('sucesso', 'Plano excluído com sucesso!');
     }
 
+    public function validaAlteracaoPlano(Request $request){
+        $bValido = $request->validate([
+            'pladescricao'          => ['required'],
+            'plaquantidadedias'     => ['required'],
+            'plavalor'              => ['required'],
+            'plaquantidadeparcela' => ['required'],
+        ],[
+            'pladescricao.required'          => 'O campo Descrição é obrigatório!',
+            'plaquantidadedias.required'     => 'O campo Quantidade de Dias é obrigatório!',
+            'plavalor.required'              => 'O campo Valor é obrigatório!',
+            'plaquantidadeparcela.required' => 'O campo Quantidade de Parcelas é obrigatório!',
+        ]);
+        return response()->json(['isValid' => $bValido, 'errors' => $bValido ? [] : $validator->errors()->toArray()]);
+    }
+
     public function alterarPlano(Request $request, $id){
         $plano = Plano::where('placodigo', $id)
                       ->where('lojcodigo', Auth::user()->lojcodigo)
@@ -57,10 +87,8 @@ class PlanoController extends Controller {
             \Log::error("Plano não encontrado com ID: $id");
             return redirect()->route('consultaPlano')->with('erro', 'Plano não encontrado.');
         }
-            
+        
         $plano->pladescricao = $request->input('pladescricao');
-        $plano->plaquantidadedias = $request->input('plaquantidadedias');
-        $plano->plavalor = str_replace(',', '.', $request->input('plavalor'));
         $plano->save();
         return redirect()->route('consultaPlano')->with('sucesso', 'Plano alterado com sucesso.');
     }

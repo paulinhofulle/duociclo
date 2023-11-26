@@ -84,7 +84,6 @@
                 $(document).ready(function() {
                     //INCLUIR
                     var modalIncluirMarca = $('#modalIncluirMarca').modal();
-                    modalIncluirMarca[0].style.maxHeight = '100%';
                     $("#openModalBtnIncluir").click(function() {
                         modalIncluirMarca.modal("open");
                         $('.error-message').remove();
@@ -137,7 +136,6 @@
                         var marcodigo = $(this).data('marca-id'); // Obtém o ID da loja do atributo data-loja-id
                         var marca = encontrarMarcaPorId(marcodigo);
                         var modalAlterarMarca = $('#modalAlterarMarca_' + marcodigo).modal();
-                        modalAlterarMarca[0].style.maxHeight = '100%';
                         preencherFormularioDeAlteracao(marca);
                         modalAlterarMarca.modal('open');
                         $('.error-message').remove();

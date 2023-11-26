@@ -38,6 +38,24 @@ class VeiculoController extends Controller{
         return view('site/lojista/cadastro/veiculo/consulta', compact('veiculos', 'totalVeiculos', 'search', 'marcas', 'situacoes'));
     }
 
+    public function validaInclusaoVeiculo(Request $request){
+        $bValido = $request->validate([
+            'veidescricao' => ['required'],
+            'veicor'       => ['required'],
+            'veiano'       => ['required', 'min:4', 'max:4'],
+            'marcodigo'    => ['required']
+        ],[
+            'veidescricao.required' => 'O campo Descrição é obrigatório!',
+            'veicor.required'       => 'O campo Cor é obrigatório!',
+            'veiano.required'       => 'O campo Ano é obrigatório!',
+            'veiano.min'            => 'O campo Ano deve ter 4 digítos!',
+            'veiano.max'            => 'O campo Ano deve ter 4 digítos!',
+            'marcodigo'             => 'O campo Marca é obrigatório!'
+        ]);
+
+        return response()->json(['isValid' => $bValido, 'errors' => $bValido ? [] : $validator->errors()->toArray()]);
+    }
+
     public function incluirVeiculo(Request $request) {
         $aVeiculoData = $request->all();
         
@@ -69,6 +87,24 @@ class VeiculoController extends Controller{
         return redirect()->route('consultaVeiculo')->with('sucesso', 'Veículo excluído com sucesso!');
     }
 
+    public function validaAlteracaoVeiculo(Request $request){
+        $bValido = $request->validate([
+            'veidescricao' => ['required'],
+            'veicor'       => ['required'],
+            'veiano'       => ['required', 'min:4', 'max:4'],
+            'marcodigo'    => ['required']
+        ],[
+            'veidescricao.required' => 'O campo Descrição é obrigatório!',
+            'veicor.required'       => 'O campo Cor é obrigatório!',
+            'veiano.required'       => 'O campo Ano é obrigatório!',
+            'veiano.min'            => 'O campo Ano deve ter 4 digítos!',
+            'veiano.max'            => 'O campo Ano deve ter 4 digítos!',
+            'marcodigo'             => 'O campo Marca é obrigatório!'
+        ]);
+
+        return response()->json(['isValid' => $bValido, 'errors' => $bValido ? [] : $validator->errors()->toArray()]);
+    }
+
     public function alterarVeiculo(Request $request, $id){
         $veiculo = Veiculo::where('veicodigo', $id)
                       ->where('lojcodigo', Auth::user()->lojcodigo)
@@ -78,13 +114,20 @@ class VeiculoController extends Controller{
             return redirect()->route('consultaVeiculo')->with('erro', 'Veículo não encontrado.');
         }
             
-        $veiculo->veikm = $request->input('veikm');
+        if ($request->hasFile('veiimagem') && $request->file('veiimagem')->isValid()) {
+            $requestImagem = $request->veiimagem;
+            $extension = $requestImagem->extension();
+
+            $imagemName = md5($requestImagem->getClientOriginalName() . strtotime("now"). "." . $extension);
+            $request->veiimagem->move(public_path('img/veiculos'), $imagemName);
+            $veiculo->veiimagem = $imagemName;
+        }
+        $veiculo->veiquilometragem = $request->input('veiquilometragem');
         $veiculo->veiplaca = $request->input('veiplaca');
         $veiculo->veicor = $request->input('veicor');
         $veiculo->veidescricao = $request->input('veidescricao');
-        //if ($request->hasFile('veiimagem')) {
-        //    $veiculo->veiimagem = $request->file('veiimagem')->store('veiculos', 'public');
-       // }
+        $veiculo->marcodigo = $request->input('marcodigo');
+        $veiculo->veiano = $request->input('veiano');
         $veiculo->save();
         return redirect()->route('consultaVeiculo')->with('sucesso', 'Veiculo alterado com sucesso.');
     }

@@ -1,4 +1,4 @@
-<div id="modalIncluirMarca" class="modal" style="max-height: 100%">
+<div id="modalIncluirMarca" class="modal">
     <div class="modal-content">
         <form id="formIncluirMarca" action="{{ route('incluirMarca') }}" method="POST">
             @csrf

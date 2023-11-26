@@ -1,4 +1,4 @@
-<div id="modalAlterarMarca_{{$marca->marcodigo}}" class="modal" style="max-height: 100%">
+<div id="modalAlterarMarca_{{$marca->marcodigo}}" class="modal">
     <div class="modal-content">
         <!-- Formulário de edição da loja aqui -->
         <form id="formAlterarMarca" action="{{ route('alterarMarca', ['id' => old('marcodigo', $marca->marcodigo)]) }}" method="POST">

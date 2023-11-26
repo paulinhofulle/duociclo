@@ -64,6 +64,7 @@
                   @foreach ($veiculos as $veiculo)
                     @include('site/lojista/cadastro/veiculo/visualizar', ['veiculo' => $veiculo])
                     @include('site/lojista/cadastro/veiculo/alterar', ['veiculo' => $veiculo])
+                    @include('site/lojista/cadastro/veiculo/excluir', ['veiculo' => $veiculo])
                     <tr>
                         <td><img src="/img/veiculos/{{$veiculo->veiimagem}}"></td>
                         <td>{{$veiculo->veicodigo}}</td>
@@ -77,12 +78,7 @@
                             <button class="btn-floating halfway-fab waves-effect waves-light orange secondary-content seuBotaoDeAlteracao" data-veiculo-id="{{ $veiculo->veicodigo }}" style="position: relative; bottom:0px;" title="Alterar">
                                 <i class="material-icons">build</i>
                             </button>
-                            <form action="{{ route('excluirVeiculo', ['id' => $veiculo->veicodigo]) }}" method="POST" enctype="multipart/form-data">
-                                @csrf
-                                @method('DELETE')
-                                <input type="hidden" name="id" value="{{ $veiculo->veicodigo }}">
-                                <button class="btn-floating halfway-fab waves-effect waves-light red secondary-content" title="Excluir" style="position: relative; bottom:0px;"><i class="material-icons">delete</i></button>
-                            </form>
+                            <button class="btn-floating halfway-fab waves-effect waves-light red secondary-content btn modal-trigger seuBotaoDeExclusao" title="Excluir" style="position: relative; bottom:0px;" data-veiculo-id="{{ $veiculo->veicodigo }}"><i class="material-icons">delete</i></button>
                             <button class="btn-floating halfway-fab waves-effect waves-light blue secondary-content btn modal-trigger seuBotaoDeVisualizacao" title="Visualizar" style="position: relative; bottom:0px;" data-veiculo-id="{{ $veiculo->veicodigo }}">
                                 <i class="material-icons">remove_red_eye</i>
                             </button>
@@ -101,12 +97,9 @@
                 $(document).ready(function() {
                     //INCLUIR
                     var modalIncluirVeiculo = $('#modalIncluirVeiculo').modal();
-                    modalIncluirVeiculo[0].style.maxHeight = '80%';
                     $("#openModalBtnIncluir").click(function() {
                         modalIncluirVeiculo.modal("open");
                         $('.error-message').remove();
-                        limparCamposModalIncluir();
-                        limparClassesCampos();
                     });
         
                     modalIncluirVeiculo.modal({
@@ -114,11 +107,11 @@
                     });
                     
                     function limparCamposModalIncluir() {
-                        $('#marnome').val('');
+                        $('select[name="marcodigo"]').val('');
                     };
         
                     function limparClassesCampos() {
-                        $('#marnome')[0].className = 'validate';
+                        $('select[name="marcodigo"]')[0].className = 'validate';
                     };
                     
                     $("#btnFecharIncluir").click(function() {
@@ -127,7 +120,6 @@
                     
                     //VISUALIZAR
                     var modalVisualizarVeiculo = $('#modalVisualizarVeiculo').modal();
-                    modalVisualizarVeiculo[0].style.maxHeight = '80%';
                     $('.seuBotaoDeVisualizacao').click(function() {
                         var veicodigo = $(this).data('veiculo-id'); // Obtém o ID da loja do atributo data-loja-id
                         var veiculo = encontrarVeiculoPorId(veicodigo); // Encontra a loja correspondente no array de lojas
@@ -148,9 +140,15 @@
                     };
 
                     function preencherModalVisualizar(veiculo) {
+                        var modalContent = $('#modalVisualizarVeiculo .modal-content');
+    
+                        // Limpar conteúdo anterior
+                        modalContent.empty();
+
                         var marca = encontrarMarcaPorId(veiculo.marcodigo);
                         var sDescricaoMarca = 'Sem marca vinculada!';
                         $('#modalVisualizarVeiculo .modal-content').append('<h4 class="center">Visualizar</h4>');
+                        $('#modalVisualizarVeiculo .modal-content').append('<img src="/img/veiculos/' + veiculo.veiimagem + '" alt="Imagem do Veículo" class="responsive-img">');
                         $('#modalVisualizarVeiculo .modal-content').append('<p><b>Descrição:</b> ' + veiculo.veidescricao + '</p>');
                         $('#modalVisualizarVeiculo .modal-content').append('<p><b>Cor:</b> ' + veiculo.veicor + '</p>');
                         $('#modalVisualizarVeiculo .modal-content').append('<p><b>Ano:</b> ' + veiculo.veiano + '</p>');
@@ -167,7 +165,6 @@
                         var veicodigo = $(this).data('veiculo-id'); // Obtém o ID da loja do atributo data-loja-id
                         var veiculo = encontrarVeiculoPorId(veicodigo);
                         var modalAlterarVeiculo = $('#modalAlterarVeiculo_' + veicodigo).modal();
-                        modalAlterarVeiculo[0].style.maxHeight = '80%';
                         preencherFormularioDeAlteracao(veiculo);
                         modalAlterarVeiculo.modal('open');
                         $('.error-message').remove();
@@ -175,16 +172,74 @@
                     });
 
                     function preencherFormularioDeAlteracao(veiculo) {
-                        $('#modalAlterarVeiculo #veicodigo').val(veiculo.veicodigo);
-                        $('#modalAlterarVeiculo #veiquilometragem').val(veiculo.veiquilometragem);
-                        $('#modalAlterarVeiculo #veiplaca').val(veiculo.veiplaca);
-                        $('#modalAlterarVeiculo #veicor').val(veiculo.veicor);
-                        $('#modalAlterarVeiculo #veidescricao').val(veiculo.veidescricao);
+                        var veicodigo = veiculo.veicodigo;
+                        $('#modalAlterarVeiculo_' + veicodigo+' #veicodigo').val(veiculo.veicodigo);
+                        $('#modalAlterarVeiculo_' + veicodigo+' #veiquilometragem').val(veiculo.veiquilometragem);
+                        $('#modalAlterarVeiculo_' + veicodigo+' #veiplaca').val(veiculo.veiplaca);
+                        $('#modalAlterarVeiculo_' + veicodigo+' #veicor').val(veiculo.veicor);
+                        $('#modalAlterarVeiculo_' + veicodigo+' #veidescricao').val(veiculo.veidescricao);
                     };
 
+                    $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
                     $('#btnEnviarFormAlteracao').click(function() {
-                        event.preventDefault();
-                        $('#formAlterarVeiculo').submit();
+                        event.preventDefault(); // Evite o envio do formulário padrão
+                        var veicodigo = +$('#veicodigo').val(); 
+                    // Limpar mensagens de erro existentes
+                    $('.error-message').remove();
+
+                    // Realize as validações aqui
+                    var veidescricao = $('#modalAlterarVeiculo_' + veicodigo+' #veidescricao').val().trim();
+                    var veicor = $('#modalAlterarVeiculo_' + veicodigo+' #veicor').val().trim();
+                    var veiano = $('#modalAlterarVeiculo_' + veicodigo+' #veiano').val().trim();
+                    var marcodigo = $('#modalAlterarVeiculo_' + veicodigo+' select[name="marcodigo"]').val().trim();
+                    
+                    var data = {
+                        veidescricao: veidescricao,
+                        veicor: veicor,
+                        veiano: veiano,
+                        marcodigo:marcodigo,
+                    };
+
+                    // Enviar solicitação AJAX para validar no servidor
+                    $.ajax({
+                        url: '/lojista/veiculos/validaAlteracaoVeiculo',
+                        type: 'POST',
+                        data: data,
+                        success: function (response) {
+                            if (response.isValid) {
+                                $('#formAlterarVeiculo').submit();
+                            } else {
+                                // Se houver erros, exiba as mensagens
+                                M.toast({ html: 'Por favor, corrija os erros no formulário antes de prosseguir.', classes: 'red' });
+                                
+                                // Adicione mensagens de erro aos campos
+                                $.each(response.errors, function (key, value) {
+                                    $('#modalAlterarVeiculo_' + veicodigo+' #' + key).after('<span class="error-message" style="color:red;">' + value[0] + '</span>');
+                                });
+                            }
+                        },
+                        error: function (error) {
+                            M.toast({ html: 'Por favor, corrija os erros no formulário antes de prosseguir.', classes: 'red' });
+                                
+                                // Adicione mensagens de erro aos campos
+                                $.each(error.responseJSON.errors, function (key, value) {
+                                    $('#modalAlterarVeiculo_' + veicodigo+' #' + key).after('<span class="error-message" style="color:red;">' + value[0] + '</span>');
+                                    $('label[for="'+key+'"]').addClass('active');
+                                });
+                            // Lidar com erros aqui
+                        }
+                    });
+                    });
+
+                    $('.seuBotaoDeExclusao').click(function() {
+                        var veicodigo = $(this).data('veiculo-id'); 
+                        var modalExcluirVeiculo = $('#modalExcluirVeiculo_' + veicodigo).modal();
+                        modalExcluirVeiculo.modal('open');
                     });
 
                 });

@@ -61,11 +61,15 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/lojista/veiculos/incluir', [VeiculoController::class, 'incluirVeiculo'])->name('incluirVeiculo');
     Route::delete('/lojista/veiculos/excluir/{id}', [VeiculoController::class, 'excluirVeiculo'])->name('excluirVeiculo');
     Route::put('/lojista/veiculos/alterar/{id}', [VeiculoController::class, 'alterarVeiculo'])->name('alterarVeiculo');
+    Route::post('/lojista/veiculos/validaInclusaoVeiculo', [VeiculoController::class, 'validaInclusaoVeiculo']);
+    Route::post('/lojista/veiculos/validaAlteracaoVeiculo', [VeiculoController::class, 'validaAlteracaoVeiculo']);
     //plano
     Route::get('/lojista/planos', [PlanoController::class, 'consultaPlano'])->name('consultaPlano');
     Route::post('/lojista/planos/incluir', [PlanoController::class, 'incluirPlano'])->name('incluirPlano');
     Route::delete('/lojista/planos/excluir/{id}', [PlanoController::class, 'excluirPlano'])->name('excluirPlano');
     Route::put('/lojista/planos/alterar/{id}', [PlanoController::class, 'alterarPlano'])->name('alterarPlano');
+    Route::post('/lojista/planos/validaInclusaoPlano', [PlanoController::class, 'validaInclusaoPlano']);
+    Route::post('/lojista/planos/validaAlteracaoPlano', [PlanoController::class, 'validaAlteracaoPlano']);
     //aluguel
     Route::get('/lojista/alugueis', [AluguelController::class, 'consultaAluguelLojista'])->name('consultaAluguelLojista');
     //manutencao
