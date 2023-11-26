@@ -127,47 +127,6 @@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('#lojcep').on('blur', function() {
-                var cep = $(this).val();
-
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-
-                $.ajax({
-                    url: '/obter-endereco-por-cep',
-                    method: 'POST',
-                    data: { cep: cep },
-                    success: function (response) {
-                        if (response.data.erro !== true) {
-                            $('#lojrua_aux').val(response.data.logradouro).addClass('filled').prop('disabled', true);
-                            $('#lojbairro_aux').val(response.data.bairro).addClass('filled').prop('disabled', true);
-                            $('#lojcidade_aux').val(response.data.localidade).addClass('filled').prop('disabled', true);
-                            $('select[name="lojestado_aux"]').val(response.data.uf).addClass('filled').prop('disabled', true);
-                        
-                            $('label[for="lojrua"]').addClass('active');
-                            $('label[for="lojbairro"]').addClass('active');
-                            $('label[for="lojcidade"]').addClass('active');
-
-                        } else{
-                            $('#lojrua_aux').val('').removeClass('filled').prop('disabled', false);
-                            $('#lojbairro_aux').val('').removeClass('filled').prop('disabled', false);
-                            $('#lojcidade_aux').val('').removeClass('filled').prop('disabled', false);
-                            $('select[name="lojestado_aux"]').val('').removeClass('filled').prop('disabled', false);
-                        
-                            $('label[for="lojrua"]').addClass('active');
-                            $('label[for="lojbairro"]').addClass('active');
-                            $('label[for="lojcidade"]').addClass('active');
-                        
-                        }
-                    },
-                    error: function (error) {
-                        console.error(error);
-                        // Lidar com erros aqui
-                    }
-                });
-            });
+        
         });
     </script>    

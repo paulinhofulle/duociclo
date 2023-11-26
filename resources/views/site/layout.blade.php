@@ -89,12 +89,14 @@
         function hideMenuOptionsIfNeeded(title, options) {
           var titleRect = title.getBoundingClientRect();
           var optionsRect = options.getBoundingClientRect();
+          debugger;
           if (titleRect.bottom < optionsRect.top) {
             options.style.display = 'none';
           } else {
             options.style.display = 'block';
           }
         }
+        
       });
   </script>
 </body>

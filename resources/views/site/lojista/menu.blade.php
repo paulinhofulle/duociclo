@@ -2,52 +2,25 @@
 @section('title', 'Duociclo')
 
 @section('opcoesMenu')
-
-    <link rel="stylesheet" href="{{asset('css/style.css')}}">
-    <ul id="slide-out" class="sidenav">
-        <ul id="dropdownCadastro" class="dropdown-content">
-            <li><a href="{{route('consultaMarca')}}" style="color:#ff9800;">Marcas</a></li>
-            <li><a href="{{route('consultaVeiculo')}}" style="color:#ff9800;">Veículos</a></li>
-            <li><a href="{{route('consultaPlano')}}" style="color:#ff9800;">Planos</a></li>
-        </ul>
-    
-        <ul id="dropdownGestao" class="dropdown-content">
-            <li><a href="{{route('consultaManutencao')}}" style="color:#ff9800;">Manutenções</a></li>
-            <li><a href="{{route('consultaReservaLojista')}}" style="color:#ff9800;">Reservas</a></li>
-            <li><a href="{{route('consultaAluguelLojista')}}" style="color:#ff9800;">Aluguéis</a></li>
-        </ul>
-    
-        <li><a href="{{ url('/lojista') }}" style="text-decoration:none;">Home</a></li>
-        <ul id="nav-mobile2" class="right">
-            <li><a href="#" class="dropdown-trigger" data-target="dropdownGestao">Gestão<i class="material-icons right">expand_more</i></a></li>
-        </ul>
-        <ul id="nav-mobile2" class="right">
-            <li><a href="#" class="dropdown-trigger" data-target="dropdownCadastro">Cadastros<i class="material-icons right">expand_more</i></a></li>
-        </ul>
-    </ul>
-
-    <li>
-        <a href="#" data-target="slide-out" class="sidenav-trigger" style="text-decoration:none;"><i class="material-icons">menu</i></a>
-    </li>
     <link rel="stylesheet" href="{{asset('css/style.css')}}">
     <ul id="dropdownCadastro" class="dropdown-content">
-        <li class="hide-on-small-only"><a href="{{route('consultaMarca')}}" style="color:#ff9800;">Marcas</a></li>
-        <li class="hide-on-small-only"><a href="{{route('consultaVeiculo')}}" style="color:#ff9800;">Veículos</a></li>
-        <li class="hide-on-small-only"><a href="{{route('consultaPlano')}}" style="color:#ff9800;">Planos</a></li>
+        <li ><a href="{{route('consultaMarca')}}" style="color:#ff9800;">Marcas</a></li>
+        <li ><a href="{{route('consultaVeiculo')}}" style="color:#ff9800;">Veículos</a></li>
+        <li ><a href="{{route('consultaPlano')}}" style="color:#ff9800;">Planos</a></li>
     </ul>
 
     <ul id="dropdownGestao" class="dropdown-content">
-        <li class="hide-on-small-only"><a href="{{route('consultaManutencao')}}" style="color:#ff9800;">Manutenções</a></li>
-        <li class="hide-on-small-only"><a href="{{route('consultaReservaLojista')}}" style="color:#ff9800;">Reservas</a></li>
-        <li class="hide-on-small-only"><a href="{{route('consultaAluguelLojista')}}" style="color:#ff9800;">Aluguéis</a></li>
+        <li ><a href="{{route('consultaManutencao')}}" style="color:#ff9800;">Manutenções</a></li>
+        <li ><a href="{{route('consultaReservaLojista')}}" style="color:#ff9800;">Reservas</a></li>
+        <li ><a href="{{route('consultaAluguelLojista')}}" style="color:#ff9800;">Aluguéis</a></li>
     </ul>
 
-    <li class="hide-on-small-only"><a href="{{ url('/lojista') }}" style="text-decoration:none;">Home</a></li>
+    <li ><a href="{{ url('/lojista') }}" style="text-decoration:none;">Home</a></li>
     <ul id="nav-mobile2" class="right">
-        <li class="hide-on-small-only"><a href="#" class="dropdown-trigger" data-target="dropdownGestao">Gestão<i class="material-icons right">expand_more</i></a></li>
+        <li ><a href="#" class="dropdown-trigger" data-target="dropdownGestao">Gestão<i class="material-icons right">expand_more</i></a></li>
     </ul>
     <ul id="nav-mobile2" class="right">
-        <li class="hide-on-small-only"><a href="#" class="dropdown-trigger" data-target="dropdownCadastro">Cadastros<i class="material-icons right">expand_more</i></a></li>
+        <li ><a href="#" class="dropdown-trigger" data-target="dropdownCadastro">Cadastros<i class="material-icons right">expand_more</i></a></li>
     </ul>
 @endsection
 

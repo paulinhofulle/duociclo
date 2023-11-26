@@ -206,7 +206,6 @@
                 //VISUALIZAR
                 $('.seuBotaoDeVisualizacao').click(function() {
                     var modalVisualizarLoja = $('#modalVisualizarLoja').modal();
-                    modalVisualizarLoja[0].style.maxHeight = '100%';
                     var lojcodigo = $(this).data('loja-id'); // Obtém o ID da loja do atributo data-loja-id
                     var loja = encontrarLojaPorId(lojcodigo); // Encontra a loja correspondente no array de lojas
                     preencherModalVisualizar(loja); // Preenche o modal de visualização com os dados da loja
@@ -303,6 +302,14 @@
                             }
                         });
                 };
+
+                $('[id^="lojcep"]').on('blur', function() {
+                    var cep = $(this).val();
+                    var lojcodigo = $('#lojcodigo').val(); 
+                    var loja = encontrarLojaPorId(+lojcodigo);
+
+                    carregaCep(loja);
+                });
 
                 $.ajaxSetup({
                         headers: {

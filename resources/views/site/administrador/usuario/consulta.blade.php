@@ -184,7 +184,6 @@
                 };
 
                 $('.seuBotaoDeExclusao').click(function() {
-                    debugger;
                     var usucodigo = $(this).data('usuario-id'); 
                     var modalExcluirUsuario = $('#modalExcluirUsuario_' + usucodigo).modal();
                     modalExcluirUsuario.modal('open');

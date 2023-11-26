@@ -41,9 +41,15 @@ class VeiculoController extends Controller{
     public function incluirVeiculo(Request $request) {
         $aVeiculoData = $request->all();
         
-        //if ($request->hasFile('veiimagem')) {
-        //    $aVeiculoData['veiimagem'] = $request->file('veiimagem')->store('veiculos', 'public');
-       // }
+        if ($request->hasFile('veiimagem') && $request->file('veiimagem')->isValid()) {
+            $requestImagem = $request->veiimagem;
+            $extension = $requestImagem->extension();
+
+            $imagemName = md5($requestImagem->getClientOriginalName() . strtotime("now"). "." . $extension);
+            $request->veiimagem->move(public_path('img/veiculos'), $imagemName);
+            $aVeiculoData['veiimagem'] = $imagemName;
+        }
+
         $aVeiculoData['veisituacao'] = 1;
         $aVeiculoData['lojcodigo']   = Auth::user()->lojcodigo;
         

@@ -1,4 +1,4 @@
-<div id="modalExcluirUsuario_{{$usuario->id}}" class="modal" style="max-height: 100%">
+<div id="modalExcluirUsuario_{{$usuario->id}}" class="modal">
     <div class="modal-content">
         <h4 class="center">Excluir</h4>
         <p style="font-size: larger"><i>Tem certeza que deseja excluir o registro?</i></p>

@@ -58,6 +58,7 @@
                   @foreach ($marcas as $marca)
                     @include('site/lojista/cadastro/marca/visualizar', ['marca' => $marca])
                     @include('site/lojista/cadastro/marca/alterar', ['marca' => $marca])
+                    @include('site/lojista/cadastro/marca/excluir', ['marca' => $marca])
                     <tr>
                         <td>{{$marca->marcodigo}}</td>
                         <td>{{$marca->marnome}}</td>
@@ -65,13 +66,8 @@
                             <button class="btn-floating halfway-fab waves-effect waves-light orange secondary-content seuBotaoDeAlteracao" data-marca-id="{{ $marca->marcodigo }}" style="position: relative; bottom:0px;" title="Alterar">
                                 <i class="material-icons">build</i>
                             </button>
-                            <form action="{{ route('excluirMarca', ['id' => $marca->marcodigo]) }}" method="POST" enctype="multipart/form-data">
-                                @csrf
-                                @method('DELETE')
-                                <input type="hidden" name="id" value="{{ $marca->marcodigo }}">
-                                <button class="btn-floating halfway-fab waves-effect waves-light red secondary-content" title="Excluir" style="position: relative; bottom:0px;"><i class="material-icons">delete</i></button>
-                            </form>
-                            <button class="btn-floating halfway-fab waves-effect waves-light blue secondary-content btn modal-trigger seuBotaoDeVisualizacao" title="Visualizar" style="position: relative; bottom:0px;" data-marca-id="{{ $marca->marcodigo }}">
+                            <button class="btn-floating halfway-fab waves-effect waves-light red secondary-content btn modal-trigger seuBotaoDeExclusao" title="Excluir" style="position: relative; bottom:0px;" data-marca-id="{{ $marca->marcodigo }}"><i class="material-icons">delete</i></button>
+                            <button class="btn-floating halfway-fab waves-effect waves-light blue secondary-content seuBotaoDeVisualizacao" title="Visualizar" style="position: relative; bottom:0px;" data-marca-id="{{ $marca->marcodigo }}">
                                 <i class="material-icons">remove_red_eye</i>
                             </button>
                         </td>
@@ -113,11 +109,10 @@
                     });
                     
                     //VISUALIZAR
-                    var modalVisualizarMarca = $('#modalVisualizarMarca').modal();
-                    modalVisualizarMarca[0].style.maxHeight = '100%';
                     $('.seuBotaoDeVisualizacao').click(function() {
+                        var modalVisualizarMarca = $('#modalVisualizarMarca').modal();
                         var marcodigo = $(this).data('marca-id'); // Obtém o ID da loja do atributo data-loja-id
-                        var marca = encontrarMarcaPorId(marcodigo); // Encontra a loja correspondente no array de lojas
+                        var marca = encontrarMarcaPorId(+marcodigo); // Encontra a loja correspondente no array de lojas
                         preencherModalVisualizar(marca); // Preenche o modal de visualização com os dados da loja
                         modalVisualizarMarca.modal('open');
                     });
@@ -129,6 +124,10 @@
                     };
 
                     function preencherModalVisualizar(marca) {
+                        var modalContent = $('#modalVisualizarMarca .modal-content');
+    
+                        // Limpar conteúdo anterior
+                        modalContent.empty();
                         $('#modalVisualizarMarca .modal-content').append('<h4 class="center">Visualizar</h4>');
                         $('#modalVisualizarMarca .modal-content').append('<p><b>Nome:</b> ' + marca.marnome + '</p>');
                     };
@@ -155,7 +154,27 @@
                         $('#formAlterarMarca').submit();
                     });
 
+                    $('.seuBotaoDeExclusao').click(function() {
+                    var marcodigo = $(this).data('marca-id'); 
+                    var modalExcluirMarca = $('#modalExcluirMarca_' + marcodigo).modal();
+                    modalExcluirMarca.modal('open');
                 });
+
+                document.addEventListener('DOMContentLoaded', function() {
+                    // Inicialize os modais
+                    var elems = document.querySelectorAll('.modal');
+                    var instances = M.Modal.init(elems, options);
+
+                    // Inicialize os seletores
+                    var selectElems = document.querySelectorAll('select');
+                    var selectInstances = M.FormSelect.init(selectElems);
+                });
+                // Or with jQuery
+
+                $(document).ready(function(){
+                    $('select').formSelect();
+                });
+            });
         
             </script>
             <div class="row center">

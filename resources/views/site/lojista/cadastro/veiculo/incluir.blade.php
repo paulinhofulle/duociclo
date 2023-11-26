@@ -1,6 +1,6 @@
 <div id="modalIncluirVeiculo" class="modal" style="max-height: 100%">
     <div class="modal-content">
-        <form id="formIncluirVeiculo" action="{{ route('incluirVeiculo') }}" method="POST">
+        <form id="formIncluirVeiculo" action="{{ route('incluirVeiculo') }}" enctype="multipart/form-data" method="POST">
             @csrf
             <h4 class="center">Incluir</h4>
             <div class="file-field input-field">

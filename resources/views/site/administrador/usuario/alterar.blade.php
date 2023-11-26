@@ -321,37 +321,11 @@
                 });
 
 
-        $('#usucep').on('blur', function() {
-            var cep = $(this).val();
-
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
-            $.ajax({
-                url: '/obter-endereco-por-cep',
-                method: 'POST',
-                data: { cep: cep },
-                success: function (response) {
-                    if (response.data) {
-                        $('#usurua').val(response.data.logradouro).addClass('filled').prop('readonly', true).css({'color': 'rgba(0,0,0,0.42)','border-bottom': '1px dotted rgba(0,0,0,0.42)'});
-                        $('#usubairro').val(response.data.bairro).addClass('filled').prop('readonly', true).css({'color': 'rgba(0,0,0,0.42)','border-bottom': '1px dotted rgba(0,0,0,0.42)'});
-                        $('#usucidade').val(response.data.localidade).addClass('filled').prop('readonly', true).css({'color': 'rgba(0,0,0,0.42)','border-bottom': '1px dotted rgba(0,0,0,0.42)'});
-                        $('select[name="usuestado"]').val(response.data.uf).addClass('filled').prop('readonly', true).css({'color': 'rgba(0,0,0,0.42)','border-bottom': '1px dotted rgba(0,0,0,0.42)'});
-                    } else{
-                        $('#usurua').val('').removeClass('filled').prop('disabled', false);
-                        $('#usubairro').val('').removeClass('filled').prop('disabled', false);
-                        $('#usucidade').val('').removeClass('filled').prop('disabled', false);
-                        $('select[name="usuestado"]').val('').removeClass('filled').prop('disabled', false);
-                    }
-                },
-                error: function (error) {
-                    console.error(error);
-                    // Lidar com erros aqui
-                }
-            });
+                $('[id^="usucep"]').on('blur', function() {
+                    var cep = $(this).val();
+                    var usucodigo = $('#id').val(); 
+                    var usuario = encontrarUsuarioPorId(+usucodigo);
+                    carregaCep(usuario);
+                });
         });
-    });
     </script>    

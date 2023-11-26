@@ -65,7 +65,7 @@
                     @include('site/lojista/cadastro/veiculo/visualizar', ['veiculo' => $veiculo])
                     @include('site/lojista/cadastro/veiculo/alterar', ['veiculo' => $veiculo])
                     <tr>
-                        <td><img src="{{ asset('imagens/download.png') }}"></td>
+                        <td><img src="/img/veiculos/{{$veiculo->veiimagem}}"></td>
                         <td>{{$veiculo->veicodigo}}</td>
                         <td>{{$veiculo->veidescricao}}</td>
                         <td>{{$veiculo->veicor}}</td>

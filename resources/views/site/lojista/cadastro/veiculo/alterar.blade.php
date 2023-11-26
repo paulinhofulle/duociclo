@@ -9,7 +9,7 @@
             <div class="file-field input-field">
                 <div class="btn" style="background-color: #ff9800;">
                     <span>Imagem</span>
-                    <input name="veiimagem" type="file">
+                    <input name="veiimagem" value="{{ old('veicodigo', $veiculo->veiimagem) }}" type="file">
                 </div>
                 <div class="file-path-wrapper">
                     <input class="file-path validate" type="text">

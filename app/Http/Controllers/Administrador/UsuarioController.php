@@ -133,6 +133,7 @@ class UsuarioController extends Controller {
             'usunumeroendereco.numeric'  => 'Só deve ser informado números!',
             'lojcodigo'                  => 'O lojista precisa estar vinculado a uma loja!'
         ]);
+        return response()->json(['isValid' => $bValido, 'errors' => $bValido ? [] : $validator->errors()->toArray()]);
     }
 
     public function alterarUsuario(Request $request, $id){
