@@ -12,11 +12,16 @@ use App\Models\User;
 class ClienteController extends Controller {
     
     public function menu(){
-        $aluguel = Aluguel::with('tbparcela')
+        $aluguel = Aluguel::with('tbparcela', 'tbveiculo', 'tbplano')
         ->where('alusituacao', 1) // Aluguel em andamento
-        ->where('usucodigo', Auth::user()->usuariocodigo) // Cliente logado
+        ->where('usucodigo', Auth::user()->id) // Cliente logado
         ->first();
-        return view('site/cliente/painel', compact('aluguel'));
+
+        $situacoes = [
+            1 => 'Em Andamento',
+            2 => 'Finalizado'
+        ];
+        return view('site/cliente/painel', compact('aluguel', 'situacoes'));
     }
 
     public function meuPerfil(){

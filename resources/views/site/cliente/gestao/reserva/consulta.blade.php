@@ -26,7 +26,7 @@
             @endif
 
             <div class="row">
-                <a id="openModalBtnIncluir" href="{{route('reservaCliente')}}" class="btn" style="background-color: green; border-color: white; color: white; margin-bottom: 1rem;">
+                <a id="openModalBtnIncluir" href="{{ route('reservaCliente') }}" class="btn" style="background-color: green; border-color: white; color: white; margin-bottom: 1rem; display: {{ $podeSolicitar ? 'inline-block' : 'none' }}">
                     <i class="material-icons left">add</i>Solicitar
                 </a>
             </div>
@@ -45,7 +45,7 @@
           </nav>     
 
             <div class="card z-depth-4 registros" >
-            <table class="striped ">
+            <table class="striped  responsive-table">
                 <thead>
                   <tr>
                     <th></th>
@@ -66,13 +66,16 @@
                   @foreach ($reservas as $reserva)
                     @include('site/lojista/gestao/reserva/visualizar', ['reserva' => $reserva])
                     <tr>
+                        <td><img src="/img/veiculos/{{$reserva->tbveiculo->veiimagem}}" style="height: 3rem"></td>
                         <td>{{$reserva->rescodigo}}</td>
                         <td>{{$reserva->tbveiculo->veidescricao}}</td>
-                        <td>{{$reserva->users->usunome}}</td>
+                        <td>{{$reserva->tbveiculo->tbloja->lojnome}}</td>
                         <td>{{$reserva->tbplano->pladescricao}}</td>
+                        <td>{{$reserva->tbplano->plavalor}}</td>
+                        <td>{{$reserva->resquantidadeparcela}}</td>
                         <td>{{ date('d/m/Y', strtotime($reserva->resdatainicio)) }}</td>
                         <td>{{ date('d/m/Y', strtotime($reserva->resdatatermino)) }}</td>
-                        <td>{{$reserva->ressituacao}}</td>
+                        <td>{{$situacoes[$reserva->ressituacao]}}</td>
                         <td style="display: flex; justify-content:end;">
                             <button class="btn-floating halfway-fab waves-effect waves-light blue secondary-content btn modal-trigger seuBotaoDeVisualizacao" title="Visualizar" style="position: relative; bottom:0px;" data-reserva-id="{{ $reserva->rescodigo }}">
                                 <i class="material-icons">remove_red_eye</i>
@@ -80,24 +83,6 @@
                         </td>
                     </tr>    
                   @endforeach
-                  @include('site/cliente/gestao/reserva/visualizar')
-                  <tr>
-                    <td><img src="{{ asset('imagens/download.png') }}"></td>
-                    <td>1</td>
-                    <td>CG 125 ES</td>
-                    <td>Motos Neno</td>
-                    <td>Mensal</td>
-                    <td>R$500,00</td>
-                    <td>1</td>
-                    <td>02/11/2023</td>
-                    <td>02/12/2023</td>
-                    <td>Aceita</td>
-                    <td style="display: flex; justify-content:end;">
-                        <button class="btn-floating halfway-fab waves-effect waves-light blue secondary-content btn modal-trigger seuBotaoDeVisualizacao" title="Visualizar" style="position: relative; bottom:0px;">
-                            <i class="material-icons">remove_red_eye</i>
-                        </button>
-                    </td>
-                </tr>  
                 </tbody>
               </table>
             </div>
@@ -109,7 +94,6 @@
                 $(document).ready(function() {
                     //VISUALIZAR
                     var modalVisualizarReserva = $('#modalVisualizarReserva').modal();
-                    modalVisualizarReserva[0].style.maxHeight = '100%';
                     $('.seuBotaoDeVisualizacao').click(function() {
                         var rescodigo = $(this).data('reserva-id'); // Obtém o ID da loja do atributo data-loja-id
                         var reserva = encontrarReservaPorId(rescodigo); // Encontra a loja correspondente no array de lojas
@@ -124,15 +108,18 @@
                     };
 
                     function preencherModalVisualizar(reserva) {
+                        var modalContent = $('#modalVisualizarReserva .modal-content');
+    
+                        // Limpar conteúdo anterior
+                        modalContent.empty();
                         $('#modalVisualizarReserva .modal-content').append('<h4 class="center">Visualizar</h4>');
-                        $('#modalVisualizarReserva .modal-content').append('<p><b>Veículo:</b> CG 125 ES</p>');
-                        $('#modalVisualizarReserva .modal-content').append('<p><b>Loja:</b> Motos Neno</p>');
-                        $('#modalVisualizarReserva .modal-content').append('<p><b>Plano:</b> Mensal</p>');
-                        $('#modalVisualizarReserva .modal-content').append('<p><b>Valor:</b>R$500,00</p>');
-                        $('#modalVisualizarReserva .modal-content').append('<p><b>Qtde Parcelas:</b> 1</p>');
-                        $('#modalVisualizarReserva .modal-content').append('<p><b>Data de Início:</b> 02/11/2023</p>');
-                        $('#modalVisualizarReserva .modal-content').append('<p><b>Data de Término:</b>02/12/2023</p>');
-                        $('#modalVisualizarReserva .modal-content').append('<p><b>Situação:</b>Aceita</p>');
+                        $('#modalVisualizarReserva .modal-content').append('<p><b>Veículo:</b> '+reserva.tbveiculo.veidescricao+'</p>');
+                        $('#modalVisualizarReserva .modal-content').append('<p><b>Loja:</b> '+reserva.tbveiculo.tbloja.lojnome+'</p>');
+                        $('#modalVisualizarReserva .modal-content').append('<p><b>Plano:</b> '+reserva.tbplano.pladescricao+'</p>');
+                        $('#modalVisualizarReserva .modal-content').append('<p><b>Valor:</b> '+reserva.tbplano.plavalor+'</p>');
+                        $('#modalVisualizarReserva .modal-content').append('<p><b>Qtde Parcelas:</b> '+reserva.resquantidadeparcela+'</p>');
+                        $('#modalVisualizarReserva .modal-content').append('<p><b>Data de Início:</b> '+reserva.resdatainicio+'</p>');
+                        $('#modalVisualizarReserva .modal-content').append('<p><b>Data de Término:</b> '+reserva.resdatatermino+'</p>');
                     };
 
 

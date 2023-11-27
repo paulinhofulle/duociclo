@@ -37,21 +37,28 @@
                 </thead>
         
                 <tbody>
-                 
-                      <tr>
-                        <td>1</td>
-                        <td>R$500,00</td>
-                        <td>10/11/2023</td>
-                        <td>Aberta</td>
-                        <td style="display: flex; justify-content:end;">
-                            <button class="btn-floating halfway-fab waves-effect waves-light green secondary-content seuBotaoDeParcelas" style="position: relative; bottom:0px;" title="Pagar">
-                                <i class="material-icons">attach_money</i>
-                            </button>
-                            <button class="btn-floating halfway-fab waves-effect waves-light red secondary-content seuBotaoDeAceitar" style="position: relative; bottom:0px;" title="Aberta">
-                              <i class="material-icons">money_off</i>
-                          </button>
-                        </td>
-                    </tr>  
+                    @foreach ($parcelas as $parcela)
+                        @include('site/lojista/gestao/aluguel/aberta', ['parcela' => $parcela])
+                        @include('site/lojista/gestao/aluguel/pagar', ['parcela' => $parcela])
+                        <tr>
+                            <td>{{$parcela->parsequencia}}</td>
+                            <td>{{$parcela->parvalor}}</td>
+                            <td>{{date('d/m/Y', strtotime($parcela->pardatavalidade))}}</td>
+                            <td>{{$situacoes[$parcela->parsituacao]}}</td>
+                            <td style="display: flex; justify-content:end;">
+                                @if($parcela->parsituacao == 1 && $parcela->tbaluguel->alusituacao == 1)
+                                    <button class="btn-floating halfway-fab waves-effect waves-light green secondary-content seuBotaoDePagar" data-parcela-id="{{ $parcela->parsequencia }}" style="position: relative; bottom:0px;" title="Pagar">
+                                        <i class="material-icons">attach_money</i>
+                                    </button>    
+                                @endif
+                                @if($parcela->parsituacao == 2 && $parcela->tbaluguel->alusituacao == 1)
+                                    <button class="btn-floating halfway-fab waves-effect waves-light red secondary-content seuBotaoDeAberta" data-parcela-id="{{ $parcela->parsequencia }}" style="position: relative; bottom:0px;" title="Aberta">
+                                        <i class="material-icons">money_off</i>
+                                    </button>
+                                @endif
+                            </td>
+                        </tr>    
+                    @endforeach  
                 </tbody>
               </table>
             </div>
@@ -60,7 +67,17 @@
             <script>
                 $(document).ready(function() {
                     
-                    
+                    $('.seuBotaoDePagar').click(function() {
+                        var parsequencia = $(this).data('parcela-id'); 
+                        var modalPagarParcela = $('#modalParcelaPaga_' + parsequencia).modal();
+                        modalPagarParcela.modal('open');
+                    });
+
+                    $('.seuBotaoDeAberta').click(function() {
+                        var parsequencia = $(this).data('parcela-id'); 
+                        var modalAbrirParcela = $('#modalParcelaAberta_' + parsequencia).modal();
+                        modalAbrirParcela.modal('open');
+                    });
                 });
         
             </script>

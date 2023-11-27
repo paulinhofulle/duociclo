@@ -62,6 +62,7 @@
                   @foreach ($manutencoes as $manutencao)
                     @include('site/lojista/gestao/manutencao/visualizar', ['manutencao' => $manutencao])
                     @include('site/lojista/gestao/manutencao/alterar', ['manutencao' => $manutencao])
+                    @include('site/lojista/gestao/manutencao/excluir', ['manutencao' => $manutencao])
                     @include('site/lojista/gestao/manutencao/finalizar', ['manutencao' => $manutencao])
                     <tr>
                         <td>{{$manutencao->mancodigo}}</td>
@@ -81,12 +82,7 @@
                                     <i class="material-icons">build</i>
                                 </button>
                             @endif
-                            <form action="{{ route('excluirManutencao', ['id' => $manutencao->mancodigo]) }}" method="POST" enctype="multipart/form-data">
-                                @csrf
-                                @method('DELETE')
-                                <input type="hidden" name="id" value="{{ $manutencao->mancodigo }}">
-                                <button class="btn-floating halfway-fab waves-effect waves-light red secondary-content" title="Excluir" style="position: relative; bottom:0px;"><i class="material-icons">delete</i></button>
-                            </form>
+                            <button class="btn-floating halfway-fab waves-effect waves-light red secondary-content btn modal-trigger seuBotaoDeExclusao" title="Excluir" style="position: relative; bottom:0px;" data-manutencao-id="{{ $manutencao->mancodigo }}"><i class="material-icons">delete</i></button>
                             <button class="btn-floating halfway-fab waves-effect waves-light blue secondary-content btn modal-trigger seuBotaoDeVisualizacao" title="Visualizar" style="position: relative; bottom:0px;" data-manutencao-id="{{ $manutencao->mancodigo }}">
                                 <i class="material-icons">remove_red_eye</i>
                             </button>
@@ -114,8 +110,8 @@
                     $("#openModalBtnIncluir").click(function() {
                         modalIncluirManutencao.modal("open");
                         $('.error-message').remove();
-                        limparCamposModalIncluir();
-                        limparClassesCampos();
+                        // limparCamposModalIncluir();
+                        // limparClassesCampos();
                     });
         
                     modalIncluirManutencao.modal({
@@ -136,7 +132,6 @@
                     
                     //VISUALIZAR
                     var modalVisualizarManutencao = $('#modalVisualizarManutencao').modal();
-                    modalVisualizarManutencao[0].style.maxHeight = '80%';
                     $('.seuBotaoDeVisualizacao').click(function() {
                         var mancodigo = $(this).data('manutencao-id'); // Obtém o ID da loja do atributo data-loja-id
                         var manutencao = encontrarManutencaoPorId(mancodigo); // Encontra a loja correspondente no array de lojas
@@ -157,6 +152,10 @@
                     };
 
                     function preencherModalVisualizar(manutencao) {
+                        var modalContent = $('#modalVisualizarManutencao .modal-content');
+    
+                        // Limpar conteúdo anterior
+                        modalContent.empty();
                         var veiculo      = encontrarVeiculoPorId(manutencao.veicodigo);
                         var sDescricao   = 'Nenhum veículo selecionado!';
                         var sDataTermino = manutencao.mandatatermino !== null ? manutencao.mandatatermino : 'Não definido!';
@@ -196,7 +195,13 @@
                         modalAlterarManutencao[0].style.maxHeight = '100%';
                         modalAlterarManutencao.modal('open');
                         $('.error-message').remove();
-                        limparClassesCampos();
+                        //limparClassesCampos();
+                    });
+
+                    $('.seuBotaoDeExclusao').click(function() {
+                        var mancodigo = $(this).data('manutencao-id'); 
+                        var modalExcluirManutencao = $('#modalExcluirManutencao_' + mancodigo).modal();
+                        modalExcluirManutencao.modal('open');
                     });
 
                 });

@@ -40,6 +40,21 @@ class ManutencaoController extends Controller {
         return view('site/lojista/gestao/manutencao/consulta', compact('situacoes', 'manutencoes', 'totalManutencoes', 'search', 'veiculos', 'veiculosDisponiveis'));
     }
 
+    public function validaInclusaoManutencao(Request $request){
+        $bValido = $request->validate([
+            'manvalor'         => ['required'],
+            'mandescricao'     => ['required'],
+            'mandatainicio'    => ['required'],
+            'veicodigo'        => ['required'],
+        ],[
+            'manvalor.required'          => 'O campo Valor é obrigatório!',
+            'mandescricao.required'     => 'O campo Descrição é obrigatório!',
+            'mandatainicio.required'              => 'O campo Data de Início é obrigatório!',
+            'veicodigo.required' => 'O campo Veículo é obrigatório!',
+        ]);
+        return response()->json(['isValid' => $bValido, 'errors' => $bValido ? [] : $validator->errors()->toArray()]);
+    }
+
     public function incluirManutencao(Request $request){
         $aManutencaoData = $request->all();
         $aManutencaoData['manvalor']  = str_replace(',', '.', $request->input('manvalor'));
@@ -68,6 +83,21 @@ class ManutencaoController extends Controller {
         return redirect()->route('consultaManutencao')->with('sucesso', 'Manutenção excluída com sucesso!');
     }
 
+    public function validaAlteracaoManutencao(Request $request){
+        $bValido = $request->validate([
+            'manvalor'         => ['required'],
+            'mandescricao'     => ['required'],
+            'mandatainicio'    => ['required'],
+            'veicodigo'        => ['required'],
+        ],[
+            'manvalor.required'          => 'O campo Valor é obrigatório!',
+            'mandescricao.required'     => 'O campo Descrição é obrigatório!',
+            'mandatainicio.required'              => 'O campo Data de Início é obrigatório!',
+            'veicodigo.required' => 'O campo Veículo é obrigatório!',
+        ]);
+        return response()->json(['isValid' => $bValido, 'errors' => $bValido ? [] : $validator->errors()->toArray()]);
+    }
+
     public function alterarManutencao(Request $request, $id){
         $manutencao = Manutencao::find($id);
         if (!$manutencao) {
@@ -81,6 +111,28 @@ class ManutencaoController extends Controller {
         $manutencao->manobservacao = $request->input('manobservacao');
         $manutencao->save();
         return redirect()->route('consultaManutencao')->with('sucesso', 'Manutenção alterada com sucesso.');
+    }
+
+    public function validaFinalizacaoManutencao(Request $request){
+        $bValido = $request->validate([
+            'mandatatermino'   => [
+                'required',
+                'date',
+                function ($attribute, $value, $fail) use ($request) {
+                    // Lógica para verificar se a data de término é maior ou igual à data de início
+                    $dataInicio = strtotime($request->mandatainicio);
+                    $dataTermino = strtotime($value);
+    
+                    if ($dataTermino < $dataInicio) {
+                        $fail('A data de término deve ser igual ou depois da data de início.');
+                    }
+                },
+            ],
+        ],[
+            'mandatatermino.required'   => 'O campo Data de Término é obrigatório!',
+            'mandatatermino.date'       => 'O campo Data de Término deve ser uma data válida!',
+        ]);
+        return response()->json(['isValid' => $bValido, 'errors' => $bValido ? [] : $validator->errors()->toArray()]);    
     }
 
     public function finalizarManutencao(Request $request, $id){

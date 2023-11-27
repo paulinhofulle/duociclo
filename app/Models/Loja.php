@@ -25,4 +25,8 @@ class Loja extends Model
         'lojestado'             ,
         'lojcomplementoendereco',
     ];
+
+    public function tbplano(){
+        return $this->hasMany(Plano::class, 'lojcodigo', 'lojcodigo');
+    }
 }

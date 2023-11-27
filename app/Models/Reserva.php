@@ -16,6 +16,7 @@ class Reserva extends Model {
         'resdatainicio',
         'resdatatermino',
         'ressituacao',
+        'resquantidadeparcela',
         'veicodigo',
         'usucodigo',
         'placodigo'
@@ -26,11 +27,11 @@ class Reserva extends Model {
     }
 
     public function users(){
-        return $this->belongsTo(User::class, 'usucodigo');
+        return $this->belongsTo(User::class, 'usucodigo', 'id');
     }
 
     public function tbplano(){
         return $this->belongsTo(Plano::class, 'placodigo', 'placodigo');
     }
-    
+
 }

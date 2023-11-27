@@ -4,24 +4,6 @@
 @section('conteudo')
     @if ($aluguel == null)
         <div class="row container">
-            <section class="info">
-                <div class="col s12 m12">
-                    <article class="bg-gradient-green card z-depth-4 ">
-                        <i class="material-icons">motorcycle</i>
-                        <p>Aluguel Ativo</p>
-                        <ul style="color: white">
-                            <li>Veículo: CG 125 ES</li>
-                            <li>Plano: Mensal</li>
-                            <li>Data de Início: 02/11/2023</li>
-                            <li>Data de Término: 02/12/2023</li>
-                            <li>Valor:R$500,00</li>
-                        </ul>
-                    </article>
-                </div>
-            </section>
-        </div>
-    @else
-    <div class="row container">
         <section class="info">
             <div class="col s12 m12">
                 <article class="bg-gradient-orange card z-depth-4 ">
@@ -32,9 +14,7 @@
             </div>
         </section>
         </div>
-
-
-
+    @else
         <div class="row container">
             <section class="info">
                 <div class="col s12 m12">
@@ -42,11 +22,11 @@
                         <i class="material-icons">motorcycle</i>
                         <p>Aluguel Ativo</p>
                         <ul>
-                            <li>Veículo:{{$aluguel->veidescricao}}</li>
-                            <li>Plano:{{$aluguel->pladescricao}}</li>
-                            <li>Data de Início:{{$aluguel->aludatainicio}}</li>
-                            <li>Data de Término:{{$aluguel->aludatatermino}}</li>
-                            <li>Valor:R${{$aluguel->plavalor}}</li>
+                            <li style="color: white">Veículo: {{$aluguel->tbveiculo->veidescricao}}</li>
+                            <li style="color: white">Plano: {{$aluguel->tbplano->pladescricao}}</li>
+                            <li style="color: white">Data de Início: {{\Carbon\Carbon::createFromFormat('Y-m-d', $aluguel->aludatainicio)->format('d/m/Y')}}</li>
+                            <li style="color: white">Data de Término: {{\Carbon\Carbon::createFromFormat('Y-m-d', $aluguel->aludatatermino)->format('d/m/Y')}}</li>
+                            <li style="color: white">Valor: R${{$aluguel->tbplano->plavalor}}</li>
                         </ul>
                     </article>
                 </div>
@@ -76,21 +56,12 @@
                         @foreach ($aluguel->tbparcela as $parcela)
                             <tr>
                                 <td>{{$parcela->parsequencia}}</td>
-                                <td>{{$parcela->parvalor}}</td>
-                                <td>{{$parcela->pardatavalidade}}</td>
-                                <td>{{$parcela->parsituacao}}</td>
-                                </td>
+                                <td>R${{$parcela->parvalor}}</td>
+                                <td>{{ \Carbon\Carbon::createFromFormat('Y-m-d', $parcela->pardatavalidade)->format('d/m/Y') }}</td>
+                                <td>{{$situacoes[$parcela->parsituacao]}}</td>
                             </tr>    
                         @endforeach
                     @endif
-
-                    <tr>
-                        <td>1</td>
-                        <td>R$500,00</td>
-                        <td>10/11/2023</td>
-                        <td>Aberta</td>
-                        </td>
-                    </tr>    
                 </tbody>
             </table>
         </div>

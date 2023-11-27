@@ -23,4 +23,12 @@ class Veiculo extends Model{
         'lojcodigo',
         'marcodigo'
     ];
+
+    public function tbloja(){
+        return $this->belongsTo(Loja::class, 'lojcodigo', 'lojcodigo');
+    }
+
+    public function tbmarca(){
+        return $this->belongsTo(Marca::class, 'marcodigo', 'marcodigo');
+    }
 }

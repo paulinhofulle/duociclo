@@ -2,7 +2,7 @@
 @section('title', 'Duociclo - Cadastrar-se')
 
 @section('form')
-    <form action="{{route('registrar')}}" method="POST">
+    <form id="formCadastrar" action="{{route('registrar')}}" method="POST">
         @csrf
         <img src="imagens/duociclo_logo.png" alt="Duociclo" style="margin-bottom:-3rem; margin-left:-2.75rem" height="200" width="200">
         <h1 class="h3 mb-3 fw-normal">Cadastrar-se</h1>
@@ -263,7 +263,7 @@
                                 $('#usubairro').val($('#usubairro_aux').val());
                                 $('#usucidade').val($('#usucidade_aux').val());
                                 $('#usuestado').val($('select[name="usuestado_aux"]').val());
-                                $('#form').submit();
+                                $('#formCadastrar').submit();
                             } else {
                                 // Adicione mensagens de erro aos campos
                                 $.each(response.errors, function (key, value) {

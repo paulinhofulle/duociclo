@@ -49,3 +49,68 @@
         </form>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+            $('#btnEnviarFormIncluir').click(function(event){
+                    event.preventDefault(); // Evite o envio do formulário padrão
+
+                    // Limpar mensagens de erro existentes
+                    $('.error-message').remove();
+
+                    // Realize as validações aqui
+                    var mandescricao = $('#modalIncluirManutencao #mandescricao').val().trim();
+                    var mandatainicio = $('#modalIncluirManutencao #mandatainicio').val().trim();
+                    var manvalor = $('#modalIncluirManutencao #manvalor').val().trim();
+                    var veicodigo = $('#modalIncluirManutencao select[name="veicodigo"]').val().trim();
+                    
+                    var data = {
+                        mandescricao: mandescricao,
+                        mandatainicio: mandatainicio,
+                        manvalor: manvalor,
+                        veicodigo: veicodigo,
+                    };
+
+                    // Enviar solicitação AJAX para validar no servidor
+                    $.ajax({
+                        url: '/lojista/manutencoes/validaInclusaoManutencao',
+                        type: 'POST',
+                        data: data,
+                        success: function (response) {
+                            if (response.isValid) {
+                                $('#formIncluirManutencao').submit();
+                            } else {
+                                // Se houver erros, exiba as mensagens
+                                M.toast({ html: 'Por favor, corrija os erros no formulário antes de prosseguir.', classes: 'red' });
+                                
+                                // Adicione mensagens de erro aos campos
+                                $.each(response.errors, function (key, value) {
+                                    $('#modalIncluirManutencao #' + key).after('<span class="error-message" style="color:red;">' + value[0] + '</span>');
+                                });
+                            }
+                        },
+                        error: function (error) {
+                            M.toast({ html: 'Por favor, corrija os erros no formulário antes de prosseguir.', classes: 'red' });
+                                
+                                // Adicione mensagens de erro aos campos
+                                $.each(error.responseJSON.errors, function (key, value) {
+                                    if(key == 'veicodigo'){
+                                        $('#modalIncluirManutencao select[name="veicodigo"]').after('<span class="error-message" style="color:red;">' + value[0] + '</span>');
+                                    }
+                                    else{
+                                        $('#modalIncluirManutencao #' + key).after('<span class="error-message" style="color:red;">' + value[0] + '</span>');
+                                    }
+                                    $('label[for="'+key+'"]').addClass('active');
+                                });
+                            // Lidar com erros aqui
+                        }
+                    });
+                });
+    });
+    </script> 

@@ -65,7 +65,7 @@
                         <td>{{$reserva->tbplano->pladescricao}}</td>
                         <td>{{ date('d/m/Y', strtotime($reserva->resdatainicio)) }}</td>
                         <td>{{ date('d/m/Y', strtotime($reserva->resdatatermino)) }}</td>
-                        <td>1</td>
+                        <td>{{$reserva->resquantidadeparcela}}</td>
                         <td>{{$situacoes[$reserva->ressituacao]}}</td>
                         <td style="display: flex; justify-content:end;">
                             <button class="btn-floating halfway-fab waves-effect waves-light blue secondary-content btn modal-trigger seuBotaoDeVisualizacao" title="Visualizar" style="position: relative; bottom:0px;" data-reserva-id="{{ $reserva->rescodigo }}">
@@ -108,36 +108,33 @@
                     };
 
                     function preencherModalVisualizar(reserva) {
+                        var modalContent = $('#modalVisualizarReserva .modal-content');
+    
+                        // Limpar conteúdo anterior
+                        modalContent.empty();
                         $('#modalVisualizarReserva .modal-content').append('<h4 class="center">Visualizar</h4>');
                         $('#modalVisualizarReserva .modal-content').append('<p><b>Veículo:</b> ' + reserva.tbveiculo.veidescricao + '</p>');
                         $('#modalVisualizarReserva .modal-content').append('<p><b>Cliente:</b> ' + reserva.users.usunome + '</p>');
                         $('#modalVisualizarReserva .modal-content').append('<p><b>Plano:</b> ' + reserva.tbplano.pladescricao + '</p>');
-                        $('#modalVisualizarReserva .modal-content').append('<p><b>Data de Início:</b> 02/11/2023</p>');
-                        $('#modalVisualizarReserva .modal-content').append('<p><b>Data de Término:</b> 02/12/2023</p>');
-                        //$('#modalVisualizarReserva .modal-content').append('<p><b>Data de Início:</b> ' + reserva.resdatainicio + '</p>');
-                        //$('#modalVisualizarReserva .modal-content').append('<p><b>Data de Término:</b> ' + reserva.resdatatermino + '</p>');
-                        //$('#modalVisualizarReserva .modal-content').append('<p><b>Situação:</b> ' + reserva.ressituacao + '</p>');
-                        $('#modalVisualizarReserva .modal-content').append('<p><b>Qtde Parcelas:</b> 1</p>');
-                        $('#modalVisualizarReserva .modal-content').append('<p><b>Situação:</b> Pendente</p>');
+                        $('#modalVisualizarReserva .modal-content').append('<p><b>Data de Início:</b> '+reserva.resdatainicio+'</p>');
+                        $('#modalVisualizarReserva .modal-content').append('<p><b>Data de Término:</b> '+reserva.resdatatermino+'</p>');
+                        $('#modalVisualizarReserva .modal-content').append('<p><b>Valor:</b> R$'+reserva.tbplano.plavalor+'</p>');
+                        $('#modalVisualizarReserva .modal-content').append('<p><b>Qtde Parcelas:</b> '+reserva.resquantidadeparcela+'</p>');
                     };
 
                     //FINALIZAR
                     $('.seuBotaoDeAceitar').click(function() {
                         var rescodigo = $(this).data('reserva-id'); // Obtém o ID da loja do atributo data-loja-id
                         var reserva = encontrarReservaPorId(rescodigo);
-                        var modalAceitarReserva = $('#modalAceitarReserva_' + mancodigo).modal();
-                        modalAceitarReserva[0].style.maxHeight = '100%';
+                        var modalAceitarReserva = $('#modalAceitarReserva_' + rescodigo).modal();
                         modalAceitarReserva.modal('open');
-                        $('.error-message').remove();
                     });
 
                     $('.seuBotaoDeRecusar').click(function() {
                         var rescodigo = $(this).data('reserva-id'); // Obtém o ID da loja do atributo data-loja-id
                         var reserva = encontrarReservaPorId(rescodigo);
                         var modalRecusarReserva = $('#modalRecusarReserva_' + rescodigo).modal();
-                        modalRecusarReserva[0].style.maxHeight = '100%';
                         modalRecusarReserva.modal('open');
-                        $('.error-message').remove();
                     });
 
                 });

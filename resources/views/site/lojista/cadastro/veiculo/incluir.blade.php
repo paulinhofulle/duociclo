@@ -114,7 +114,12 @@
                                 
                                 // Adicione mensagens de erro aos campos
                                 $.each(error.responseJSON.errors, function (key, value) {
-                                    $('#modalIncluirVeiculo #' + key).after('<span class="error-message" style="color:red;">' + value[0] + '</span>');
+                                    if(key == 'marcodigo'){
+                                        $('#modalIncluirVeiculo select[name="marcodigo"]').after('<span class="error-message" style="color:red;">' + value[0] + '</span>');
+                                    } else{
+                                        $('#modalIncluirVeiculo #' + key).after('<span class="error-message" style="color:red;">' + value[0] + '</span>');
+                                    
+                                    }
                                     $('label[for="'+key+'"]').addClass('active');
                                 });
                             // Lidar com erros aqui

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->date('aludatainicio');
             $table->date('aludatatermino');
             $table->integer('alusituacao'); // 1- em andamento 2- finalizado
+            $table->integer('aluquantidadeparcela');
             $table->timestamps();
 
             //relacionamentos

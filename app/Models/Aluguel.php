@@ -16,6 +16,7 @@ class Aluguel extends Model{
         'aludatainicio',
         'aludatatermino',
         'alusituacao',
+        'aluquantidadeparcela',
         'veicodigo',
         'usucodigo',
         'placodigo'
@@ -34,6 +35,10 @@ class Aluguel extends Model{
     }
 
     public function tbparcela(){
-        return $this->belongsTo(Parcela::class, 'alucodigo', 'alucodigo');
+        return $this->hasMany(Parcela::class, 'alucodigo', 'alucodigo');
+    }
+
+    public function todasParcelasPagas() {
+        return $this->tbparcela->where('parsituacao', 1)->count() == 0;
     }
 }

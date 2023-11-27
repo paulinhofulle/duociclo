@@ -72,12 +72,19 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/lojista/planos/validaAlteracaoPlano', [PlanoController::class, 'validaAlteracaoPlano']);
     //aluguel
     Route::get('/lojista/alugueis', [AluguelController::class, 'consultaAluguelLojista'])->name('consultaAluguelLojista');
+    Route::get('/lojista/parcelas/{aluguel}', [AluguelController::class, 'consultaParcelasAluguel'])->name('consultaParcelasAluguel');
+    Route::put('/lojista/parcelas/abrir/{parcela}{aluguel}', [AluguelController::class, 'abrirParcela'])->name('abrirParcela');
+    Route::put('/lojista/parcelas/pagar/{parcela}{aluguel}', [AluguelController::class, 'pagarParcela'])->name('pagarParcela');
+    Route::put('/lojista/alugueis/finalizar/{aluguel}', [AluguelController::class, 'finalizarAluguel'])->name('finalizarAluguel');
     //manutencao
     Route::get('/lojista/manutencoes', [ManutencaoController::class, 'consultaManutencao'])->name('consultaManutencao');
     Route::post('/lojista/manutencoes/incluir', [ManutencaoController::class, 'incluirManutencao'])->name('incluirManutencao');
     Route::delete('/lojista/manutencoes/excluir/{id}', [ManutencaoController::class, 'excluirManutencao'])->name('excluirManutencao');
     Route::put('/lojista/manutencoes/alterar/{id}', [ManutencaoController::class, 'alterarManutencao'])->name('alterarManutencao');
     Route::put('/lojista/manutencoes/finalizar/{id}', [ManutencaoController::class, 'finalizarManutencao'])->name('finalizarManutencao');
+    Route::post('/lojista/manutencoes/validaInclusaoManutencao', [ManutencaoController::class, 'validaInclusaoManutencao']);
+    Route::post('/lojista/manutencoes/validaAlteracaoManutencao', [ManutencaoController::class, 'validaAlteracaoManutencao']);
+    Route::post('/lojista/manutencoes/validaFinalizacaoManutencao', [ManutencaoController::class, 'validaFinalizacaoManutencao']);
     //reserva
     Route::get('/lojista/reservas', [ReservaController::class, 'consultaReservaLojista'])->name('consultaReservaLojista');
     Route::put('/lojista/reservas/aceitar/{id}', [ReservaController::class, 'aceitarReserva'])->name('aceitarReserva');
@@ -89,12 +96,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::put('/cliente/meuPerfil/alterar/{id}', [ClienteController::class, 'alterarMeuPerfil'])->name('alterarMeuPerfilCliente');
     //aluguel
     Route::get('/cliente/alugueis', [AluguelController::class, 'consultaAluguelCliente'])->name('consultaAluguelCliente');
+    
+    //reserva
     Route::get('/cliente/reservas', [ReservaController::class, 'consultaReservaCliente'])->name('consultaReservaCliente');
-
-
-
-
-
-    Route::view('/parcelas', 'site/lojista/gestao/aluguel/parcela')->name('consultaParcelaLojista');
-    Route::view('/solicitarReserva', 'site/cliente/gestao/reserva/solicitar')->name('reservaCliente');
+    Route::get('/solicitarReserva', [ReservaController::class, 'consultaVeiculosReserva'])->name('reservaCliente');
+    Route::post('/cliente/reservas/incluir', [ReservaController::class, 'incluirReserva'])->name('incluirReserva');
+    Route::post('/cliente/reservas/validaInclusaoReserva', [ReservaController::class, 'validaInclusaoReserva']);
+    
 });

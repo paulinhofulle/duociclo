@@ -16,6 +16,7 @@ return new class extends Migration
             $table->date('resdatainicio');
             $table->date('resdatatermino');
             $table->integer('ressituacao'); // 1- pendente 2- aceita 3- recusada
+            $table->integer('resquantidadeparcela');
             $table->timestamps();
 
             $table->unsignedBigInteger('usucodigo');

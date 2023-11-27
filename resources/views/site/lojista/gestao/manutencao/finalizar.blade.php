@@ -4,6 +4,7 @@
             @csrf
             @method('PUT')
             <input type="hidden" id="mancodigo" name="mancodigo" value="{{ old('mancodigo', $manutencao->mancodigo) }}">
+            <input type="hidden" id="mandatainicio" name="mandatainicio" value="{{ old('mandatainicio', $manutencao->mandatainicio) }}">
             <h4 class="center">Finalizar</h4>
             <div class="input-field">
                 <input id="mandatatermino" type="date" class="validate" name="mandatatermino" required>
@@ -17,3 +18,59 @@
         </form>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+            $('#btnEnviarFormFinalizar').click(function(event){
+                    event.preventDefault(); // Evite o envio do formulário padrão
+                    var mancodigo = +$('#mancodigo').val(); 
+                    // Limpar mensagens de erro existentes
+                    $('.error-message').remove();
+
+                    // Realize as validações aqui
+                    var mandatatermino = $('#modalFinalizarManutencao_'+mancodigo+' #mandatatermino').val().trim();
+                    var mandatainicio = $('#modalFinalizarManutencao_'+mancodigo+' #mandatainicio').val().trim();
+                    
+                    var data = {
+                        mandatainicio: mandatainicio,
+                        mandatatermino: mandatatermino,
+                    };
+
+                    // Enviar solicitação AJAX para validar no servidor
+                    $.ajax({
+                        url: '/lojista/manutencoes/validaFinalizacaoManutencao',
+                        type: 'POST',
+                        data: data,
+                        success: function (response) {
+                            if (response.isValid) {
+                                $('#formFinalizarManutencao').submit();
+                            } else {
+                                // Se houver erros, exiba as mensagens
+                                M.toast({ html: 'Por favor, corrija os erros no formulário antes de prosseguir.', classes: 'red' });
+                                
+                                // Adicione mensagens de erro aos campos
+                                $.each(response.errors, function (key, value) {
+                                    $('#modalFinalizarManutencao_'+mancodigo+' #' + key).after('<span class="error-message" style="color:red;">' + value[0] + '</span>');
+                                });
+                            }
+                        },
+                        error: function (error) {
+                            M.toast({ html: 'Por favor, corrija os erros no formulário antes de prosseguir.', classes: 'red' });
+                                
+                                // Adicione mensagens de erro aos campos
+                                $.each(error.responseJSON.errors, function (key, value) {
+                                    $('#modalFinalizarManutencao_'+mancodigo+' #' + key).after('<span class="error-message" style="color:red;">' + value[0] + '</span>');
+                                    $('label[for="'+key+'"]').addClass('active');
+                                });
+                            // Lidar com erros aqui
+                        }
+                    });
+                });
+    });
+    </script> 
