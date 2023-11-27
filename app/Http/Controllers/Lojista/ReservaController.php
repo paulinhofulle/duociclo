@@ -13,6 +13,7 @@ use App\Models\Plano;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class ReservaController extends Controller {
     
@@ -70,6 +71,7 @@ class ReservaController extends Controller {
         // Implemente a lógica para cancelar reservas concorrentes aqui
         // Certifique-se de ajustar a condição conforme necessário
         Reserva::where('rescodigo', '!=', $reserva->rescodigo)
+            ->where('ressituacao', '=', 1)
             ->where('resdatainicio', '<=', $reserva->resdatatermino)
             ->where('resdatatermino', '>=', $reserva->resdatainicio)
             ->update(['ressituacao' => 3]);
@@ -92,7 +94,7 @@ class ReservaController extends Controller {
 
     private function alteraSituacaoVeiculo($reserva){
         $veiculo = Veiculo::find($reserva->tbveiculo->veicodigo);
-        $veiculo->veisituacao = 2 // em uso
+        $veiculo->veisituacao = 2; // em uso
         $veiculo->save();
     }
 
@@ -114,7 +116,7 @@ class ReservaController extends Controller {
                 'alucodigo' => $aluguel->alucodigo,
                 'parsituacao' => 1, // Coloque o valor correto para a situação da parcela
                 'parvalor' => $valorParcela,
-                'pardatavalidade' => $dataVencimento,
+                'pardatavencimento' => $dataVencimento,
             ]);
 
             // Avançar para o próximo mês
@@ -165,7 +167,9 @@ class ReservaController extends Controller {
     }
 
     public function consultaVeiculosReserva(){
-        $veiculos = Veiculo::with('tbloja', 'tbmarca')->get();
+        $veiculos = Veiculo::with('tbloja', 'tbmarca')
+                           ->where('veisituacao', 1)
+                           ->get();
         
         // Carregar planos associados à loja para cada veículo
         $veiculos->each(function ($veiculo) {
@@ -178,55 +182,21 @@ class ReservaController extends Controller {
     public function validaInclusaoReserva(Request $request){
         $bValido = $request->validate([
             'veicodigo'         => ['required'],
-            'veidescricao'      => ['required'],
             'placodigo'         => ['required'],
-            'resdatainicio'     => ['required', 'date'],
-            'resdatatermino'    => ['required', 'date'],
-            'plaquantidadedias' => ['required'],
+            'resdatainicio'     => ['required', 'date', 'after_or_equal:' . now()->addDays(7)->toDateString()],
+            'resdatatermino'    => ['required', 'date', 'after:resdatainicio'],
         ], [
-            'veicodigo.required'         => 'O campo Nome é obrigatório!',
-            'veidescricao.required'      => 'O campo CPF é obrigatório!',
-            'placodigo.required'         => 'O campo CPF é obrigatório!',
-            'resdatainicio.required'     => 'O campo CPF é obrigatório!',
-            'resdatatermino.required'    => 'O campo CPF é obrigatório!',
-            'plaquantidadedias.required' => 'O campo CPF é obrigatório!',
+            'veicodigo.required'         => 'O Veículo é obrigatório!',
+            'placodigo.required'         => 'O campo Plano é obrigatório!',
+            'resdatainicio.required'     => 'O campo Data Início é obrigatório!',
+            'resdatatermino.required'    => 'O campo Data Término é obrigatório!',
+            'resdatainicio.after_or_equal' => 'A reserva deve ser solicitada com 7 dias de antecedência!',
+            'resdatatermino.after'       => 'A data de término deve ser maior que a data de início.',
         ]);
-        
-        // Adiciona validação personalizada após a validação inicial
-        $validator = Validator::make($request->all(), [
-            'resdatainicio'  => [
-                'after_or_equal:' . now()->addDays(7)->toDateString(), // Deve ser igual ou posterior a data atual + 7 dias
-                'date',
-                'date_format:Y-m-d', // Adapte o formato conforme necessário
-                function ($attribute, $value, $fail) {
-                    // Deve ser um dia útil
-                    $weekday = date('w', strtotime($value));
-                    if ($weekday == 0 || $weekday == 6) {
-                        $fail('A data de início deve ser um dia útil.');
-                    }
-                },
-            ],
-            'resdatatermino' => [
-                'date',
-                'date_format:Y-m-d', // Adapte o formato conforme necessário
-                function ($attribute, $value, $fail) use ($request) {
-                    // Deve ser um dia útil
-                    $weekday = date('w', strtotime($value));
-                    if ($weekday == 0 || $weekday == 6) {
-                        $fail('A data de término deve ser um dia útil.');
-                    }
-        
-                    // Deve ter a diferença de dias definida em plaquantidadedias
-                    $diffInDays = now()->diffInDays($request->resdatainicio);
-                    if ($diffInDays != $request->plaquantidadedias) {
-                        $fail('A diferença de dias entre a data de início e término deve ser igual a plaquantidadedias.');
-                    }
-                },
-            ],
-        ]);
+    
         return response()->json(['isValid' => $bValido, 'errors' => $bValido ? [] : $validator->errors()->toArray()]);
     }
-
+    
     public function incluirReserva(Request $request){
         // preciso adicionar uma coluna de resquantidadeparcela
         $reservaData = [

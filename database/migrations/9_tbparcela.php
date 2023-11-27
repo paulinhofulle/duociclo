@@ -10,18 +10,23 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-    {
-        Schema::create('tbparcela', function (Blueprint $table) {
-            $table->id('parsequencia');
-            $table->integer('parsituacao'); //1- aberta 2- paga
-            $table->date('pardatavencimento');
-            $table->double('parvalor', 10, 2);
-            $table->timestamps();
+{
+    Schema::create('tbparcela', function (Blueprint $table) { // Vamos manter um id autoincrementável como chave primária
+        $table->integer('parsequencia');
+        $table->integer('parsituacao');
+        $table->date('pardatavencimento');
+        $table->double('parvalor', 10, 2);
+        $table->timestamps();
 
-            $table->unsignedBigInteger('alucodigo');
-            $table->foreign('alucodigo')->references('alucodigo')->on('tbaluguel')->onDelete('cascade')->onUpdate('cascade');
-        });
-    }
+        $table->unsignedBigInteger('alucodigo');
+        $table->foreign('alucodigo')->references('alucodigo')->on('tbaluguel');
+
+        // Adicionando a chave composta
+        $table->primary(['parsequencia', 'alucodigo']);
+        $table->unique(['parsequencia', 'alucodigo']);
+    });
+}
+
 
     /**
      * Reverse the migrations.

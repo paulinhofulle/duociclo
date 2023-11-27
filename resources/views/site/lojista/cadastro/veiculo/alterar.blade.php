@@ -1,4 +1,4 @@
-<div id="modalAlterarVeiculo_{{$veiculo->veicodigo}}" class="modal" style="max-height: 100%">
+<div id="modalAlterarVeiculo_{{$veiculo->veicodigo}}" class="modal" >
     <div class="modal-content">
         <!-- Formulário de edição da loja aqui -->
         <form id="formAlterarVeiculo" action="{{ route('alterarVeiculo', ['id' => old('veicodigo', $veiculo->veicodigo)]) }}" method="POST">

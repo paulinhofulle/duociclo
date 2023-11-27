@@ -57,7 +57,7 @@
                             <tr>
                                 <td>{{$parcela->parsequencia}}</td>
                                 <td>R${{$parcela->parvalor}}</td>
-                                <td>{{ \Carbon\Carbon::createFromFormat('Y-m-d', $parcela->pardatavalidade)->format('d/m/Y') }}</td>
+                                <td>{{ \Carbon\Carbon::createFromFormat('Y-m-d', $parcela->pardatavencimento)->format('d/m/Y') }}</td>
                                 <td>{{$situacoes[$parcela->parsituacao]}}</td>
                             </tr>    
                         @endforeach

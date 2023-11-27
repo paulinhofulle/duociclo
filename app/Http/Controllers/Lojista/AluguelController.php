@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Aluguel;
 use App\Models\Parcela;
+use App\Models\Veiculo;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -73,30 +74,40 @@ class AluguelController extends Controller {
     }
 
     public function abrirParcela($parcela, $aluguel){
-        $parcela = Parcela::where('alucodigo', $aluguel)
-                          ->where('parsequencia', $parcela)
-                          ->first();
-        $parcela->parsituacao = 1;
-        $parcela->save();
-        return redirect()->route('consultaParcelasAluguel', ['aluguel' => $aluguel])->with('sucesso', 'Parcela aberta com sucesso.');
+        $updateResult = Parcela::where([
+            'parsequencia' => $parcela,
+            'alucodigo' => $aluguel,
+        ])->update(['parsituacao' => 1]);
+    
+        if ($updateResult) {
+            return redirect()->route('consultaParcelasAluguel', ['aluguel' => $aluguel])->with('sucesso', 'Parcela aberta com sucesso.');
+        } else {
+            return redirect()->route('consultaParcelasAluguel', ['aluguel' => $aluguel])->with('erro', 'Parcela não encontrada.');
+        }
     }
 
     public function pagarParcela($parcela, $aluguel){
-        $parcela = Parcela::where('alucodigo', $aluguel)
-                          ->where('parsequencia', $parcela)
-                          ->first();
-        $parcela->parsituacao = 2;
-        $parcela->save();
-        return redirect()->route('consultaParcelasAluguel', ['aluguel' => $aluguel])->with('sucesso', 'Parcela paga com sucesso.');
+        $updateResult = Parcela::where([
+            'parsequencia' => $parcela,
+            'alucodigo' => $aluguel,
+        ])->update(['parsituacao' => 2]);
+    
+        if ($updateResult) {
+            return redirect()->route('consultaParcelasAluguel', ['aluguel' => $aluguel])->with('sucesso', 'Parcela paga com sucesso.');
+        } else {
+            return redirect()->route('consultaParcelasAluguel', ['aluguel' => $aluguel])->with('erro', 'Parcela não encontrada.');
+        }
     }
 
-    public function finalizarAluguel($aluguel){
-        $aluguel = Aluguel::find($aluguel);
+    public function finalizarAluguel(Request $request, $aluguel){
+        // dd($request);
+        $aluguel = Aluguel::find($request->input('alucodigo'));
         $aluguel->alusituacao = 2;
         $aluguel->save();
 
-        $veiculo = Veiculo::find($aluguel);
+        $veiculo = Veiculo::find($aluguel->tbveiculo->veicodigo);
         $veiculo->veisituacao = 1;
+        $veiculo->veiquilometragem = $request->input('veiquilometragem');
         $veiculo->save();
 
         return redirect()->route('consultaAluguelLojista')->with('sucesso', 'Aluguel finalizado com sucesso.');

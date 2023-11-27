@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 
 class LojistaController extends Controller {
     
@@ -94,6 +95,10 @@ class LojistaController extends Controller {
             $loja->lojtelefone = $request->input('lojtelefone');
             $loja->lojemail = $request->input('lojemail');
             $loja->lojcep = $request->input('lojcep');
+            $loja->lojrua = $request->input('lojrua');
+            $loja->lojbairro = $request->input('lojbairro');
+            $loja->lojcidade = $request->input('lojcidade');
+            $loja->lojestado = $request->input('lojestado');
             $loja->lojcomplementoendereco = $request->input('lojcomplementoendereco');
     
             $loja->save();
@@ -112,34 +117,50 @@ class LojistaController extends Controller {
             'usutelefone'           => ['required'],
             'usucep'                => ['required', 'min:8'],
             'usunumeroendereco'     => ['required', 'numeric'],
-            'usucomplemento'        => ['nullable']
-        ],[
+            'usucomplemento'        => ['nullable'],
+            'password'              => ['nullable', 'required_with:newpassword,newpassword_confirmation'],
+            'newpassword'           => ['nullable', 'confirmed', 'regex:/^[a-zA-Z0-9]{6,20}$/'],
+        ], [
             'usutelefone.required'       => 'O campo Telefone é obrigatório!',
             'usucep.required'            => 'O campo CEP é obrigatório!',
             'usucep.min'                 => 'O campo CEP deve ter 8 números!',
             'usunumeroendereco.required' => 'O campo N° Endereço é obrigatório!',
             'usunumeroendereco.numeric'  => 'Só deve ser informado números!',
+            'password.required_with'     => 'A senha atual é obrigatória quando informar Nova Senha!',
+            'newpassword.confirmed'      => 'A confirmação da nova senha não coincide!',
+            'newpassword.regex'          => 'A nova senha deve ter entre 6 e 20 caracteres alfanuméricos!',
         ]);
     
-        if($bValido){
-            $usuario = User::find($id);
-            if (!$usuario) {
-                \Log::error("Usuário não encontrado com ID: $id");
-                return redirect()->route('consultaUsuario')->with('erro', 'Usuário não encontrado.');
-            }
-            
-            $usuario->usutelefone            = $request->input('usutelefone');
-            $usuario->usucep                 = $request->input('usucep');
-            $usuario->usunumeroendereco      = $request->input('usunumeroendereco');
-            $usuario->usucomplementoendereco = $request->input('usucomplementoendereco');
-    
-            $usuario->save();
-    
-            return redirect()->route('lojista')->with('sucessoHome', 'Usuário alterado com sucesso.');
+        $usuario = User::find($id);
+        if (!$usuario) {
+            \Log::error("Usuário não encontrado com ID: $id");
+            return redirect()->route('consultaUsuario')->with('erro', 'Usuário não encontrado.');
         }
-        else{
-            return redirect()->route('lojista')->with('erro', 'Usuário não encontrado.');
+    
+        // Verificar se a senha atual está correta
+        if ($request->filled('password') && !Hash::check($request->input('password'), $usuario->password)) {
+            return redirect()->back()->with('erro', 'Senha atual incorreta.');
         }
+    
+        // Atualizar os dados do usuário
+        $usuario->usutelefone            = $request->input('usutelefone');
+        $usuario->usucep                 = $request->input('usucep');
+        $usuario->usurua                 = $request->input('usurua');
+        $usuario->usubairro              = $request->input('usubairro');
+        $usuario->usucidade              = $request->input('usucidade');
+        $usuario->usuestado              = $request->input('usuestado');
+        $usuario->usunumeroendereco      = $request->input('usunumeroendereco');
+        $usuario->usucomplementoendereco = $request->input('usucomplementoendereco');
+    
+        // Atualizar a senha se a nova senha estiver presente
+        if ($request->filled('newpassword')) {
+            $usuario->password = Hash::make($request->input('newpassword'));
+        }
+    
+        $usuario->save();
+    
+        return redirect()->route('lojista')->with('sucessoHome', 'Usuário alterado com sucesso.');
     }
+    
 
 }

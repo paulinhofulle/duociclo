@@ -12,15 +12,19 @@ class LojaSeeder extends Seeder
      * Run the database seeds.
      */
     public function run(): void{
-        /*Loja::create([
+        Loja::create([
             'lojnome'                => "Motos Neno",
             'lojcnpj'                => '38809161000101',
             'lojnumeroendereco'      => 2,
             'lojtelefone'            => '47223654789',
             'lojemail'               => 'motosneno@gmail.com',
-            'lojcep'                 => '89163466',
+            'lojcep'                 => '89163468',
+            'lojrua'                 => 'teste',
+            'lojbairro'                 => 'teste',
+            'lojcidade'                 => 'teste',
+            'lojestado'                 => 'AC',
             'lojcomplementoendereco' => 'loja no centro de rds',
-        ]); */
-        Loja::factory(25)->create();
+        ]);
+        //Loja::factory(1)->create();
     }
 }

@@ -73,8 +73,8 @@ Route::group(['middleware' => ['auth']], function () {
     //aluguel
     Route::get('/lojista/alugueis', [AluguelController::class, 'consultaAluguelLojista'])->name('consultaAluguelLojista');
     Route::get('/lojista/parcelas/{aluguel}', [AluguelController::class, 'consultaParcelasAluguel'])->name('consultaParcelasAluguel');
-    Route::put('/lojista/parcelas/abrir/{parcela}{aluguel}', [AluguelController::class, 'abrirParcela'])->name('abrirParcela');
-    Route::put('/lojista/parcelas/pagar/{parcela}{aluguel}', [AluguelController::class, 'pagarParcela'])->name('pagarParcela');
+    Route::put('/lojista/parcelas/abrir/{parcela}/{aluguel}', [AluguelController::class, 'abrirParcela'])->name('abrirParcela');
+    Route::put('/lojista/parcelas/pagar/{parcela}/{aluguel}', [AluguelController::class, 'pagarParcela'])->name('pagarParcela');
     Route::put('/lojista/alugueis/finalizar/{aluguel}', [AluguelController::class, 'finalizarAluguel'])->name('finalizarAluguel');
     //manutencao
     Route::get('/lojista/manutencoes', [ManutencaoController::class, 'consultaManutencao'])->name('consultaManutencao');

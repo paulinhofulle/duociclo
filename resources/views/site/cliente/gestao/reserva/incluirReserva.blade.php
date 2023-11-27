@@ -1,4 +1,4 @@
-<div id="modalIncluirReserva_{{$veiculo->veicodigo}}" class="modal" style="max-height: 100%">
+<div id="modalIncluirReserva_{{$veiculo->veicodigo}}" class="modal">
     <div class="modal-content">
         <form id="formIncluirReserva" action="{{ route('incluirReserva') }}" method="POST">
             @csrf
@@ -42,7 +42,7 @@
                     <option value="" selected>Selecione a quantidade de parcelas...</option>
                 </select>
             </div>
-            <button id="btnEnviarFormIncluirReserva" type="submit" class="btn waves-effect waves-light" style="background-color: orange">Solicitar</button>
+            <button id="btnEnviarFormIncluirReserva_{{$veiculo->veicodigo}}" data-veiculo-id="{{$veiculo->veicodigo}}" type="submit" class="btn waves-effect waves-light" style="background-color: orange">Solicitar</button>
             <a href="#!" id="btnFecharIncluir" class="modal-close waves-effect waves-green btn-flat">Fechar</a>
         </form>
     </div>
@@ -50,13 +50,14 @@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
         $(document).ready(function() {
+            var veiculo = @json($veiculo);
             $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     }
                 });
 
-            $('#btnEnviarFormIncluir').click(function(event){
+            $('#btnEnviarFormIncluirReserva_'+veiculo.veicodigo).click(function(event){
                     var veicodigo = +$(this).data('veiculo-id'); 
                     event.preventDefault(); // Evite o envio do formulário padrão
 
@@ -69,7 +70,7 @@
                     var placodigo = $('#modalIncluirReserva_'+veicodigo+' select[name="placodigo"]').val().trim();
                     var resdatainicio = $('#modalIncluirReserva_'+veicodigo+' #resdatainicio').val().trim();
                     var resdatatermino = $('#modalIncluirReserva_'+veicodigo+' #resdatatermino').val().trim();
-                    var plaquantidadeparcela = $('#modalIncluirReserva_'+veicodigo+' #plaquantidadeparcela').val().trim();
+                    var plaquantidadeparcela = $('#modalIncluirReserva_'+veicodigo+' select[name="plaquantidadeparcela"]').val().trim();
 
                     var data = {
                         veicodigo: veicodigo,
@@ -86,9 +87,8 @@
                         type: 'POST',
                         data: data,
                         success: function (response) {
-                            debugger;
                             if (response.isValid) {
-                                $('#formIncluirReserva').submit();
+                                $('#modalIncluirReserva_'+veicodigo+' #formIncluirReserva').submit();
                             } else {
                                 // Se houver erros, exiba as mensagens
                                 M.toast({ html: 'Por favor, corrija os erros no formulário antes de prosseguir.', classes: 'red' });
@@ -100,8 +100,7 @@
                             }
                         },
                         error: function (error) {
-                            M.toast({ html: 'Por favor, corrija os erros no formulário antes de prosseguir.', classes: 'red' });
-                                
+                            $('.error-message').remove();
                                 // Adicione mensagens de erro aos campos
                                 $.each(error.responseJSON.errors, function (key, value) {
                                     $('#modalIncluirReserva_'+veicodigo+' #' + key).after('<span class="error-message" style="color:red;">' + value[0] + '</span>');

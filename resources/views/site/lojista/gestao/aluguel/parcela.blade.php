@@ -43,7 +43,7 @@
                         <tr>
                             <td>{{$parcela->parsequencia}}</td>
                             <td>{{$parcela->parvalor}}</td>
-                            <td>{{date('d/m/Y', strtotime($parcela->pardatavalidade))}}</td>
+                            <td>{{date('d/m/Y', strtotime($parcela->pardatavencimento))}}</td>
                             <td>{{$situacoes[$parcela->parsituacao]}}</td>
                             <td style="display: flex; justify-content:end;">
                                 @if($parcela->parsituacao == 1 && $parcela->tbaluguel->alusituacao == 1)

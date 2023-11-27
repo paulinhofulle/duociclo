@@ -14,20 +14,20 @@ class UsuarioSeeder extends Seeder
      */
     public function run(): void{
         User::create([
-            'usunome'                => "Paulo Henrique Fülle",
-            'usucpf'                 => '10029170931',
+            'usunome'                => "Administrador",
+            'usucpf'                 => '99999999999',
             'usutipo'                => 1,
-            'usudatanascimento'      => '2001-08-06',
-            'usunumeroendereco'      => '62',
-            'password'               => Hash::make('123'),
-            'usutelefone'            => '47988061721',
-            'email'                  => 'paulohfulle@gmail.com',
+            'usudatanascimento'      => '2001-01-01',
+            'usunumeroendereco'      => '00',
+            'password'               => Hash::make('admin'),
+            'usutelefone'            => '99999999999',
+            'email'                  => 'admin@gmail.com',
             'usucep'                 => '89163467',
             'usurua'                 => 'Rua guido vota',
             'usubairro'              => 'fundo canoas',
             'usucidade'              => 'rio do sul',
             'usuestado'              => 'SC',
-            'usucomplementoendereco' => 'casa de madeira',
+            'usucomplementoendereco' => '-',
         ]);
 
         // para criar registros em massa aleatórios

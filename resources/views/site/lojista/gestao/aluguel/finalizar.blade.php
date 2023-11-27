@@ -6,7 +6,14 @@
         <form action="{{ route('finalizarAluguel', ['aluguel' => $aluguel->alucodigo]) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
-            <input type="hidden" name="id" value="{{ $aluguel->alucodigo }}">
+            <input type="hidden" name="alucodigo" value="{{ $aluguel->alucodigo }}">
+            <div class="input-field">
+                <input id="veiquilometragem" type="number" class="validate" name="veiquilometragem" required>
+                <label for="veiquilometragem">KM FINAL</label>
+                @error('veiquilometragem')
+                    <span class="error-message" style="color:red;">{{ $message }}</span>
+                @enderror
+            </div>
             <button id="btnEnviarFormPagar" type="submit" class="btn waves-effect waves-light" style="background-color: orange">Finalizar</button><a href="#!" class="modal-close waves-effect waves-green btn-flat">Fechar</a>
         </form>
     </div>

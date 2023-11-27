@@ -66,7 +66,7 @@
                     @include('site/lojista/cadastro/veiculo/alterar', ['veiculo' => $veiculo])
                     @include('site/lojista/cadastro/veiculo/excluir', ['veiculo' => $veiculo])
                     <tr>
-                        <td><img src="/img/veiculos/{{$veiculo->veiimagem}}"></td>
+                        <td><img src="/img/veiculos/{{$veiculo->veiimagem}}" style="height: 3rem;"></td>
                         <td>{{$veiculo->veicodigo}}</td>
                         <td>{{$veiculo->veidescricao}}</td>
                         <td>{{$veiculo->veicor}}</td>
@@ -92,7 +92,7 @@
             <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
             <script>
                 var veiculos = @json($veiculos).data;
-                var marcas   = @json($marcas);
+                var marcas   = Object.values(@json($marcas));
 
                 $(document).ready(function() {
                     //INCLUIR

@@ -81,8 +81,8 @@ class LoginController extends Controller{
             'usuestado'             => ['required'],
             'usunumeroendereco'     => ['required', 'numeric'],
             'usucomplemento'        => ['nullable'],
-            'password'              => ['confirmed', 'min:6'],
-            'password_confirmation' => ['required', 'min:6']
+            'password'              => ['confirmed', 'min:6', 'max:20'],
+            'password_confirmation' => ['required', 'min:6', 'max:20']
         ],[
             'usunome.required'           => 'O campo Nome é obrigatório!',
             'usucpf.required'            => 'O campo CPF é obrigatório!',
@@ -103,8 +103,10 @@ class LoginController extends Controller{
             'usunumeroendereco.numeric'  => 'Só deve ser informado números!',
             'password.required'          => 'O campo senha é obrigatório!',
             'password.min'               => 'O campo senha deve ter no mínimo 6 digítos!',
+            'password.max'               => 'O campo senha deve ter no máximo 20 digítos!',
             'password.confirmed'         => 'A senha de confirmação deve ser igual ao campo Senha',
-            'password_confirmation.min'  => 'O campo senha deve ter no mínimo 6 digítos!'
+            'password_confirmation.min'  => 'O campo senha deve ter no mínimo 6 digítos!',
+            'password_confirmation.max'  => 'O campo senha deve ter no máximo 20 digítos!'
         ]);
 
         return response()->json(['isValid' => $bValido, 'errors' => $bValido ? [] : $validator->errors()->toArray()]);

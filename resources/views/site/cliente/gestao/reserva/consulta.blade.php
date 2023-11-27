@@ -71,7 +71,7 @@
                         <td>{{$reserva->tbveiculo->veidescricao}}</td>
                         <td>{{$reserva->tbveiculo->tbloja->lojnome}}</td>
                         <td>{{$reserva->tbplano->pladescricao}}</td>
-                        <td>{{$reserva->tbplano->plavalor}}</td>
+                        <td>R${{$reserva->tbplano->plavalor}}</td>
                         <td>{{$reserva->resquantidadeparcela}}</td>
                         <td>{{ date('d/m/Y', strtotime($reserva->resdatainicio)) }}</td>
                         <td>{{ date('d/m/Y', strtotime($reserva->resdatatermino)) }}</td>

@@ -1,4 +1,4 @@
-<div id="modalAlterarManutencao_{{$manutencao->mancodigo}}" class="modal" style="max-height: 100%">
+<div id="modalAlterarManutencao_{{$manutencao->mancodigo}}" class="modal">
     <div class="modal-content">
         <form id="formAlterarManutencao" action="{{ route('alterarManutencao', ['id' => old('mancodigo', $manutencao->mancodigo)]) }}" method="POST">
             @csrf

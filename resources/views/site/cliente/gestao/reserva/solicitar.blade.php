@@ -132,7 +132,7 @@
                             var quantidadeDiasPlano = obterQuantidadeDiasPlano(veicodigo); // Implemente essa função
                             if(quantidadeDiasPlano > 0){
                                 // Adiciona a quantidade de dias ao objeto Date
-                                dataInicio.setDate(dataInicio.getDate() + quantidadeDiasPlano);
+                                dataInicio.setDate(dataInicio.getDate() + quantidadeDiasPlano + 1);
 
                                 // Formata a data de término no formato desejado
                                 var formattedDataTermino = formatDate(dataInicio); // Implemente essa função

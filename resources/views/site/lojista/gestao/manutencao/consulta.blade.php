@@ -101,12 +101,11 @@
             <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
             <script>
                 var manutencoes = @json($manutencoes).data;
-                var veiculos    = @json($veiculos);
+                var veiculos    = Object.values(@json($veiculos));
 
                 $(document).ready(function() {
                     //INCLUIR
                     var modalIncluirManutencao = $('#modalIncluirManutencao').modal();
-                    modalIncluirManutencao[0].style.maxHeight = '100%';
                     $("#openModalBtnIncluir").click(function() {
                         modalIncluirManutencao.modal("open");
                         $('.error-message').remove();
@@ -119,11 +118,11 @@
                     });
                     
                     function limparCamposModalIncluir() {
-                        $('#marnome').val('');
+                        
                     };
         
                     function limparClassesCampos() {
-                        $('#marnome')[0].className = 'validate';
+
                     };
                     
                     $("#btnFecharIncluir").click(function() {
@@ -176,7 +175,6 @@
                         var mancodigo = $(this).data('manutencao-id'); // Obtém o ID da loja do atributo data-loja-id
                         var manutencao = encontrarManutencaoPorId(mancodigo);
                         var modalAlterarManutencao = $('#modalAlterarManutencao_' + mancodigo).modal();
-                        modalAlterarManutencao[0].style.maxHeight = '50%';
                         modalAlterarManutencao.modal('open');
                         $('.error-message').remove();
                         limparClassesCampos();
