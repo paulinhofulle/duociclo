@@ -2,8 +2,8 @@
 @section('title', 'Duociclo - Minha Loja')
 
 @section('conteudo')
-    <div class="row" style="margin-left: 15rem; margin-right:15rem;">
-        <form id="formAlterarMinhaLoja" class="col s12" action="{{ route('alterarMinhaLoja', ['id' => old('lojcodigo', $loja->lojcodigo)]) }}" method="POST">
+<div class="container">
+    <form id="formAlterarMinhaLoja" class="col s12 m8 offset-m2" action="{{ route('alterarMinhaLoja', ['id' => old('lojcodigo', $loja->lojcodigo)]) }}" method="POST">
             @csrf
             @method('PUT')
             <input type="hidden" id="lojcodigo" name="lojcodigo" value="{{ old('lojcodigo', $loja->lojcodigo) }}">

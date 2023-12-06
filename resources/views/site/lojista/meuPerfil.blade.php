@@ -2,8 +2,8 @@
 @section('title', 'Duociclo - Meu Perfil')
 
 @section('conteudo')
-<div class="row" style="margin-left: 15rem; margin-right:15rem;">
-    <form id="formAlterarMeuPerfil" class="col s12" action="{{ route('alterarMeuPerfilLojista', ['id' => old('id', $usuario->id)]) }}" method="POST">
+<div class="container">
+    <form id="formAlterarMeuPerfil" class="col s12 m8 offset-m2" action="{{ route('alterarMeuPerfilLojista', ['id' => old('id', $usuario->id)]) }}" method="POST">
         @csrf
         @method('PUT')
         <input type="hidden" id="id" name="id" value="{{ old('id', $usuario->id) }}">

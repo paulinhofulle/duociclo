@@ -31,11 +31,16 @@
             @yield('opcoesMenu')
         </ul>
 
-        <ul id="nav-mobile2" class="right">
-            @if (auth()->check())
-                <li><a href="#" class="dropdown-trigger" data-target="dropdown1">Olá {{ explode(' ', auth()->user()->usunome)[0] }}! <i class="material-icons right">expand_more</i></a></li>
-            @endif
+        <ul id="nav-mobile2" class="right hide-on-med-and-down">
+          @if (auth()->check())
+              <li><a href="#" class="dropdown-trigger" data-target="dropdown1">Olá {{ explode(' ', auth()->user()->usunome)[0] }}! <i class="material-icons right">expand_more</i></a></li>
+          @endif
         </ul>
+
+        <a href="#" class="dropdown-trigger brand-logo right hide-on-large-only" data-target="dropdown1" id="mobile-user-icon">
+          <i class="material-icons">person</i>
+        </a>
+
     </div>
 </nav>
 
@@ -94,6 +99,22 @@
           } else {
             options.style.display = 'block';
           }
+        }
+
+        toggleUserDisplay();
+        window.addEventListener('resize', toggleUserDisplay);
+
+        function toggleUserDisplay() {
+            var userText = document.querySelector('#nav-mobile2');
+            var userIcon = document.getElementById('mobile-user-icon');
+
+            if (window.innerWidth < 992) {
+                userText.style.display = 'none';
+                userIcon.style.display = 'block';
+            } else {
+                userText.style.display = 'block';
+                userIcon.style.display = 'none';
+            }
         }
         
       });
