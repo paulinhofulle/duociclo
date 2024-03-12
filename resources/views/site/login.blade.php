@@ -3,6 +3,7 @@
 @section('title', 'Fulle Sistemas - Em Manutenção!')
 
 @section('form')
+@csrf
 <img src="/img/aralho.png" style="height: 30rem">
     {{-- @if($mensagem = Session::get('erro'))
         <div class="alert alert-erro">
