@@ -1,5 +1,6 @@
 @extends('site/layoutLogin')
-@section('title', 'Duociclo')
+{{-- @section('title', 'Duociclo') --}}
+@section('title', 'Fulle Sistemas')
 
 @section('form')
 <img src="/img/aralho.png" style="height: 30rem">
