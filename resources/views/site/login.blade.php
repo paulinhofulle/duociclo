@@ -1,9 +1,7 @@
 @extends('site/layoutLogin')
-{{-- @section('title', 'Duociclo') --}}
-@section('title', 'Fulle Sistemas - Em Manutenção!')
+@section('title', 'Duociclo')
 
 @section('form')
-@csrf
 <img src="/img/aralho.png" style="height: 30rem">
     {{-- @if($mensagem = Session::get('erro'))
         <div class="alert alert-erro">
@@ -42,6 +40,6 @@
     </form> --}}
 @endsection
 
-{{-- @section('botaoAux')
-<a href="{{ url('/cadastrar') }}" class="btn btn-primary w-100 py-2" style="background-color: white; border-color:#e2a951; color:#e2a951">Cadastrar-se</a>
-@endsection --}}
+@section('botaoAux')
+{{-- <a href="{{ url('/cadastrar') }}" class="btn btn-primary w-100 py-2" style="background-color: white; border-color:#e2a951; color:#e2a951">Cadastrar-se</a> --}}
+@endsection
