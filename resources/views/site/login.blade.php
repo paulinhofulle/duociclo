@@ -2,7 +2,8 @@
 @section('title', 'Duociclo')
 
 @section('form')
-    @if($mensagem = Session::get('erro'))
+<img src="/img/aralho.png" style="height: 30rem">
+    {{-- @if($mensagem = Session::get('erro'))
         <div class="alert alert-erro">
             {{$mensagem}}
         </div>
@@ -36,9 +37,9 @@
             <label for="floatingInput2">Senha</label>
         </div>
         <button type="submit" class="btn btn-primary w-100 py-2" style="background-color: #e2a951; border-color:white; color:white">Acessar</button>
-    </form>
+    </form> --}}
 @endsection
 
-@section('botaoAux')
+{{-- @section('botaoAux')
 <a href="{{ url('/cadastrar') }}" class="btn btn-primary w-100 py-2" style="background-color: white; border-color:#e2a951; color:#e2a951">Cadastrar-se</a>
-@endsection
+@endsection --}}

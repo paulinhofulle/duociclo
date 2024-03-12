@@ -10,10 +10,10 @@
     <link rel="icon" href="imagens/icone_logo.png" type="image/x-icon">
 </head>
 <body class="d-flex align-items-center py-4 bg-body-tertiary h-100">
-    <main class="w-100 m-auto" style="max-width: 30rem; padding:1rem;">
+    <main class="w-100 m-auto" style="max-width: 15rem; padding:1rem;">
         @yield('form')
         @yield('botaoAux')
-        <p class="text-body-secondary mt-3 mb-3">© 2023</p>
+        {{-- <p class="text-body-secondary mt-3 mb-3">© 2023</p> --}}
     </main>
 </body>
 </html>
