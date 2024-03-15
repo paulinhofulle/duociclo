@@ -15,8 +15,11 @@ use App\Http\Controllers\Lojista\ReservaController;
 use App\Http\Controllers\Lojista\AluguelController;
 use App\Http\Controllers\Cliente\ClienteController;
 
+// MENU
+Route::view('/', 'site/menu')->name('menu');
+
 // LOGIN
-Route::view('/', 'site/login')->name('login');
+Route::view('duociclo/', 'site/login')->name('login');
 Route::post('/auth', [LoginController::class, 'auth'])->name('login/auth');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
