@@ -74,7 +74,7 @@
     <main>
         <img src="img/logo_fulle.png" alt="Logo" class="logo">
         <div class="container">
-            <div class="row row-cols-1 row-cols-md-2 g-4">
+            <div class="row row-cols-2 row-cols-md-2 g-4">
                 <div class="col">
                     <div class="card">
                         <img src="imagens/duociclo_logo.png" class="card-img-top" alt="Imagem 1">
