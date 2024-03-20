@@ -12,12 +12,11 @@
         body {
             margin: 0;
             padding: 0;
-            overflow: hidden;
             position: relative;
             display: flex;
             justify-content: center;
-            align-items: center;
-            height: 100vh;
+            align-items: flex-start;
+            min-height: 100vh;
         }
         video {
             position: fixed;
@@ -31,10 +30,40 @@
             position: relative;
             z-index: 1;
             text-align: center;
+            margin-top: 50px;
         }
         .logo {
-            max-width: 25rem; /* ajuste conforme necessário */
-            margin-top: -25rem; /* ajuste conforme necessário */
+            max-width: 25rem;
+            margin-top: -8rem;
+        }
+        .card {
+            margin-bottom: 20px;
+            border-radius: 20px;
+            height: 0;
+            padding-bottom: 100%;
+            cursor: pointer;
+            overflow: hidden;
+        }
+        .card-img-top {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70%;
+            object-fit: cover;
+        }
+        .card-body {
+            padding: 10px;
+        }
+        .card-title {
+            font-size: 17px;
+            font-weight: 500;
+            margin-top: 5px;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 10px;
         }
     </style>
 </head>
@@ -44,7 +73,26 @@
     </video>
     <main>
         <img src="img/logo_fulle.png" alt="Logo" class="logo">
-        <!-- Seu conteúdo aqui -->
+        <div class="container">
+            <div class="row row-cols-1 row-cols-md-2 g-4">
+                <div class="col">
+                    <div class="card">
+                        <img src="imagens/duociclo_logo.png" class="card-img-top" alt="Imagem 1">
+                        <div class="card-body">
+                            <p class="card-title">Duociclo</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card">
+                        <img src="imagens/rebrecho_logo.png" class="card-img-top" alt="Imagem 2">
+                        <div class="card-body">
+                            <p class="card-title">Rebrechó</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 </body>
 </html>
