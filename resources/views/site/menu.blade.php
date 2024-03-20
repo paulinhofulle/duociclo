@@ -76,6 +76,7 @@
         <div class="container">
             <div class="row row-cols-2 row-cols-md-2 g-4">
                 <div class="col">
+                    <a href="{{ route('duociclo/login') }}">
                     <div class="card">
                         <img src="imagens/duociclo_logo.png" class="card-img-top" alt="Imagem 1">
                         <div class="card-body">

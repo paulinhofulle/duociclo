@@ -1,4 +1,4 @@
-@extends('site/layoutLogin')
+@extends('site/duociclo/layoutLogin')
 @section('title', 'Duociclo')
 
 @section('form')
@@ -23,9 +23,9 @@
         </div>
     @endif
 
-    <form action="{{route('login/auth')}}" method="POST">
+    <form action="{{route('duociclo/login/auth')}}" method="POST">
         @csrf
-        <img src="imagens/duociclo_logo.png" alt="Duociclo" style="margin-bottom:-3rem; margin-left:-2.75rem" height="200" width="200">
+        <img src="{{ asset('imagens/duociclo_logo.png') }}" alt="Duociclo" style="margin-bottom:-3rem; margin-left:-2.75rem" height="200" width="200">
         <h1 class="h3 mb-3 fw-normal">Login</h1>
         <div class="form-floating">
             <input name="email" type="email" class="form-control" id="floatingInput1">
