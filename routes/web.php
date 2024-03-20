@@ -20,7 +20,7 @@ Route::view('/', 'site/menu')->name('menu');
 
 // LOGIN
 Route::view('duociclo/login', 'site/duociclo/login')->name('duociclo/login');
-Route::post('/auth', [LoginController::class, 'auth'])->name('duociclo/login/auth');
+Route::post('/auth', [LoginController::class, 'auth'])->name('login/auth');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 // CADASTRAR
