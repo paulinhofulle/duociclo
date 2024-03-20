@@ -76,9 +76,9 @@
         <div class="container">
             <div class="row row-cols-2 row-cols-md-2 g-4">
                 <div class="col">
-                    <a href="{{ route('duociclo/login') }}">
+                    <a href="{{ route('login') }}">
                     <div class="card">
-                        <img src="{{ asset('imagens/duociclo_logo.png') }}" class="card-img-top" alt="Imagem 1">
+                        {{-- <img src="{{ asset('imagens/duociclo_logo.png') }}" class="card-img-top" alt="Imagem 1"> --}}
                         <div class="card-body">
                             <p class="card-title">Duociclo</p>
                         </div>
