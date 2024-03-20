@@ -74,11 +74,11 @@
     <main>
         <img src="img/logo_fulle.png" alt="Logo" class="logo">
         <div class="container">
-            <div class="row row-cols-2 row-cols-md-2 g-4">
+            <div class="row row-cols-2 row-cols-md-2 g-2">
                 <div class="col">
-                    <a href="{{ route('login') }}">
+                    <a href="{{ route('duociclo/login') }}">
                     <div class="card">
-                        {{-- <img src="{{ asset('imagens/duociclo_logo.png') }}" class="card-img-top" alt="Imagem 1"> --}}
+                        <img src="{{ asset('imagens/duociclo_logo.png') }}" class="card-img-top" alt="Imagem 1">
                         <div class="card-body">
                             <p class="card-title">Duociclo</p>
                         </div>

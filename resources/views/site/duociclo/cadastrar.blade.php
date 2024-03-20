@@ -1,4 +1,4 @@
-@extends('site/layoutLogin')
+@extends('site/duociclo/layoutLogin')
 @section('title', 'Duociclo - Cadastrar-se')
 
 @section('form')

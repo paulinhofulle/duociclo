@@ -10,7 +10,7 @@ use Carbon\Carbon;
 class LoginController extends Controller{
 
     public function login(){
-        return view('site/login');
+        return view('site/duociclo/login');
     }
 
     public function auth(Request $request){
@@ -56,7 +56,7 @@ class LoginController extends Controller{
 
 
     public function cadastrar(){
-        return view('site/cadastrar');
+        return view('site/duociclo/cadastrar');
     }
 
     public function validaCadastro(Request $request){

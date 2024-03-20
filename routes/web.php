@@ -19,7 +19,7 @@ use App\Http\Controllers\Cliente\ClienteController;
 Route::view('/', 'site/menu')->name('menu');
 
 // LOGIN
-Route::view('/login', 'site/duociclo/login')->name('login');
+Route::view('/duociclo/login', 'site/duociclo/login')->name('duociclo/login');
 Route::post('/auth', [LoginController::class, 'auth'])->name('login/auth');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
