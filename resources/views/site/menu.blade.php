@@ -76,21 +76,20 @@
         <div class="container">
             <div class="row row-cols-2 row-cols-md-2 g-2">
                 <div class="col">
-                    <a href="{{ route('duociclo/login') }}">
-                    <div class="card">
+                    <a class="card" href="{{ route('duociclo/login') }}">
                         <img src="{{ asset('imagens/duociclo_logo.png') }}" class="card-img-top" alt="Imagem 1">
                         <div class="card-body">
                             <p class="card-title">Duociclo</p>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 <div class="col">
-                    <div class="card">
+                    <a class="card" href="{{ route('duociclo/cadastrar') }}">
                         <img src="{{ asset('imagens/rebrecho_logo.png') }}" class="card-img-top" alt="Imagem 2">
                         <div class="card-body">
                             <p class="card-title">Rebrechó</p>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>

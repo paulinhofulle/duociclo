@@ -24,7 +24,7 @@ Route::post('/auth', [LoginController::class, 'auth'])->name('login/auth');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 // CADASTRAR
-Route::get('/cadastrar', [LoginController::class, 'cadastrar'])->name('cadastrar');
+Route::get('/cadastrar', [LoginController::class, 'cadastrar'])->name('duociclo/cadastrar');
 Route::post('/registrar', [LoginController::class, 'registrar'])->name('registrar');
 Route::post('/validaCadastro', [LoginController::class, 'validaCadastro']);
 Route::post('/obter-endereco-por-cep', [EnderecoController::class, 'obterEnderecoPorCep']);
