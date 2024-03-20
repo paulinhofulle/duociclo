@@ -78,7 +78,7 @@
                 <div class="col">
                     <a href="{{ route('duociclo/login') }}">
                     <div class="card">
-                        <img src="imagens/duociclo_logo.png" class="card-img-top" alt="Imagem 1">
+                        <img src="{{ asset('imagens/duociclo_logo.png') }}" class="card-img-top" alt="Imagem 1">
                         <div class="card-body">
                             <p class="card-title">Duociclo</p>
                         </div>
@@ -86,7 +86,7 @@
                 </div>
                 <div class="col">
                     <div class="card">
-                        <img src="imagens/rebrecho_logo.png" class="card-img-top" alt="Imagem 2">
+                        <img src="{{ asset('imagens/rebrecho_logo.png') }}" class="card-img-top" alt="Imagem 2">
                         <div class="card-body">
                             <p class="card-title">Rebrechó</p>
                         </div>
